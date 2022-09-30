@@ -11,8 +11,6 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "@headlessui/vue": "^1.7.2",
-    "@heroicons/vue": "^2.0.11",
     "axios": "^0.27.2",
     "pinia": "^2.0.22",
     "vue": "^3.2.38",
@@ -20,21 +18,17 @@
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",
-    "@tailwindcss/forms": "^0.5.3",
     "@vitejs/plugin-vue": "^3.0.3",
     "@vitejs/plugin-vue-jsx": "^2.0.1",
     "@vue/eslint-config-prettier": "^7.0.0",
     "@vue/test-utils": "^2.0.2",
-    "autoprefixer": "^10.4.12",
     "cypress": "^10.7.0",
     "eslint": "^8.22.0",
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-vue": "^9.3.0",
     "jsdom": "^20.0.0",
-    "postcss": "^8.4.16",
     "prettier": "^2.7.1",
     "start-server-and-test": "^1.14.0",
-    "tailwindcss": "^3.1.8",
     "vite": "^3.0.9",
     "vitest": "^0.23.0"
   }
