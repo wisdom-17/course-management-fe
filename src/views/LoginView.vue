@@ -3,7 +3,7 @@
     <form>
       <div class="field mt-4 grid">
         <span class="p-float-label">
-          <InputText id="email" type="text" v-model="email" />
+          <InputText id="email" type="text" v-model="email" size="23" />
           <label for="email">Email</label>
         </span>
       </div>
@@ -14,6 +14,7 @@
             v-model="password"
             :feedback="false"
             toggleMask
+            size="23"
           />
           <label for="password">Password</label>
         </span>
