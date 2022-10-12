@@ -44,11 +44,10 @@ const login = async () => {
     email: auth.value.email,
     password: auth.value.password,
   }
-  console.log(payload)
 
   try {
     await AuthService.login(payload)
-    const loggedInUser = storeAuth.getAuthUser()
+    const loggedInUser = storeAuth.getAuthenticatedUserDetails()
     if (loggedInUser) {
       router.push({ name: 'home' })
     }
