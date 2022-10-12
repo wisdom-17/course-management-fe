@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import AboutView from '@/views/AboutView.vue'
+import { useAuthStore } from '@/stores/auth'
 
 const routes = [
   {
@@ -16,17 +17,13 @@ const routes = [
     component: LoginView,
   },
   {
-    path: '/logout',
-    name: 'logout',
-    component: LoginView,
-  },
-  {
     path: '/about',
     name: 'about',
     // route level code-splitting
     // this generates a separate chunk (About.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     // component: () => import('../views/AboutView.vue'),
+    meta: { requiresAuth: true },
     component: AboutView,
   },
 ]
@@ -37,18 +34,20 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  // const authUser = store.getters["auth/authUser"];
+  const storeAuth = useAuthStore()
+  const authUser = storeAuth.loggedInUser
   const reqAuth = to.matched.some((record) => record.meta.requiresAuth);
   const loginQuery = { path: '/login', query: { redirect: to.fullPath } }
 
-  if (reqAuth /*&& !authUser*/) {
-    // store.dispatch("auth/getAuthUser").then(() => {
-    //   if (!store.getters["auth/authUser"]) next(loginQuery);
-    //   else next();
-    // });
-    // console.log('requires login')
-    // next(loginQuery)
-    next()
+  if (reqAuth && !authUser) {
+    storeAuth.getAuthenticatedUserDetails().then(() => {
+      if (!authUser) {
+        console.log('user needs to login')
+        next(loginQuery)
+      } else {
+        next()
+      }
+    })
   } else {
     next() // make sure to always call next()!
   }
