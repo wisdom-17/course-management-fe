@@ -15,7 +15,7 @@ authClient.interceptors.response.use(
     return response
   },
   function (error) {
-    console.log(error)
+    console.error(error)
     if (
       error.response &&
       [401, 419].includes(error.response.status) /*&&
@@ -30,8 +30,7 @@ authClient.interceptors.response.use(
 
 export default {
   async login(payload) {
-    const res = await authClient.get('/sanctum/csrf-cookie')
-    console.log(res)
+    await authClient.get('/sanctum/csrf-cookie')
     return authClient.post('/login', payload)
   },
   logout() {
