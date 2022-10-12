@@ -47,9 +47,11 @@ const login = async () => {
 
   try {
     await AuthService.login(payload)
-    const loggedInUser = storeAuth.getAuthenticatedUserDetails()
-    if (loggedInUser) {
+    await storeAuth.getAuthenticatedUserDetails()
+    if (storeAuth.loggedInUser) {
       router.push({ name: 'home' })
+    } else {
+      console.error('loggedInUser is falsy')
     }
   } catch (error) {
     console.log(error)
