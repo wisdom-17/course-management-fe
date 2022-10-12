@@ -14,10 +14,10 @@ export const useAuthStore = defineStore({
     async getAuthenticatedUserDetails() {
       try {
         const response = await AuthService.getAuthUser()
-        console.log(response)
         this.loggedInUser = response.data.data
       } catch (error) {
-        console.log(error)
+        console.error(error)
+        this.loggedInUser = null
       }
     },
     logout() {

@@ -6,7 +6,6 @@ import { useAuthStore } from '@/stores/auth'
 const storeAuth = useAuthStore()
 
 const onClickLogout = () => {
-  console.log('clicked logout')
   storeAuth.logout()
 }
 </script>

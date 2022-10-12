@@ -36,17 +36,14 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const storeAuth = useAuthStore()
   const authUser = storeAuth.loggedInUser
-  const reqAuth = to.matched.some((record) => record.meta.requiresAuth);
+  const reqAuth = to.matched.some((record) => record.meta.requiresAuth)
   const loginQuery = { path: '/login', query: { redirect: to.fullPath } }
 
   if (reqAuth && !authUser) {
     storeAuth.getAuthenticatedUserDetails().then(() => {
-      if (!authUser) {
-        console.log('user needs to login')
-        next(loginQuery)
-      } else {
-        next()
-      }
+      // console.log(storeAuth.loggedInUser)
+      if (!storeAuth.loggedInUser) next(loginQuery)
+      else next()
     })
   } else {
     next() // make sure to always call next()!
