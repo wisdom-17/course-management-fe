@@ -1,5 +1,10 @@
 <template>
   <h1>Login</h1>
+  <ErrorMessage
+    :message="validation.message"
+    v-show="showErrorMessage"
+    @close="onClickClose"
+  />
   <div class="card h-screen flex justify-content-center align-items-center">
     <form>
       <div class="field mt-4 grid">
@@ -34,10 +39,13 @@ import Button from 'primevue/button'
 import AuthService from '@/services/AuthService'
 import { useAuthStore } from '@/stores/auth'
 import router from '@/router'
+import ErrorMessage from '@/components/ErrorMessage.vue'
 
 const storeAuth = useAuthStore()
 
 const auth = ref({ email: '', password: '' })
+const validation = ref({ message: '' })
+const showErrorMessage = ref(false)
 
 const login = async () => {
   const payload = {
@@ -54,7 +62,14 @@ const login = async () => {
       console.error('loggedInUser is falsy')
     }
   } catch (error) {
-    console.log(error)
+    console.error(error.response.data)
+    validation.value.message = error.response.data.message
+    showErrorMessage.value = true
   }
+}
+
+const onClickClose = () => {
+  validation.value.message = ''
+  showErrorMessage.value = false
 }
 </script>
