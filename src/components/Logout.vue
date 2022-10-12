@@ -1,4 +1,4 @@
-<template> | <a href="#" @click="onClickLogout">Logout</a> | </template>
+<template> | <a href="#" @click="onClickLogout">Logout</a> </template>
 
 <script setup>
 import { useAuthStore } from '@/stores/auth'
