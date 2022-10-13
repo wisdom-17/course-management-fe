@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { useAuthStore } from '@/stores/auth'
 
 const apiURL = import.meta.env.VITE_BASE_API_URL
 
@@ -15,14 +16,13 @@ authClient.interceptors.response.use(
     return response
   },
   function (error) {
-    console.error(error)
+    const storeAuth = useAuthStore()
     if (
       error.response &&
-      [401, 419].includes(error.response.status) /*&&
-      store.getters['auth/authUser'] &&
-      !store.getters['auth/guest']*/
+      [401, 419].includes(error.response.status) &&
+      storeAuth.loggedInUser
     ) {
-      // store.dispatch('auth/logout')
+      storeAuth.logout()
     }
     return Promise.reject(error)
   }
