@@ -18,6 +18,9 @@
           />
           <label for="email">Email</label>
         </span>
+        <InlineMessage class="ml-1" v-show="validation.errors.email.length > 0">
+          {{ validation.errors.email[0] }}
+        </InlineMessage>
       </div>
       <div class="field mt-4 grid">
         <span class="p-float-label">
@@ -31,6 +34,12 @@
           />
           <label for="password">Password</label>
         </span>
+        <InlineMessage
+          class="ml-1"
+          v-show="validation.errors.password.length > 0"
+        >
+          {{ validation.errors.password[0] }}
+        </InlineMessage>
       </div>
       <div class="field grid mt-4">
         <Button @click="login" label="Login" />
@@ -43,6 +52,7 @@ import { ref } from 'vue'
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
 import Button from 'primevue/button'
+import InlineMessage from 'primevue/inlinemessage';
 import AuthService from '@/services/AuthService'
 import { useAuthStore } from '@/stores/auth'
 import router from '@/router'
