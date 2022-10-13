@@ -9,7 +9,13 @@
     <form>
       <div class="field mt-4 grid">
         <span class="p-float-label">
-          <InputText id="email" type="text" v-model="auth.email" size="23" />
+          <InputText
+            id="email"
+            :class="{ 'p-invalid': validation.errors.email.length > 0 }"
+            type="text"
+            v-model="auth.email"
+            size="23"
+          />
           <label for="email">Email</label>
         </span>
       </div>
@@ -17,6 +23,7 @@
         <span class="p-float-label">
           <Password
             id="password"
+            :class="{ 'p-invalid': validation.errors.password.length > 0 }"
             v-model="auth.password"
             :feedback="false"
             toggleMask
@@ -44,7 +51,7 @@ import ErrorMessage from '@/components/ErrorMessage.vue'
 const storeAuth = useAuthStore()
 
 const auth = ref({ email: '', password: '' })
-const validation = ref({ message: '' })
+const validation = ref({ message: '', errors: { email: [], password: [] } })
 const showErrorMessage = ref(false)
 
 const login = async () => {
@@ -52,6 +59,10 @@ const login = async () => {
     email: auth.value.email,
     password: auth.value.password,
   }
+
+  // clear validation errors
+  validation.value.message = ''
+  validation.value.errors = { email: [], password: [] }
 
   try {
     await AuthService.login(payload)
@@ -62,8 +73,13 @@ const login = async () => {
       console.error('loggedInUser is falsy')
     }
   } catch (error) {
-    console.error(error.response.data)
     validation.value.message = error.response.data.message
+    // update validation error messages with ones
+    // returned from API call
+    validation.value.errors = {
+      ...validation.value.errors,
+      ...error.response.data.errors,
+    }
     showErrorMessage.value = true
   }
 }
