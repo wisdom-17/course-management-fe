@@ -1,5 +1,4 @@
 <template>
-  <h1>Login</h1>
   <ErrorMessage
     :message="validation.message"
     v-show="showErrorMessage"
