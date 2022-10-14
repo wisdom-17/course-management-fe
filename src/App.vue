@@ -1,19 +1,14 @@
 <template>
   <div class="app">
-    <nav v-if="currentRoute !== 'login'">
-      <!-- <RouterLink to="/login">Login</RouterLink> -->
-      <RouterLink to="/">Home</RouterLink> |
-      <RouterLink to="/about">About</RouterLink>
-      <Logout />
-    </nav>
+    <Navigation v-if="currentRoute !== 'login'" />
     <RouterView />
   </div>
 </template>
 
 <script setup>
 import { computed } from 'vue'
-import { RouterLink, RouterView, useRoute } from 'vue-router'
-import Logout from '@/components/Logout.vue'
+import { RouterView, useRoute } from 'vue-router'
+import Navigation from '@/components/Navigation.vue'
 
 const currentRoute = computed(() => {
   return useRoute().name
