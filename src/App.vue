@@ -14,9 +14,3 @@ const currentRoute = computed(() => {
   return useRoute().name
 })
 </script>
-
-<style>
-.app {
-  text-align: center;
-}
-</style>
