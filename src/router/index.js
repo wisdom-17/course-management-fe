@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import AboutView from '@/views/AboutView.vue'
 import CoursesView from '@/views/CoursesView.vue'
+import NewCourseView from '@/views/NewCourseView.vue'
 import { useAuthStore } from '@/stores/auth'
 
 const routes = [
@@ -32,6 +33,12 @@ const routes = [
     name: 'courses',
     meta: { requiresAuth: true },
     component: CoursesView,
+  },
+  {
+    path: '/new-course',
+    name: 'newCourse',
+    meta: { requiresAuth: true },
+    component: NewCourseView,
   },
 ]
 
