@@ -1,7 +1,9 @@
 <template>
   <div class="new-course">
-    <h1>New Course</h1>
+    <NewCourseForm />
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import NewCourseForm from '@/components/courses/NewForm.vue'
+</script>
