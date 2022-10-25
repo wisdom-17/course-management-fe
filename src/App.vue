@@ -1,7 +1,9 @@
 <template>
   <div class="app">
     <Navigation v-if="currentRoute !== 'login'" />
-    <RouterView />
+    <div :class="{ grid: currentRoute !== 'login' }">
+      <RouterView />
+    </div>
   </div>
 </template>
 
