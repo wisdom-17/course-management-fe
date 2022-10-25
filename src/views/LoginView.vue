@@ -70,8 +70,6 @@ const login = async () => {
     await storeAuth.getAuthenticatedUserDetails()
     if (storeAuth.loggedInUser) {
       router.push({ name: 'home' })
-    } else {
-      console.error('loggedInUser is falsy')
     }
   } catch (error) {
     validation.value.message = error.response.data.message
