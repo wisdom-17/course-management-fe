@@ -23,7 +23,6 @@
           <label for="startDate">Start and End Dates</label>
           <Calendar
             id="dateRange"
-            :class="{ 'p-invalid': validation.errors.dateRange.length > 0 }"
             :class="{ 'p-invalid': dateRangeValidationMessages.length > 0 }"
             class="mr-1 w-4"
             v-model="course.dateRange"
