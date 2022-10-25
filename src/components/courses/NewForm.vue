@@ -24,6 +24,7 @@
           <Calendar
             id="dateRange"
             :class="{ 'p-invalid': validation.errors.dateRange.length > 0 }"
+            :class="{ 'p-invalid': dateRangeValidationMessages.length > 0 }"
             class="mr-1 w-4"
             v-model="course.dateRange"
             selectionMode="range"
@@ -31,7 +32,15 @@
             :showButtonBar="true"
             :showIcon="true"
           />
-          <small class="p-error">{{ validation.errors.dateRange[0] }}</small>
+          <template
+            v-for="errorMessage in dateRangeValidationMessages"
+            :key="errorMessage"
+          >
+            <small class="p-error">
+              {{ errorMessage }}
+            </small>
+            {{ ' ' }}
+          </template>
         </div>
         <h4>Teaching Days</h4>
         <div class="formgrid grid">
@@ -128,27 +137,47 @@ import Card from 'primevue/card'
 import CourseService from '@/services/Course'
 import InputText from 'primevue/inputtext'
 import ErrorMessage from '@/components/ErrorMessage.vue'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 const course = ref({ name: '', dateRange: [], teachingDays: [] })
 
 const validation = ref({
   message: '',
-  errors: { name: [], dateRange: [], teachingDays: [] },
+  errors: { name: [], startDate: [], endDate: [], teachingDays: [] },
 })
 const showErrorMessage = ref(false)
+
+const startDate = computed(() => {
+  return course.value.dateRange[0]
+})
+
+const endDate = computed(() => {
+  return course.value.dateRange[1]
+})
+
+const dateRangeValidationMessages = computed(() => {
+  return [
+    ...validation.value.errors.startDate,
+    ...validation.value.errors.endDate,
+  ]
+})
 
 const handleOnClickSubmitButton = async () => {
   const payload = {
     name: course.value.name,
-    startDate: course.value.startDate,
-    endDate: course.value.endDate,
+    startDate: startDate.value,
+    endDate: endDate.value,
     teachingDays: course.value.teachingDays,
   }
 
   // clear validation errors
   validation.value.message = ''
-  validation.value.errors = { name: [], dateRange: [], teachingDays: [] }
+  validation.value.errors = {
+    name: [],
+    startDate: [],
+    endDate: [],
+    teachingDays: [],
+  }
 
   try {
     const apiResult = await CourseService.new(payload)
@@ -162,7 +191,6 @@ const handleOnClickSubmitButton = async () => {
       ...error.response.data.errors,
     }
     showErrorMessage.value = true
-    console.log(error)
   }
 }
 
