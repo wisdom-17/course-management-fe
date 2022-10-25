@@ -1,5 +1,5 @@
 <template>
-  <Card class="mt-4 surface-ground">
+  <Card class="mt-4 surface-ground w-auto">
     <template #title>New Course</template>
     <template #content>
       <ErrorMessage
@@ -7,18 +7,96 @@
         v-show="showErrorMessage"
         @close="onClickClose"
       />
-      <form>
+      <form class="newCourse">
         <div class="field">
           <label for="courseName">Course Name</label>
           <InputText
             id="courseName"
-            class="w-full"
             :class="{ 'p-invalid': validation.errors.name.length > 0 }"
+            class="mr-1 w-6"
             type="text"
             v-model="course.name"
           />
           <small class="p-error">{{ validation.errors.name[0] }}</small>
         </div>
+        <div class="field">
+          <label for="startDate">Start and End Dates</label>
+          <Calendar
+            id="dateRange"
+            :class="{ 'p-invalid': validation.errors.dateRange.length > 0 }"
+            class="mr-1 w-4"
+            v-model="course.dateRange"
+            selectionMode="range"
+            dateFormat="dd/mm/yy"
+            :showButtonBar="true"
+            :showIcon="true"
+          />
+          <small class="p-error">{{ validation.errors.dateRange[0] }}</small>
+        </div>
+        <h4>Teaching Days</h4>
+        <div class="formgrid grid">
+          <div class="col-2">
+            <div class="field-checkbox">
+              <Checkbox
+                inputId="monday"
+                value="monday"
+                v-model="course.teachingDays"
+              />
+              <label for="monday">Monday</label>
+            </div>
+            <div class="field-checkbox">
+              <Checkbox
+                inputId="tuesday"
+                value="tuesday"
+                v-model="course.teachingDays"
+              />
+              <label for="tuesday">Tuesday</label>
+            </div>
+            <div class="field-checkbox">
+              <Checkbox
+                inputId="wednesday"
+                value="wednesday"
+                v-model="course.teachingDays"
+              />
+              <label for="wednesday">Wednesday</label>
+            </div>
+            <div class="field-checkbox">
+              <Checkbox
+                inputId="thursday"
+                value="thursday"
+                v-model="course.teachingDays"
+              />
+              <label for="thursday">Thursday</label>
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="field-checkbox">
+              <Checkbox
+                inputId="friday"
+                value="friday"
+                v-model="course.teachingDays"
+              />
+              <label for="friday">Friday</label>
+            </div>
+            <div class="field-checkbox">
+              <Checkbox
+                inputId="saturday"
+                value="saturday"
+                v-model="course.teachingDays"
+              />
+              <label for="saturday">Saturday</label>
+            </div>
+            <div class="field-checkbox">
+              <Checkbox
+                inputId="sunday"
+                value="sunday"
+                v-model="course.teachingDays"
+              />
+              <label for="sunday">Sunday</label>
+            </div>
+          </div>
+        </div>
+
         <div class="flex justify-content-between">
           <div class="flex">
             <Button
@@ -44,22 +122,33 @@
 
 <script setup>
 import Button from 'primevue/button'
+import Calendar from 'primevue/calendar'
+import Checkbox from 'primevue/checkbox'
 import Card from 'primevue/card'
 import CourseService from '@/services/Course'
 import InputText from 'primevue/inputtext'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import { ref } from 'vue'
 
-const course = ref({ name: '' })
-const validation = ref({ message: '', errors: { name: [] } })
+const course = ref({ name: '', dateRange: [], teachingDays: [] })
+
+const validation = ref({
+  message: '',
+  errors: { name: [], dateRange: [], teachingDays: [] },
+})
 const showErrorMessage = ref(false)
 
 const handleOnClickSubmitButton = async () => {
-  const payload = { name: course.value.name }
+  const payload = {
+    name: course.value.name,
+    startDate: course.value.startDate,
+    endDate: course.value.endDate,
+    teachingDays: course.value.teachingDays,
+  }
 
   // clear validation errors
   validation.value.message = ''
-  validation.value.errors = { name: [] }
+  validation.value.errors = { name: [], dateRange: [], teachingDays: [] }
 
   try {
     const apiResult = await CourseService.new(payload)
@@ -83,7 +172,8 @@ const onClickClose = () => {
 }
 </script>
 <style scoped>
-.field input {
+.newCourse,
+.field label {
   display: block;
 }
 </style>
