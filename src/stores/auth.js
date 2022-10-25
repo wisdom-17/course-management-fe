@@ -7,9 +7,7 @@ export const useAuthStore = defineStore({
   state: () => ({
     loggedInUser: null,
   }),
-  getters: {
-    // user: (state) => state.user,
-  },
+  getters: {},
   actions: {
     async getAuthenticatedUserDetails() {
       try {
