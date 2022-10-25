@@ -1,5 +1,5 @@
 <template>
-  <div class="new-course">
+  <div class="col new-course">
     <NewCourseForm />
   </div>
 </template>

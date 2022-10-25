@@ -1,5 +1,5 @@
 <template>
-  <div class="courses">
+  <div class="col courses">
     <h1>Courses</h1>
     <Toolbar />
   </div>
