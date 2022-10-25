@@ -19,13 +19,24 @@
           />
           <small class="p-error">{{ validation.errors.name[0] }}</small>
         </div>
-        <Button
-          class="mr-2"
-          label="Save"
-          @click="handleOnClickSubmitButton()"
-        />
-        <Button class="mr-2" label="Next Step" />
-        <Button label="Cancel" />
+        <div class="flex justify-content-between">
+          <div class="flex">
+            <Button
+              class="mr-2"
+              icon="pi pi-save"
+              label="Save"
+              @click="handleOnClickSubmitButton()"
+            />
+            <Button
+              class="mr-2"
+              icon="pi pi-angle-double-right"
+              label="Next Step"
+            />
+          </div>
+          <div class="flex align-self-end">
+            <Button class="p-button-danger" icon="pi pi-trash" label="Cancel" />
+          </div>
+        </div>
       </form>
     </template>
   </Card>
@@ -72,7 +83,7 @@ const onClickClose = () => {
 }
 </script>
 <style scoped>
-.field * {
+.field input {
   display: block;
 }
 </style>
