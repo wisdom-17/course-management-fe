@@ -103,6 +103,11 @@
               <label for="sunday">Sunday</label>
             </div>
           </div>
+          <div class="col-2">
+            <small class="p-error">{{
+              validation.errors.teachingDays[0]
+            }}</small>
+          </div>
         </div>
 
         <div class="flex justify-content-between">
