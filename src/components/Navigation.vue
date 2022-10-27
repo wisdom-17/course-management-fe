@@ -32,6 +32,7 @@ const items = ref([
   },
 ])
 
+// Buggy since updating to Primevue v3.18.0
 watch(
   () => route.name,
   (newRoute, previousRoute) => {
