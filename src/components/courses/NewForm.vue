@@ -103,7 +103,7 @@
               <label for="sunday">Sunday</label>
             </div>
           </div>
-          <div class="col-2">
+          <div class="col-4">
             <small class="p-error">{{
               validation.errors.teachingDays[0]
             }}</small>
