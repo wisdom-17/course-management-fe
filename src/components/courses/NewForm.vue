@@ -41,6 +41,8 @@
             {{ ' ' }}
           </template>
         </div>
+        <h5>{{ startDate }}</h5>
+        <h5>{{ endDate }}</h5>
         <h4>Teaching Days</h4>
         <div class="formgrid grid">
           <div class="col-2">
@@ -152,11 +154,41 @@ const validation = ref({
 const showErrorMessage = ref(false)
 
 const startDate = computed(() => {
-  return course.value.dateRange[0]
+  // console.log(course.value.dateRange[0])
+  // console.log(typeof course.value.dateRange[0])
+  const date = course.value.dateRange[0]
+  let string = JSON.stringify(date)
+  console.log(string)
+
+  // After: JSON.stringify keeps date as-is!
+  Date.prototype.toJSON = function () {
+    const hoursDiff = this.getHours() - this.getTimezoneOffset() / 60
+    this.setHours(hoursDiff)
+    return this.toISOString()
+  }
+  string = JSON.stringify(date)
+  console.log(string)
+  console.log(date)
+
+  return date
 })
 
 const endDate = computed(() => {
-  return course.value.dateRange[1]
+  const date = course.value.dateRange[1]
+  let string = JSON.stringify(date)
+  console.log(string)
+
+  // After: JSON.stringify keeps date as-is!
+  Date.prototype.toJSON = function () {
+    const hoursDiff = this.getHours() - this.getTimezoneOffset() / 60
+    this.setHours(hoursDiff)
+    return this.toISOString()
+  }
+  string = JSON.stringify(date)
+  console.log(string)
+  console.log(date)
+
+  return date
 })
 
 const dateRangeValidationMessages = computed(() => {
@@ -202,6 +234,7 @@ const onClickClose = () => {
   validation.value.message = ''
   showErrorMessage.value = false
 }
+
 </script>
 <style scoped>
 .newCourse,
