@@ -41,8 +41,6 @@
             {{ ' ' }}
           </template>
         </div>
-        <h5>{{ startDate }}</h5>
-        <h5>{{ endDate }}</h5>
         <h4>Teaching Days</h4>
         <div class="formgrid grid">
           <div class="col-2">
@@ -154,11 +152,9 @@ const validation = ref({
 const showErrorMessage = ref(false)
 
 const startDate = computed(() => {
-  // console.log(course.value.dateRange[0])
-  // console.log(typeof course.value.dateRange[0])
   const date = course.value.dateRange[0]
-  let string = JSON.stringify(date)
-  console.log(string)
+  // let string = JSON.stringify(date)
+  // console.log(string)
 
   // After: JSON.stringify keeps date as-is!
   Date.prototype.toJSON = function () {
@@ -166,17 +162,17 @@ const startDate = computed(() => {
     this.setHours(hoursDiff)
     return this.toISOString()
   }
-  string = JSON.stringify(date)
-  console.log(string)
-  console.log(date)
+  // string = JSON.stringify(date)
+  // console.log(string)
+  // console.log(date)
 
   return date
 })
 
 const endDate = computed(() => {
   const date = course.value.dateRange[1]
-  let string = JSON.stringify(date)
-  console.log(string)
+  // let string = JSON.stringify(date)
+  // console.log(string)
 
   // After: JSON.stringify keeps date as-is!
   Date.prototype.toJSON = function () {
@@ -184,9 +180,9 @@ const endDate = computed(() => {
     this.setHours(hoursDiff)
     return this.toISOString()
   }
-  string = JSON.stringify(date)
-  console.log(string)
-  console.log(date)
+  // string = JSON.stringify(date)
+  // console.log(string)
+  // console.log(date)
 
   return date
 })
@@ -234,7 +230,6 @@ const onClickClose = () => {
   validation.value.message = ''
   showErrorMessage.value = false
 }
-
 </script>
 <style scoped>
 .newCourse,
