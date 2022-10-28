@@ -20,26 +20,15 @@
           <small class="p-error">{{ validation.errors.name[0] }}</small>
         </div>
         <div class="field">
-          <label for="startDate">Start and End Dates</label>
-          <Calendar
-            id="dateRange"
-            :class="{ 'p-invalid': dateRangeValidationMessages.length > 0 }"
-            class="mr-1 w-4"
-            v-model="course.dateRange"
-            selectionMode="range"
-            dateFormat="dd/mm/yy"
-            :showButtonBar="true"
-            :showIcon="true"
+          <DateRangePicker
+            :validationErrorMessages="[
+              ...validation.errors.startDate,
+              ...validation.errors.endDate,
+            ]"
+            @selected-date-range="
+              (selectedDateRange) => (course.dateRange = selectedDateRange)
+            "
           />
-          <template
-            v-for="errorMessage in dateRangeValidationMessages"
-            :key="errorMessage"
-          >
-            <small class="p-error">
-              {{ errorMessage }}
-            </small>
-            {{ ' ' }}
-          </template>
         </div>
         <h4>Teaching Days</h4>
         <div class="formgrid grid">
@@ -135,70 +124,26 @@
 
 <script setup>
 import Button from 'primevue/button'
-import Calendar from 'primevue/calendar'
 import Checkbox from 'primevue/checkbox'
 import Card from 'primevue/card'
-import CourseService from '@/services/Course'
 import InputText from 'primevue/inputtext'
+import CourseService from '@/services/Course'
+import DateRangePicker from '@/components/DateRangePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 
 const course = ref({ name: '', dateRange: [], teachingDays: [] })
-
 const validation = ref({
   message: '',
   errors: { name: [], startDate: [], endDate: [], teachingDays: [] },
 })
 const showErrorMessage = ref(false)
 
-const startDate = computed(() => {
-  const date = course.value.dateRange[0]
-  // let string = JSON.stringify(date)
-  // console.log(string)
-
-  // After: JSON.stringify keeps date as-is!
-  Date.prototype.toJSON = function () {
-    const hoursDiff = this.getHours() - this.getTimezoneOffset() / 60
-    this.setHours(hoursDiff)
-    return this.toISOString()
-  }
-  // string = JSON.stringify(date)
-  // console.log(string)
-  // console.log(date)
-
-  return date
-})
-
-const endDate = computed(() => {
-  const date = course.value.dateRange[1]
-  // let string = JSON.stringify(date)
-  // console.log(string)
-
-  // After: JSON.stringify keeps date as-is!
-  Date.prototype.toJSON = function () {
-    const hoursDiff = this.getHours() - this.getTimezoneOffset() / 60
-    this.setHours(hoursDiff)
-    return this.toISOString()
-  }
-  // string = JSON.stringify(date)
-  // console.log(string)
-  // console.log(date)
-
-  return date
-})
-
-const dateRangeValidationMessages = computed(() => {
-  return [
-    ...validation.value.errors.startDate,
-    ...validation.value.errors.endDate,
-  ]
-})
-
 const handleOnClickSubmitButton = async () => {
   const payload = {
     name: course.value.name,
-    startDate: startDate.value,
-    endDate: endDate.value,
+    startDate: course.value.dateRange[0],
+    endDate: course.value.dateRange[1],
     teachingDays: course.value.teachingDays,
   }
 
@@ -231,9 +176,3 @@ const onClickClose = () => {
   showErrorMessage.value = false
 }
 </script>
-<style scoped>
-.newCourse,
-.field label {
-  display: block;
-}
-</style>
