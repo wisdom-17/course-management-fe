@@ -131,7 +131,9 @@ import CourseService from '@/services/Course'
 import DateRangePicker from '@/components/DateRangePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const course = ref({ name: '', dateRange: [], teachingDays: [] })
 const validation = ref({
   message: '',
@@ -160,7 +162,10 @@ const handleOnClickSubmitButton = async () => {
 
   try {
     const apiResult = await CourseService.new(payload)
-    console.log(apiResult)
+
+    if (apiResult.status === 201) {
+      router.push({ name: 'courses' })
+    }
   } catch (error) {
     validation.value.message = error.response.data.message
     // update validation error messages with ones
