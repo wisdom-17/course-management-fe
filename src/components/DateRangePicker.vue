@@ -7,6 +7,7 @@
     v-model="selectedDateRange"
     selectionMode="range"
     dateFormat="dd/mm/yy"
+    :numberOfMonths="2"
     :showButtonBar="true"
     :showIcon="true"
     @date-select="onSelectedDateRange"
