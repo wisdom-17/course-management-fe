@@ -5,7 +5,7 @@
     @close="onClickClose"
   />
   <div class="card h-screen flex justify-content-center align-items-center">
-    <form>
+    <form @keyup.enter="login">
       <div class="field mt-4 grid">
         <span class="p-float-label">
           <InputText
