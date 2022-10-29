@@ -130,14 +130,16 @@ import InputText from 'primevue/inputtext'
 import CourseService from '@/services/Course'
 import DateRangePicker from '@/components/DateRangePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 const course = ref({ name: '', dateRange: [], teachingDays: [] })
 const validation = ref({
   message: '',
   errors: { name: [], startDate: [], endDate: [], teachingDays: [] },
 })
-const showErrorMessage = ref(false)
+const showErrorMessage = computed(() => {
+  return validation.value.message !== ''
+})
 
 const handleOnClickSubmitButton = async () => {
   const payload = {
@@ -167,12 +169,10 @@ const handleOnClickSubmitButton = async () => {
       ...validation.value.errors,
       ...error.response.data.errors,
     }
-    showErrorMessage.value = true
   }
 }
 
 const onClickClose = () => {
   validation.value.message = ''
-  showErrorMessage.value = false
 }
 </script>
