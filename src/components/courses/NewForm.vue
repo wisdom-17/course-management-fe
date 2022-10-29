@@ -5,7 +5,12 @@
       <ErrorMessage
         :message="validation.message"
         v-show="showErrorMessage"
-        @close="onClickClose"
+        @close="onClickCloseErrorMessage"
+      />
+      <SuccessMessage
+        :message="successMessage"
+        v-show="showSuccessMessage"
+        @close="onClickCloseSuccessMessage"
       />
       <form class="newCourse">
         <div class="field">
@@ -130,6 +135,7 @@ import InputText from 'primevue/inputtext'
 import CourseService from '@/services/Course'
 import DateRangePicker from '@/components/DateRangePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
+import SuccessMessage from '@/components/SuccessMessage.vue'
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -139,8 +145,15 @@ const validation = ref({
   message: '',
   errors: { name: [], startDate: [], endDate: [], teachingDays: [] },
 })
+
+const successMessage = ref([])
+
 const showErrorMessage = computed(() => {
   return validation.value.message !== ''
+})
+
+const showSuccessMessage = computed(() => {
+  return successMessage.value.length !== 0
 })
 
 const handleOnClickSubmitButton = async () => {
@@ -162,13 +175,17 @@ const handleOnClickSubmitButton = async () => {
 
   try {
     const apiResult = await CourseService.new(payload)
-
     if (apiResult.status === 201) {
-      router.push({ name: 'courses' })
+      successMessage.value = [...apiResult.data]
+
+      // redirect to courses page after 3 seconds
+      setTimeout(() => {
+        router.push({ name: 'courses' })
+      }, 2000)
     }
   } catch (error) {
     validation.value.message = error.response.data.message
-    // update validation error messages with ones
+    // update validation error msgs with error msgs
     // returned from API call
     validation.value.errors = {
       ...validation.value.errors,
@@ -177,7 +194,11 @@ const handleOnClickSubmitButton = async () => {
   }
 }
 
-const onClickClose = () => {
+const onClickCloseErrorMessage = () => {
   validation.value.message = ''
+}
+
+const onClickCloseSuccessMessage = () => {
+  successMessage.value = []
 }
 </script>
