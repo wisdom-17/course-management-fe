@@ -7,10 +7,10 @@
 </template>
 
 <script setup>
-import CourseService from '@/services/Course'
-import Table from '@/components/courses/Table.vue'
 import { onMounted, ref } from 'vue'
-import Toolbar from '@/components/courses/Toolbar.vue'
+import CourseService from '@/services/Course'
+import Table from '@/components/course/Table.vue'
+import Toolbar from '@/components/course/Toolbar.vue'
 
 const courses = ref([])
 
