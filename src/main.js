@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import PrimeVue from 'primevue/config'
+import ConfirmationService from 'primevue/confirmationservice'
 import { createPinia } from 'pinia'
 
 import './assets/main.css'
@@ -16,5 +17,6 @@ const pinia = createPinia()
 app.use(pinia)
 app.use(router)
 app.use(PrimeVue, { ripple: true })
+app.use(ConfirmationService)
 
 app.mount('#app')
