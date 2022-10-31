@@ -1,4 +1,5 @@
 <template>
+  <ConfirmDialog></ConfirmDialog>
   <Card class="mt-4 surface-ground w-auto">
     <template #title>New Course</template>
     <template #content>
@@ -110,7 +111,7 @@
               class="mr-2"
               icon="pi pi-save"
               label="Save"
-              @click="handleOnClickSubmitButton()"
+              @click="onClickSubmitButton()"
             />
             <Button
               class="mr-2"
@@ -119,7 +120,12 @@
             />
           </div>
           <div class="flex align-self-end">
-            <Button class="p-button-danger" icon="pi pi-trash" label="Cancel" />
+            <Button
+              class="p-button-danger"
+              icon="pi pi-trash"
+              label="Cancel"
+              @click="onClickCancelButton"
+            />
           </div>
         </div>
       </form>
@@ -129,8 +135,10 @@
 
 <script setup>
 import Button from 'primevue/button'
-import Checkbox from 'primevue/checkbox'
 import Card from 'primevue/card'
+import Checkbox from 'primevue/checkbox'
+import ConfirmDialog from 'primevue/confirmdialog';
+import { useConfirm } from 'primevue/useconfirm'
 import InputText from 'primevue/inputtext'
 import CourseService from '@/services/Course'
 import DateRangePicker from '@/components/DateRangePicker.vue'
@@ -139,7 +147,9 @@ import SuccessMessage from '@/components/SuccessMessage.vue'
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
+const confirm = useConfirm()
 const router = useRouter()
+
 const course = ref({ name: '', dateRange: [], teachingDays: [] })
 const validation = ref({
   message: '',
@@ -156,7 +166,7 @@ const showSuccessMessage = computed(() => {
   return successMessage.value.length !== 0
 })
 
-const handleOnClickSubmitButton = async () => {
+const onClickSubmitButton = async () => {
   const payload = {
     name: course.value.name,
     startDate: course.value.dateRange[0],
@@ -192,6 +202,18 @@ const handleOnClickSubmitButton = async () => {
       ...error.response.data.errors,
     }
   }
+}
+
+const onClickCancelButton = () => {
+  confirm.require({
+    message:
+      'Are you sure you want to cancel? Clicking "Yes" will take you to the Courses list page and any unsaved changes will be lost.',
+    header: 'Cancel',
+    icon: 'pi pi-exclamation-triangle',
+    accept: () => {
+      router.push({ name: 'courses' })
+    },
+  })
 }
 
 const onClickCloseErrorMessage = () => {
