@@ -4,6 +4,9 @@ import LoginView from '@/views/LoginView.vue'
 import AboutView from '@/views/AboutView.vue'
 import CoursesView from '@/views/CoursesView.vue'
 import NewCourseView from '@/views/NewCourseView.vue'
+import StepOneForm from '@/components/course/StepOneForm.vue'
+import StepTwoForm from '@/components/course/StepTwoForm.vue'
+import StepThreeForm from '@/components/course/StepThreeForm.vue'
 import { useAuthStore } from '@/stores/auth'
 
 const routes = [
@@ -39,6 +42,23 @@ const routes = [
     name: 'newCourse',
     meta: { requiresAuth: true },
     component: NewCourseView,
+    children: [
+      {
+        path: 'step-one',
+        name: 'courseStepOne',
+        component: StepOneForm,
+      },
+      {
+        path: 'step-two',
+        name: 'courseStepTwo',
+        component: StepTwoForm,
+      },
+      {
+        path: 'step-three',
+        name: 'courseStepThree',
+        component: StepThreeForm,
+      },
+    ],
   },
 ]
 
