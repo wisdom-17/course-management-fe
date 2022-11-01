@@ -1,5 +1,4 @@
 <template>
-  <ConfirmDialog></ConfirmDialog>
   <Card class="mt-4 surface-ground w-auto">
     <template #title>STEP ONE</template>
     <template #content>
@@ -105,49 +104,27 @@
           </div>
         </div>
 
-        <div class="flex justify-content-between">
-          <div class="flex">
-            <Button
-              class="mr-2"
-              icon="pi pi-save"
-              label="Save"
-              @click="onClickSubmitButton()"
-            />
-            <Button
-              class="mr-2"
-              icon="pi pi-angle-double-right"
-              label="Next Step"
-            />
-          </div>
-          <div class="flex align-self-end">
-            <Button
-              class="p-button-danger"
-              icon="pi pi-trash"
-              label="Cancel"
-              @click="onClickCancelButton"
-            />
-          </div>
-        </div>
+        <MultiStepFormButtons
+          @save-button-clicked="onClickSubmitButton"
+          @next-button-clicked="onClickNextButton"
+        />
       </form>
     </template>
   </Card>
 </template>
 
 <script setup>
-import Button from 'primevue/button'
 import Card from 'primevue/card'
 import Checkbox from 'primevue/checkbox'
-import ConfirmDialog from 'primevue/confirmdialog'
-import { useConfirm } from 'primevue/useconfirm'
 import InputText from 'primevue/inputtext'
 import CourseService from '@/services/Course'
 import DateRangePicker from '@/components/DateRangePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
+import MultiStepFormButtons from '@/components/course/MultiStepFormButtons.vue'
 import SuccessMessage from '@/components/SuccessMessage.vue'
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
-const confirm = useConfirm()
 const router = useRouter()
 
 const course = ref({ name: '', dateRange: [], teachingDays: [] })
@@ -188,7 +165,7 @@ const onClickSubmitButton = async () => {
     if (apiResult.status === 201) {
       successMessage.value = [...apiResult.data]
 
-      // redirect to courses page after 3 seconds
+      // redirect to courses page after 2 seconds
       setTimeout(() => {
         router.push({ name: 'courses' })
       }, 2000)
@@ -203,17 +180,11 @@ const onClickSubmitButton = async () => {
     }
   }
 }
-
-const onClickCancelButton = () => {
-  confirm.require({
-    message:
-      'Are you sure you want to cancel? Clicking "Yes" will take you to the Courses list page and any unsaved changes will be lost.',
-    header: 'Cancel',
-    icon: 'pi pi-exclamation-triangle',
-    accept: () => {
-      router.push({ name: 'courses' })
-    },
-  })
+const onClickNextButton = async () => {
+  console.log('next button clicked')
+  setTimeout(() => {
+    router.push({ name: 'courseStepTwo' })
+  }, 2000)
 }
 
 const onClickCloseErrorMessage = () => {
