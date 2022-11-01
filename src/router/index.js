@@ -44,7 +44,7 @@ const routes = [
     component: NewCourseView,
     children: [
       {
-        path: 'step-one',
+        path: '',
         name: 'courseStepOne',
         component: StepOneForm,
       },
