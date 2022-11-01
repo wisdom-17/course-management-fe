@@ -1,6 +1,5 @@
 <template>
   <Card class="mt-4 surface-ground w-auto">
-    <template #title>STEP ONE</template>
     <template #content>
       <ErrorMessage
         :message="validation.message"
@@ -105,6 +104,7 @@
         </div>
 
         <MultiStepFormButtons
+          :hasNextButton="true"
           @save-button-clicked="onClickSubmitButton"
           @next-button-clicked="onClickNextButton"
         />
@@ -182,9 +182,7 @@ const onClickSubmitButton = async () => {
 }
 const onClickNextButton = async () => {
   console.log('next button clicked')
-  setTimeout(() => {
-    router.push({ name: 'courseStepTwo' })
-  }, 2000)
+  router.push({ name: 'courseStepTwo' })
 }
 
 const onClickCloseErrorMessage = () => {
