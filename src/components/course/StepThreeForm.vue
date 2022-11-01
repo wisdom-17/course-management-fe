@@ -1,7 +1,5 @@
 <template>
-  <ConfirmDialog></ConfirmDialog>
   <Card class="mt-4 surface-ground w-auto">
-    <template #title>STEP THREE FORM</template>
     <template #content>
       <ErrorMessage
         :message="validation.message"
@@ -26,47 +24,26 @@
           />
         </div>
 
-        <div class="flex justify-content-between">
-          <div class="flex">
-            <Button
-              class="mr-2"
-              icon="pi pi-angle-double-left"
-              label="Previous Step"
-            />
-            <Button
-              class="mr-2"
-              icon="pi pi-save"
-              label="Save"
-              @click="onClickSubmitButton()"
-            />
-          </div>
-          <div class="flex align-self-end">
-            <Button
-              class="p-button-danger"
-              icon="pi pi-trash"
-              label="Cancel"
-              @click="onClickCancelButton"
-            />
-          </div>
-        </div>
+        <MultiStepFormButtons
+          @save-button-clicked="onClickSubmitButton"
+          @previous-button-clicked="onClickPreviousButton"
+          :hasPreviousButton="true"
+        />
       </form>
     </template>
   </Card>
 </template>
 
 <script setup>
-import Button from 'primevue/button'
 import Card from 'primevue/card'
-import ConfirmDialog from 'primevue/confirmdialog'
-import { useConfirm } from 'primevue/useconfirm'
 import CourseService from '@/services/Course'
 import DateRangePicker from '@/components/DateRangePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
+import MultiStepFormButtons from '@/components/course/MultiStepFormButtons.vue'
 import SuccessMessage from '@/components/SuccessMessage.vue'
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
-const confirm = useConfirm()
 const router = useRouter()
 
 const course = ref({ name: '', dateRange: [], teachingDays: [] })
@@ -123,16 +100,9 @@ const onClickSubmitButton = async () => {
   }
 }
 
-const onClickCancelButton = () => {
-  confirm.require({
-    message:
-      'Are you sure you want to cancel? Clicking "Yes" will take you to the Courses list page and any unsaved changes will be lost.',
-    header: 'Cancel',
-    icon: 'pi pi-exclamation-triangle',
-    accept: () => {
-      router.push({ name: 'courses' })
-    },
-  })
+const onClickPreviousButton = async () => {
+  console.log('previous button clicked')
+  router.push({ name: 'courseStepTwo' })
 }
 
 const onClickCloseErrorMessage = () => {
