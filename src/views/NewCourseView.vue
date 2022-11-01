@@ -1,6 +1,6 @@
 <template>
   <div class="col new-course">
-    <Steps :model="items" class="mt-4" :readonly="false" />
+    <Steps :model="items" class="mt-4" />
     <RouterView />
   </div>
 </template>
