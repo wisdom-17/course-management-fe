@@ -105,8 +105,8 @@
 
         <MultiStepFormButtons
           :hasNextButton="true"
-          @save-button-clicked="onClickSubmitButton"
-          @next-button-clicked="onClickNextButton"
+          @save-button-clicked="onClickSaveButton('courses')"
+          @next-button-clicked="onClickSaveButton('courseStepTwo')"
         />
       </form>
     </template>
@@ -143,7 +143,30 @@ const showSuccessMessage = computed(() => {
   return successMessage.value.length !== 0
 })
 
-const onClickSubmitButton = async () => {
+// const onClickNextButton = async () => {
+//   const saveCourseStatus = await saveCourseDetails()
+
+//   // only redirect if API call was successful
+//   if (saveCourseStatus === true) {
+//     // redirect to courses page after 1.5 seconds
+//     setTimeout(() => {
+//       router.push({ name: 'courseStepTwo' })
+//     }, 1500)
+//   }
+// }
+
+const onClickCloseErrorMessage = () => {
+  validation.value.message = ''
+}
+
+const onClickCloseSuccessMessage = async () => {
+  successMessage.value = []
+}
+
+/* This handler is for save and next buttons as 
+both buttons will call API to save the course. The difference
+being where to redirect to after a successful save */
+const onClickSaveButton = async (redirectRouteName) => {
   const payload = {
     name: course.value.name,
     startDate: course.value.dateRange[0],
@@ -165,10 +188,10 @@ const onClickSubmitButton = async () => {
     if (apiResult.status === 201) {
       successMessage.value = [...apiResult.data]
 
-      // redirect to courses page after 2 seconds
+      // redirect to route (depending on which button was clicked) after 1.5 seconds
       setTimeout(() => {
-        router.push({ name: 'courses' })
-      }, 2000)
+        router.push({ name: redirectRouteName })
+      }, 1500)
     }
   } catch (error) {
     validation.value.message = error.response.data.message
@@ -179,17 +202,5 @@ const onClickSubmitButton = async () => {
       ...error.response.data.errors,
     }
   }
-}
-const onClickNextButton = async () => {
-  console.log('next button clicked')
-  router.push({ name: 'courseStepTwo' })
-}
-
-const onClickCloseErrorMessage = () => {
-  validation.value.message = ''
-}
-
-const onClickCloseSuccessMessage = () => {
-  successMessage.value = []
 }
 </script>
