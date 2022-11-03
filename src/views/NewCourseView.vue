@@ -1,7 +1,7 @@
 <template>
   <div class="col new-course">
     <Toast />
-    <Steps :model="items" class="mt-4" />
+    <Steps :model="items" class="mt-4" :readonly="false" />
     <RouterView @save-success="showSuccessToast" />
   </div>
 </template>

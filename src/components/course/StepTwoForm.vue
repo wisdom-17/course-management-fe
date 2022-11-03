@@ -14,6 +14,7 @@
       <form class="newCourse">
         <div class="field">
           <DateRangePicker
+            label="Term 1 Start and End Dates"
             :validationErrorMessages="[
               ...validation.errors.startDate,
               ...validation.errors.endDate,
