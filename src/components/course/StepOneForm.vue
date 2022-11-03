@@ -6,11 +6,6 @@
         v-show="showErrorMessage"
         @close="onClickCloseErrorMessage"
       />
-      <SuccessMessage
-        :message="successMessage"
-        v-show="showSuccessMessage"
-        @close="onClickCloseSuccessMessage"
-      />
       <form class="newCourse">
         <div class="field">
           <label for="courseName">Course Name</label>
@@ -114,6 +109,8 @@
 </template>
 
 <script setup>
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import Card from 'primevue/card'
 import Checkbox from 'primevue/checkbox'
 import InputText from 'primevue/inputtext'
@@ -121,9 +118,8 @@ import CourseService from '@/services/Course'
 import DateRangePicker from '@/components/DateRangePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import MultiStepFormButtons from '@/components/course/MultiStepFormButtons.vue'
-import SuccessMessage from '@/components/SuccessMessage.vue'
-import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
+
+const emit = defineEmits(['saveSuccess'])
 
 const router = useRouter()
 
@@ -139,28 +135,8 @@ const showErrorMessage = computed(() => {
   return validation.value.message !== ''
 })
 
-const showSuccessMessage = computed(() => {
-  return successMessage.value.length !== 0
-})
-
-// const onClickNextButton = async () => {
-//   const saveCourseStatus = await saveCourseDetails()
-
-//   // only redirect if API call was successful
-//   if (saveCourseStatus === true) {
-//     // redirect to courses page after 1.5 seconds
-//     setTimeout(() => {
-//       router.push({ name: 'courseStepTwo' })
-//     }, 1500)
-//   }
-// }
-
 const onClickCloseErrorMessage = () => {
   validation.value.message = ''
-}
-
-const onClickCloseSuccessMessage = async () => {
-  successMessage.value = []
 }
 
 /* This handler is for save and next buttons as 
@@ -187,11 +163,11 @@ const onClickSaveButton = async (redirectRouteName) => {
     const apiResult = await CourseService.new(payload)
     if (apiResult.status === 201) {
       successMessage.value = [...apiResult.data]
-
-      // redirect to route (depending on which button was clicked) after 1.5 seconds
+      emit('saveSuccess', 'Course details saved successfully!')
+      // redirect to route (depending on which button was clicked) after 2.5 seconds
       setTimeout(() => {
         router.push({ name: redirectRouteName })
-      }, 1500)
+      }, 2500)
     }
   } catch (error) {
     validation.value.message = error.response.data.message
