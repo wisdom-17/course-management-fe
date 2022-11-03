@@ -102,12 +102,10 @@ const onClickSubmitButton = async () => {
   }
 }
 const onClickNextButton = async () => {
-  console.log('next button clicked')
   router.push({ name: 'courseStepThree' })
 }
 
 const onClickPreviousButton = async () => {
-  console.log('previous button clicked')
   router.push({ name: 'courseStepOne' })
 }
 
