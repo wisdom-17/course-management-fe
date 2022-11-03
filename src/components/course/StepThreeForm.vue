@@ -101,7 +101,6 @@ const onClickSubmitButton = async () => {
 }
 
 const onClickPreviousButton = async () => {
-  console.log('previous button clicked')
   router.push({ name: 'courseStepTwo' })
 }
 
