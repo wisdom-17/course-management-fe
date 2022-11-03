@@ -1,5 +1,5 @@
 <template>
-  <label for="dateRange">Start and End Dates</label>
+  <label for="dateRange">{{ label }}</label>
   <Calendar
     id="dateRange"
     :class="{ 'p-invalid': validationErrorMessages.length > 0 }"
@@ -32,7 +32,7 @@ const onSelectedDateRange = () => {
   if (selectedDateRange.value.filter((elem) => !!elem).length === 2) {
     const formattedStartDate = new Date(
       selectedDateRange.value[0]
-    ).toLocaleDateString('fr-CA') // Canadian date format is yyyy-mm-dd 
+    ).toLocaleDateString('fr-CA') // Canadian date format is yyyy-mm-dd
 
     const formattedEndDate = new Date(
       selectedDateRange.value[1]
@@ -48,6 +48,10 @@ defineProps({
     default() {
       return []
     },
+  },
+  label: {
+    type: String,
+    default: 'Start and End Dates',
   },
 })
 </script>
