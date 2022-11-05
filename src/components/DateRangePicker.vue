@@ -10,7 +10,9 @@
     :numberOfMonths="2"
     :showButtonBar="true"
     :showIcon="true"
+    :disabledDates="disabledDates"
     @date-select="onSelectedDateRange"
+    @clear-click="onClearedDateRange"
   />
   <template v-for="errorMessage in validationErrorMessages" :key="errorMessage">
     <small class="p-error">
@@ -24,7 +26,7 @@
 import { ref } from 'vue'
 import Calendar from 'primevue/calendar'
 
-const emit = defineEmits(['selectedDateRange'])
+const emit = defineEmits(['selectedDateRange', 'clearedDateRange'])
 const selectedDateRange = ref([])
 
 const onSelectedDateRange = () => {
@@ -42,6 +44,10 @@ const onSelectedDateRange = () => {
   }
 }
 
+const onClearedDateRange = () => {
+  emit('clearedDateRange')
+}
+
 defineProps({
   validationErrorMessages: {
     type: Array,
@@ -52,6 +58,12 @@ defineProps({
   label: {
     type: String,
     default: 'Start and End Dates',
+  },
+  disabledDates: {
+    type: Array,
+    default() {
+      return []
+    },
   },
 })
 </script>
