@@ -29,7 +29,7 @@
     <div class="field">
       <Button
         class="p-button-sm"
-        label="Additional Terms"
+        :label="`Additional ${type} Dates`"
         icon="pi pi-plus"
         @click="onClickAdditionalDateRangesButton"
       />
@@ -47,7 +47,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import Button from 'primevue/button'
-import CourseService from '@/services/Course'
+// import CourseService from '@/services/Course'
 import DateRangePicker from '@/components/DateRangePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import MultiStepFormButtons from '@/components/course/MultiStepFormButtons.vue'
