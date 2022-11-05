@@ -1,0 +1,142 @@
+<template>
+  <ErrorMessage
+    :message="validation.message"
+    v-show="showErrorMessage"
+    @close="onClickCloseErrorMessage"
+  />
+  <form class="newCourse">
+    <template v-for="(term, index) in numberOfDateRanges" :key="index">
+      <div class="field">
+        <DateRangePicker
+          :label="`${type} ${term} Start and End Dates`"
+          :disabledDates="
+            formattedSelectedDates
+              .filter((obj, rangeIndex) => index !== rangeIndex)
+              .flat()
+          "
+          :validationErrorMessages="[
+            ...validation.errors.startDate,
+            ...validation.errors.endDate,
+          ]"
+          @selected-date-range="
+            (selectedDateRange) =>
+              (selectedDateRanges[index] = selectedDateRange)
+          "
+          @cleared-date-range="() => (selectedDateRanges[index] = [])"
+        />
+      </div>
+    </template>
+    <div class="field">
+      <Button
+        class="p-button-sm"
+        label="Additional Terms"
+        icon="pi pi-plus"
+        @click="onClickAdditionalDateRangesButton"
+      />
+    </div>
+    <MultiStepFormButtons
+      @save-button-clicked="onClickSubmitButton"
+      @next-button-clicked="onClickNextButton"
+      :hasNextButton="hasNextButton"
+      :hasPreviousButton="hasPreviousButton"
+    />
+  </form>
+</template>
+
+<script setup>
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import Button from 'primevue/button'
+import CourseService from '@/services/Course'
+import DateRangePicker from '@/components/DateRangePicker.vue'
+import ErrorMessage from '@/components/ErrorMessage.vue'
+import MultiStepFormButtons from '@/components/course/MultiStepFormButtons.vue'
+
+const emit = defineEmits(['saveSuccess'])
+
+const router = useRouter()
+const props = defineProps({
+  type: { type: String, default: '' },
+  hasPreviousButton: { type: Boolean, default: false },
+  hasNextButton: { type: Boolean, default: true },
+})
+
+const numberOfDateRanges = ref([1]) // show one date range picker field by default
+const selectedDateRanges = ref([])
+const validation = ref({
+  message: '',
+  errors: { startDate: [], endDate: [] },
+})
+
+// formattedSelectedDates is used to disable selected
+// dates in daterange pickers for other terms (i.e. cannot
+// select date already selected in another date range picker on the page)
+const formattedSelectedDates = computed(() => {
+  return selectedDateRanges.value.map((dates) => {
+    if (dates.length === 2) {
+      const startDate = new Date(dates[0].replace(/-/g, '/'))
+      const endDate = new Date(dates[1].replace(/-/g, '/'))
+      return getDatesInRange(startDate, endDate)
+    }
+    return []
+  })
+})
+
+// helper/utility method to get all dates within a range
+const getDatesInRange = (startDate, endDate) => {
+  const date = new Date(startDate.getTime())
+  const dates = []
+
+  while (date <= endDate) {
+    dates.push(new Date(date))
+    date.setDate(date.getDate() + 1)
+  }
+  return dates
+}
+
+const onClickAdditionalDateRangesButton = () => {
+  numberOfDateRanges.value.push(numberOfDateRanges.value.length + 1)
+}
+
+const onClickSubmitButton = async () => {
+  const payload = {
+    terms: selectedDateRanges.value,
+  }
+  console.log(payload)
+
+  // clear validation errors
+  validation.value.message = ''
+  validation.value.errors = {
+    startDate: [],
+    endDate: [],
+  }
+
+  try {
+    emit('saveSuccess', `Course ${props.type} dates saved successfully!`)
+    // redirect to courses page after 2 seconds
+    setTimeout(() => {
+      router.push({ name: 'courses' })
+    }, 2000)
+  } catch (error) {
+    validation.value.message = error.response.data.message
+    // update validation error msgs with error msgs
+    // returned from API call
+    validation.value.errors = {
+      ...validation.value.errors,
+      ...error.response.data.errors,
+    }
+  }
+}
+
+const onClickNextButton = async () => {
+  router.push({ name: 'courseStepThree' })
+}
+
+const showErrorMessage = computed(() => {
+  return validation.value.message !== ''
+})
+
+const onClickCloseErrorMessage = () => {
+  validation.value.message = ''
+}
+</script>
