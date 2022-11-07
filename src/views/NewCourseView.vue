@@ -2,7 +2,7 @@
   <div class="col new-course">
     <ConfirmDialog></ConfirmDialog>
     <Toast />
-    <Steps :model="items" class="mt-4" :readonly="false" />
+    <Steps :model="items" class="mt-4" />
     <RouterView @save-success="showSuccessToast" />
   </div>
 </template>

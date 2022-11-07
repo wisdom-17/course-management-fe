@@ -155,8 +155,12 @@ const onClickSaveButton = async (redirectRouteName) => {
   try {
     const apiResult = await CourseService.new(payload)
     if (apiResult.status === 201) {
-      // save id of newly saved course to store
-      storeCourse.saveCourseId(apiResult.data.id)
+      // save newly saved course to store
+      const newCourse = {
+        id: apiResult.data.id,
+        ...payload,
+      }
+      storeCourse.saveCourseDetails(newCourse)
 
       // emit saveSuccess event to show success toast from parent component
       emit('saveSuccess', 'Course details saved successfully!')
