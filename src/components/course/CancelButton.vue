@@ -1,5 +1,4 @@
 <template>
-  <ConfirmDialog></ConfirmDialog>
   <Button
     class="p-button-danger"
     icon="pi pi-trash"
@@ -11,7 +10,6 @@
 <script setup>
 import Button from 'primevue/button'
 import { useRouter } from 'vue-router'
-import ConfirmDialog from 'primevue/confirmdialog'
 import { useConfirm } from 'primevue/useconfirm'
 
 const confirm = useConfirm()

@@ -1,5 +1,6 @@
 <template>
   <div class="col new-course">
+    <ConfirmDialog></ConfirmDialog>
     <Toast />
     <Steps :model="items" class="mt-4" :readonly="false" />
     <RouterView @save-success="showSuccessToast" />
@@ -9,6 +10,7 @@
 <script setup>
 import { ref } from 'vue'
 import { RouterView } from 'vue-router'
+import ConfirmDialog from 'primevue/confirmdialog'
 import Steps from 'primevue/steps'
 import Toast from 'primevue/toast'
 import { useToast } from 'primevue/usetoast'
