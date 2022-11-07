@@ -9,6 +9,7 @@
         @click="$emit('previousButtonClicked')"
       />
       <Button
+        v-if="hasSaveButton"
         class="mr-2"
         icon="pi pi-save"
         label="Save"
@@ -33,6 +34,7 @@ import Button from 'primevue/button'
 import CancelButton from '@/components/course/CancelButton.vue'
 
 defineProps({
+  hasSaveButton: { type: Boolean, default: false },
   hasNextButton: { type: Boolean, default: false },
   hasPreviousButton: { type: Boolean, default: false },
 })

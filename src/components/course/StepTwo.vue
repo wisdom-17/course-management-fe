@@ -4,6 +4,7 @@
       <DatesForm
         type="Term"
         :hasPreviousButton="false"
+        :hasSaveButton="false"
         hasNextButton
         @save-success="emitSaveSuccessEvent"
         hasDeleteDatePickerButton
