@@ -6,7 +6,8 @@
   />
   <form class="newCourse">
     <template v-for="(term, index) in numberOfDateRanges" :key="index">
-      <div class="field">
+      <!-- we need the v-if="term" check to ensure deleted datepickers are handled as expected-->
+      <div v-if="term" class="field">
         <DateRangePicker
           :label="`${type} ${term} Start and End Dates`"
           :disabledDates="
@@ -23,6 +24,8 @@
               (selectedDateRanges[index] = selectedDateRange)
           "
           @cleared-date-range="() => (selectedDateRanges[index] = [])"
+          :hasDeleteButton="hasDeleteDatePickerButton"
+          @clicked-delete-date-picker-button="onClickDeleteDatePicker(index)"
         />
       </div>
     </template>
@@ -59,6 +62,7 @@ const props = defineProps({
   type: { type: String, default: '' },
   hasPreviousButton: { type: Boolean, default: false },
   hasNextButton: { type: Boolean, default: true },
+  hasDeleteDatePickerButton: { type: Boolean, default: false },
 })
 
 const numberOfDateRanges = ref([1]) // show one date range picker field by default
@@ -138,5 +142,14 @@ const showErrorMessage = computed(() => {
 
 const onClickCloseErrorMessage = () => {
   validation.value.message = ''
+}
+
+const onClickDeleteDatePicker = (rangeIndex) => {
+  // delete removes the element from the array and preserves the index
+  // we need to preserve the index to ensure selected dates are handled correctly
+  // howevever, the deleted element index position will still return 'empty'
+  // so this needs to be handled
+  delete numberOfDateRanges.value[rangeIndex]
+  selectedDateRanges.value[rangeIndex] = []
 }
 </script>

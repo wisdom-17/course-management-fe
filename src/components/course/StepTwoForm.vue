@@ -6,6 +6,7 @@
         :hasPreviousButton="false"
         hasNextButton
         @save-success="emitSaveSuccessEvent"
+        hasDeleteDatePickerButton
       />
     </template>
   </Card>
