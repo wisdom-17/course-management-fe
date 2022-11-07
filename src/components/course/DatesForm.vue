@@ -5,7 +5,7 @@
     @close="onClickCloseErrorMessage"
   />
   <form class="newCourse">
-    <template v-for="(term, index) in numberOfDateRanges" :key="index">
+    <template v-for="(term, index) in dateRanges" :key="index">
       <!-- we need the v-if="term" check to ensure deleted datepickers are handled as expected-->
       <div v-if="term" class="field">
         <DateRangePicker
@@ -24,7 +24,9 @@
               (selectedDateRanges[index] = selectedDateRange)
           "
           @cleared-date-range="() => (selectedDateRanges[index] = [])"
-          :hasDeleteButton="hasDeleteDatePickerButton"
+          :hasDeleteButton="
+            hasDeleteDatePickerButton && showDeleteDatePickerButton
+          "
           @clicked-delete-date-picker-button="onClickDeleteDatePicker(index)"
         />
       </div>
@@ -65,7 +67,7 @@ const props = defineProps({
   hasDeleteDatePickerButton: { type: Boolean, default: false },
 })
 
-const numberOfDateRanges = ref([1]) // show one date range picker field by default
+const dateRanges = ref([1]) // show one date range picker field by default
 const selectedDateRanges = ref([])
 const validation = ref({
   message: '',
@@ -86,6 +88,11 @@ const formattedSelectedDates = computed(() => {
   })
 })
 
+// Don't show delete button if there is only one datepicker
+const showDeleteDatePickerButton = computed(() => {
+  return dateRanges.value.filter((x) => x).length > 1 ? true : false
+})
+
 // helper/utility method to get all dates within a range
 const getDatesInRange = (startDate, endDate) => {
   const date = new Date(startDate.getTime())
@@ -99,7 +106,7 @@ const getDatesInRange = (startDate, endDate) => {
 }
 
 const onClickAdditionalDateRangesButton = () => {
-  numberOfDateRanges.value.push(numberOfDateRanges.value.length + 1)
+  dateRanges.value.push(dateRanges.value.length + 1)
 }
 
 const onClickSubmitButton = async () => {
@@ -149,7 +156,7 @@ const onClickDeleteDatePicker = (rangeIndex) => {
   // we need to preserve the index to ensure selected dates are handled correctly
   // howevever, the deleted element index position will still return 'empty'
   // so this needs to be handled
-  delete numberOfDateRanges.value[rangeIndex]
+  delete dateRanges.value[rangeIndex]
   selectedDateRanges.value[rangeIndex] = []
 }
 </script>
