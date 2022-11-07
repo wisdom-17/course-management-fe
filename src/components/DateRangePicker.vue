@@ -14,6 +14,11 @@
     @date-select="onSelectedDateRange"
     @clear-click="onClearedDateRange"
   />
+  <Button
+    v-if="hasDeleteButton"
+    @click="onClickDeleteButton"
+    icon="pi pi-trash"
+  />
   <template v-for="errorMessage in validationErrorMessages" :key="errorMessage">
     <small class="p-error">
       {{ errorMessage }}
@@ -25,8 +30,13 @@
 <script setup>
 import { ref } from 'vue'
 import Calendar from 'primevue/calendar'
+import Button from 'primevue/button'
 
-const emit = defineEmits(['selectedDateRange', 'clearedDateRange'])
+const emit = defineEmits([
+  'selectedDateRange',
+  'clearedDateRange',
+  'clickedDeleteDatePickerButton',
+])
 const selectedDateRange = ref([])
 
 const onSelectedDateRange = () => {
@@ -48,6 +58,10 @@ const onClearedDateRange = () => {
   emit('clearedDateRange')
 }
 
+const onClickDeleteButton = () => {
+  emit('clickedDeleteDatePickerButton')
+}
+
 defineProps({
   validationErrorMessages: {
     type: Array,
@@ -64,6 +78,10 @@ defineProps({
     default() {
       return []
     },
+  },
+  hasDeleteButton: {
+    type: Boolean,
+    default: false,
   },
 })
 </script>
