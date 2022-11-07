@@ -52,10 +52,13 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import Button from 'primevue/button'
+import { useConfirm } from 'primevue/useconfirm'
 // import CourseService from '@/services/Course'
 import DateRangePicker from '@/components/DateRangePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import MultiStepFormButtons from '@/components/course/MultiStepFormButtons.vue'
+
+const confirm = useConfirm()
 
 const emit = defineEmits(['saveSuccess'])
 
@@ -152,11 +155,19 @@ const onClickCloseErrorMessage = () => {
 }
 
 const onClickDeleteDatePicker = (rangeIndex) => {
-  // delete removes the element from the array and preserves the index
-  // we need to preserve the index to ensure selected dates are handled correctly
-  // howevever, the deleted element index position will still return 'empty'
-  // so this needs to be handled
-  delete dateRanges.value[rangeIndex]
-  selectedDateRanges.value[rangeIndex] = []
+  confirm.require({
+    message:
+      'Are you sure you want to delete this date range picker? Any unsaved changes will be lost.',
+    header: 'Delete Date',
+    icon: 'pi pi-exclamation-triangle',
+    accept: () => {
+      // delete removes the element from the array and preserves the index
+      // we need to preserve the index to ensure selected dates are handled correctly
+      // howevever, the deleted element index position will still return 'empty'
+      // so this needs to be handled
+      delete dateRanges.value[rangeIndex]
+      selectedDateRanges.value[rangeIndex] = []
+    },
+  })
 }
 </script>
