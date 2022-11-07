@@ -118,9 +118,10 @@ import CourseService from '@/services/Course'
 import DateRangePicker from '@/components/DateRangePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import MultiStepFormButtons from '@/components/course/MultiStepFormButtons.vue'
+import { useCourseStore } from '@/stores/course'
 
+const storeCourse = useCourseStore()
 const emit = defineEmits(['saveSuccess'])
-
 const router = useRouter()
 
 const course = ref({ name: '', dateRange: [], teachingDays: [] })
@@ -128,8 +129,6 @@ const validation = ref({
   message: '',
   errors: { name: [], startDate: [], endDate: [], teachingDays: [] },
 })
-
-const successMessage = ref([])
 
 const showErrorMessage = computed(() => {
   return validation.value.message !== ''
@@ -162,14 +161,20 @@ const onClickSaveButton = async (redirectRouteName) => {
   try {
     const apiResult = await CourseService.new(payload)
     if (apiResult.status === 201) {
-      successMessage.value = [...apiResult.data]
+
+      // save id of newly saved course to store
+      storeCourse.saveCourseId(apiResult.data.id)
+
+      // emit saveSuccess event to show success toast from parent component
       emit('saveSuccess', 'Course details saved successfully!')
+
       // redirect to route (depending on which button was clicked) after 2.5 seconds
       setTimeout(() => {
         router.push({ name: redirectRouteName })
       }, 2500)
     }
   } catch (error) {
+    console.log(error)
     validation.value.message = error.response.data.message
     // update validation error msgs with error msgs
     // returned from API call
