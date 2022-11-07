@@ -28,6 +28,8 @@
             hasDeleteDatePickerButton && showDeleteDatePickerButton
           "
           @clicked-delete-date-picker-button="onClickDeleteDatePicker(index)"
+          :minDate="minAndMaxDates.minDate"
+          :maxDate="minAndMaxDates.maxDate"
         />
       </div>
     </template>
@@ -96,6 +98,13 @@ const formattedSelectedDates = computed(() => {
   })
 })
 
+const minAndMaxDates = computed(() => {
+  return {
+    minDate: new Date(storeCourse.multiStepForm.startDate.replace(/-/g, '/')),
+    maxDate: new Date(storeCourse.multiStepForm.endDate.replace(/-/g, '/')),
+  }
+})
+
 // Don't show delete button if there is only one datepicker
 const showDeleteDatePickerButton = computed(() => {
   return dateRanges.value.filter((x) => x).length > 1 ? true : false
@@ -129,9 +138,9 @@ const onClickSaveButton = async (redirectRouteName) => {
     endDate: [],
   }
 
-  const { courseId } = storeCourse.multiStepForm
+  const { id } = storeCourse.multiStepForm
   try {
-    const apiResult = await CourseService.newDates(payload, courseId)
+    const apiResult = await CourseService.newDates(payload, id)
     if (apiResult.status === 201) {
       successMessage.value = [...apiResult.data]
       emit('saveSuccess', `Course ${props.type} dates saved successfully!`)
