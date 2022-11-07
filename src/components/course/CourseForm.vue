@@ -96,6 +96,7 @@
 
     <MultiStepFormButtons
       :hasNextButton="true"
+      :hasSaveButton="false"
       @save-button-clicked="onClickSaveButton('courses')"
       @next-button-clicked="onClickSaveButton('courseStepTwo')"
     />

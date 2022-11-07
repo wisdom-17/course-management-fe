@@ -44,6 +44,7 @@
       @next-button-clicked="onClickSaveButton('courseStepThree')"
       :hasNextButton="hasNextButton"
       :hasPreviousButton="hasPreviousButton"
+      :hasSaveButton="hasSaveButton"
     />
   </form>
 </template>
@@ -69,6 +70,7 @@ const props = defineProps({
   type: { type: String, default: '' },
   hasPreviousButton: { type: Boolean, default: false },
   hasNextButton: { type: Boolean, default: true },
+  hasSaveButton: { type: Boolean, default: false },
   hasDeleteDatePickerButton: { type: Boolean, default: false },
 })
 
@@ -138,11 +140,6 @@ const onClickSaveButton = async (redirectRouteName) => {
         router.push({ name: redirectRouteName })
       }, 2500)
     }
-
-    // redirect to courses page after 2 seconds
-    setTimeout(() => {
-      router.push({ name: 'courses' })
-    }, 2000)
   } catch (error) {
     validation.value.message = error.response.data.message
     // update validation error msgs with error msgs

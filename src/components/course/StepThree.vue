@@ -5,6 +5,7 @@
         type="Holiday"
         :hasPreviousButton="false"
         :hasNextButton="false"
+        hasSaveButton
         @save-success="emitSaveSuccessEvent"
         hasDeleteDatePickerButton
       />
