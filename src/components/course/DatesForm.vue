@@ -120,8 +120,6 @@ const onClickSaveButton = async (redirectRouteName) => {
     dates: selectedDateRanges.value,
     dateType: props.type,
   }
-  console.log(payload)
-
   // clear validation errors
   validation.value.message = ''
   validation.value.errors = {
