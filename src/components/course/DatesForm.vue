@@ -40,8 +40,8 @@
       />
     </div>
     <MultiStepFormButtons
-      @save-button-clicked="onClickSubmitButton"
-      @next-button-clicked="onClickNextButton"
+      @save-button-clicked="onClickSaveButton('courses')"
+      @next-button-clicked="onClickSaveButton('courseStepThree')"
       :hasNextButton="hasNextButton"
       :hasPreviousButton="hasPreviousButton"
     />
@@ -53,11 +53,13 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import Button from 'primevue/button'
 import { useConfirm } from 'primevue/useconfirm'
-// import CourseService from '@/services/Course'
+import CourseService from '@/services/Course'
 import DateRangePicker from '@/components/DateRangePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import MultiStepFormButtons from '@/components/course/MultiStepFormButtons.vue'
+import { useCourseStore } from '@/stores/course'
 
+const storeCourse = useCourseStore()
 const confirm = useConfirm()
 
 const emit = defineEmits(['saveSuccess'])
@@ -76,6 +78,7 @@ const validation = ref({
   message: '',
   errors: { startDate: [], endDate: [] },
 })
+const successMessage = ref([])
 
 // formattedSelectedDates is used to disable selected
 // dates in daterange pickers for other terms (i.e. cannot
@@ -112,9 +115,10 @@ const onClickAdditionalDateRangesButton = () => {
   dateRanges.value.push(dateRanges.value.length + 1)
 }
 
-const onClickSubmitButton = async () => {
+const onClickSaveButton = async (redirectRouteName) => {
   const payload = {
-    terms: selectedDateRanges.value,
+    dates: selectedDateRanges.value,
+    dateType: props.type,
   }
   console.log(payload)
 
@@ -125,8 +129,18 @@ const onClickSubmitButton = async () => {
     endDate: [],
   }
 
+  const { courseId } = storeCourse.multiStepForm
   try {
-    emit('saveSuccess', `Course ${props.type} dates saved successfully!`)
+    const apiResult = await CourseService.newDates(payload, courseId)
+    if (apiResult.status === 201) {
+      successMessage.value = [...apiResult.data]
+      emit('saveSuccess', `Course ${props.type} dates saved successfully!`)
+      // redirect to route (depending on which button was clicked) after 2.5 seconds
+      setTimeout(() => {
+        router.push({ name: redirectRouteName })
+      }, 2500)
+    }
+
     // redirect to courses page after 2 seconds
     setTimeout(() => {
       router.push({ name: 'courses' })
@@ -140,10 +154,6 @@ const onClickSubmitButton = async () => {
       ...error.response.data.errors,
     }
   }
-}
-
-const onClickNextButton = async () => {
-  router.push({ name: 'courseStepThree' })
 }
 
 const showErrorMessage = computed(() => {
