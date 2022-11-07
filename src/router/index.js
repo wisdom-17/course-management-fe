@@ -4,9 +4,9 @@ import LoginView from '@/views/LoginView.vue'
 import AboutView from '@/views/AboutView.vue'
 import CoursesView from '@/views/CoursesView.vue'
 import NewCourseView from '@/views/NewCourseView.vue'
-import StepOneForm from '@/components/course/StepOneForm.vue'
-import StepTwoForm from '@/components/course/StepTwoForm.vue'
-import StepThreeForm from '@/components/course/StepThreeForm.vue'
+import StepOne from '@/components/course/StepOne.vue'
+import StepTwo from '@/components/course/StepTwo.vue'
+import StepThree from '@/components/course/StepThree.vue'
 import { useAuthStore } from '@/stores/auth'
 
 const routes = [
@@ -46,17 +46,17 @@ const routes = [
       {
         path: '',
         name: 'courseStepOne',
-        component: StepOneForm,
+        component: StepOne,
       },
       {
         path: 'step-two',
         name: 'courseStepTwo',
-        component: StepTwoForm,
+        component: StepTwo,
       },
       {
         path: 'step-three',
         name: 'courseStepThree',
-        component: StepThreeForm,
+        component: StepThree,
       },
     ],
   },
