@@ -18,6 +18,7 @@
     v-if="hasDeleteButton"
     @click="onClickDeleteButton"
     icon="pi pi-trash"
+    class="p-button-danger"
   />
   <template v-for="errorMessage in validationErrorMessages" :key="errorMessage">
     <small class="p-error">
