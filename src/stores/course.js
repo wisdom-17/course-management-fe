@@ -4,13 +4,20 @@ export const useCourseStore = defineStore({
   id: 'course',
   state: () => ({
     multiStepForm: {
-      courseId: null,
+      id: null,
+      name: '',
+      startDate: '',
+      endDate: '',
     },
   }),
   getters: {},
   actions: {
-    saveCourseId(courseId) {
-      this.multiStepForm.courseId = courseId
+    saveCourseDetails(course) {
+      const { id, name, startDate, endDate } = course
+      this.multiStepForm.id = id
+      this.multiStepForm.name = name
+      this.multiStepForm.startDate = startDate
+      this.multiStepForm.endDate = endDate
     },
   },
 })
