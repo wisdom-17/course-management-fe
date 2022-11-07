@@ -13,6 +13,8 @@
     :disabledDates="disabledDates"
     @date-select="onSelectedDateRange"
     @clear-click="onClearedDateRange"
+    :minDate="minDate"
+    :maxDate="maxDate"
   />
   <Button
     v-if="hasDeleteButton"
@@ -83,6 +85,14 @@ defineProps({
   hasDeleteButton: {
     type: Boolean,
     default: false,
+  },
+  minDate: {
+    type: Date,
+    default: null,
+  },
+  maxDate: {
+    type: Date,
+    default: null,
   },
 })
 </script>
