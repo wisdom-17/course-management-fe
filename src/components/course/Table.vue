@@ -1,5 +1,5 @@
 <template>
-  <DataTable :value="courses">
+  <DataTable :value="courses" :loading="loading">
     <Column
       v-for="col in columns"
       :field="col.field"
@@ -15,7 +15,16 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 
 defineProps({
-  courses: Array,
+  courses: {
+    type: Array,
+    default: () => {
+      return []
+    },
+  },
+  loading: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const columns = ref([
