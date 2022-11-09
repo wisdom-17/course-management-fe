@@ -1,5 +1,14 @@
 <template>
-  <DataTable :value="courses" :loading="loading">
+  <!-- <pre>{{ selectedCourses }}</pre> -->
+  <Toolbar :isDeleteButtonDisabled="selectedCourses.length === 0" />
+  <DataTable
+    :value="courses"
+    v-model:selection="selectedCourses"
+    :loading="loading"
+    @rowSelect="rowSelected"
+    class="mt-4"
+  >
+    <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
     <Column
       v-for="col in columns"
       :field="col.field"
@@ -13,6 +22,9 @@
 import { ref } from 'vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
+import Toolbar from '@/components/course/Toolbar.vue'
+
+const selectedCourses = ref([])
 
 defineProps({
   courses: {
@@ -35,4 +47,8 @@ const columns = ref([
   { field: 'createdAt', header: 'Created At' },
   { field: 'updatedAt', header: 'Updated At' },
 ])
+
+const rowSelected = (obj) => {
+
+}
 </script>

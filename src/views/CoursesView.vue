@@ -1,8 +1,7 @@
 <template>
   <div class="col courses">
     <h1>Courses</h1>
-    <Toolbar />
-    <Table :courses="courses" class="mt-4" :loading="loading" />
+    <Table :courses="courses" :loading="loading" />
   </div>
 </template>
 
@@ -10,7 +9,6 @@
 import { onMounted, ref } from 'vue'
 import CourseService from '@/services/Course'
 import Table from '@/components/course/Table.vue'
-import Toolbar from '@/components/course/Toolbar.vue'
 
 const courses = ref([])
 const loading = ref(false)
@@ -22,4 +20,5 @@ onMounted(() => {
     loading.value = false
   })
 })
+
 </script>
