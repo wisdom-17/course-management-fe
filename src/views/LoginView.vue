@@ -44,11 +44,13 @@ import { ref } from 'vue'
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
 import Button from 'primevue/button'
+import { useRoute } from 'vue-router'
 import AuthService from '@/services/AuthService'
 import { useAuthStore } from '@/stores/auth'
 import router from '@/router'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 
+const route = useRoute()
 const storeAuth = useAuthStore()
 
 const auth = ref({ email: '', password: '' })
@@ -69,7 +71,7 @@ const login = async () => {
     await AuthService.login(payload)
     await storeAuth.getAuthenticatedUserDetails()
     if (storeAuth.loggedInUser) {
-      router.push({ name: 'home' })
+      router.push(route.query.redirect || '/')
     }
   } catch (error) {
     validation.value.message = error.response.data.message
