@@ -12,7 +12,7 @@
         @click="onClickDeleteButton()"
         icon="pi pi-trash"
         label="Delete"
-        :disabled="selectedCoursesIds.length === 0"
+        :disabled="selectedCourses.length === 0"
       />
     </template>
   </Toolbar>
@@ -27,12 +27,14 @@ import { useCourseStore } from '@/stores/course'
 const storeCourse = useCourseStore()
 
 const props = defineProps({
-  selectedCoursesIds: {
+  selectedCourses: {
     type: Array,
     default: () => [],
   },
 })
 const router = useRouter()
+
+const emit = defineEmits(['deleteSuccess'])
 
 const onClickNewButton = () => {
   // for some reason, using route name doesn't
@@ -44,6 +46,11 @@ const onClickNewButton = () => {
 }
 
 const onClickDeleteButton = async () => {
-  storeCourse.delete(props.selectedCoursesIds)
+  const selectedCoursesIds = props.selectedCourses.map((obj) => obj.id)
+  // this event is used to clear the selected courses which
+  // in turn is used to determine the delete buttons active/disabled status
+  storeCourse.delete(selectedCoursesIds).then(() => {
+    emit('deleteSuccess')
+  })
 }
 </script>

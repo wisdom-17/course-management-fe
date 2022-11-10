@@ -1,5 +1,8 @@
 <template>
-  <Toolbar :selectedCoursesIds="selectedCoursesIds" />
+  <Toolbar
+    :selectedCourses="selectedCourses"
+    @delete-success="selectedCourses = []"
+  />
   <DataTable
     :value="storeCourse.list"
     v-model:selection="selectedCourses"
@@ -17,7 +20,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Toolbar from '@/components/course/Toolbar.vue'
@@ -26,12 +29,6 @@ import { useCourseStore } from '@/stores/course'
 const storeCourse = useCourseStore()
 
 const selectedCourses = ref([])
-
-const selectedCoursesIds = computed(() => {
-  return selectedCourses.value.map((obj) => {
-    return obj.id
-  })
-})
 
 const columns = ref([
   { field: 'name', header: 'Name' },
