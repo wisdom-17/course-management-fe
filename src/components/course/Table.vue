@@ -1,11 +1,9 @@
 <template>
-  <!-- <pre>{{ selectedCourses }}</pre> -->
-  <Toolbar :isDeleteButtonDisabled="selectedCourses.length === 0" />
+  <Toolbar :selectedCoursesIds="selectedCoursesIds" />
   <DataTable
-    :value="courses"
+    :value="storeCourse.list"
     v-model:selection="selectedCourses"
-    :loading="loading"
-    @rowSelect="rowSelected"
+    :loading="storeCourse.loading"
     class="mt-4"
   >
     <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
@@ -19,24 +17,20 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Toolbar from '@/components/course/Toolbar.vue'
+import { useCourseStore } from '@/stores/course'
+
+const storeCourse = useCourseStore()
 
 const selectedCourses = ref([])
 
-defineProps({
-  courses: {
-    type: Array,
-    default: () => {
-      return []
-    },
-  },
-  loading: {
-    type: Boolean,
-    default: false,
-  },
+const selectedCoursesIds = computed(() => {
+  return selectedCourses.value.map((obj) => {
+    return obj.id
+  })
 })
 
 const columns = ref([
@@ -48,7 +42,10 @@ const columns = ref([
   { field: 'updatedAt', header: 'Updated At' },
 ])
 
-const rowSelected = (obj) => {
-
-}
+onMounted(() => {
+  // check to prevent hammering the API unnecessarily
+  if (storeCourse.list.length === 0) {
+    storeCourse.getCourses()
+  }
+})
 </script>
