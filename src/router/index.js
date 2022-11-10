@@ -78,10 +78,11 @@ router.beforeEach((to, from, next) => {
   if (reqAuth && !authUser) {
     storeAuth.getAuthenticatedUserDetails().then(() => {
       if (!storeAuth.loggedInUser) next(loginQuery)
+      else next()
     })
-  } else if (to.name === 'login' && authUser) {
-    // redirect logged in user if they try to access login page
-    next({ path: '/' })
+    // } else if (to.name === 'login' && authUser) {
+    //   // redirect logged in user if they try to access login page
+    //   next({ path: '/' })
   } else {
     next() // make sure to always call next()!
   }
