@@ -12,7 +12,7 @@
         @click="onClickDeleteButton()"
         icon="pi pi-trash"
         label="Delete"
-        :disabled="isDeleteButtonDisabled"
+        :disabled="selectedCoursesIds.length === 0"
       />
     </template>
   </Toolbar>
@@ -22,11 +22,14 @@
 import Toolbar from 'primevue/toolbar'
 import Button from 'primevue/button'
 import { useRouter } from 'vue-router'
+import { useCourseStore } from '@/stores/course'
 
-defineProps({
-  isDeleteButtonDisabled: {
-    type: Boolean,
-    default: true,
+const storeCourse = useCourseStore()
+
+const props = defineProps({
+  selectedCoursesIds: {
+    type: Array,
+    default: () => [],
   },
 })
 const router = useRouter()
@@ -40,7 +43,7 @@ const onClickNewButton = () => {
   router.push({ path: 'new-course' })
 }
 
-const onClickDeleteButton = () => {
-  console.log('onClickDeleteButton')
+const onClickDeleteButton = async () => {
+  storeCourse.delete(props.selectedCoursesIds)
 }
 </script>
