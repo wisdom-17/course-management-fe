@@ -20,6 +20,8 @@ const routes = [
   {
     path: '/login',
     name: 'login',
+    redirect: '/courses',
+    meta: { hideForAuth: true },
     component: LoginView,
   },
   {
