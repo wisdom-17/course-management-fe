@@ -15,12 +15,19 @@ export const useCourseStore = defineStore({
   }),
   getters: {},
   actions: {
-    getCourses() {
-      this.loading = true
-      CourseService.list().then((data) => {
-        this.list = data.data
-        this.loading = false
-      })
+    async getCourses() {
+      try {
+        this.loading = true
+        CourseService.list().then((data) => {
+          this.list = data.data
+          this.loading = false
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    selectCourse(id) {
+      this.selectedCoursesIds.push(id)
     },
     saveCourseDetails(course) {
       const { id, name, startDate, endDate } = course
@@ -28,6 +35,22 @@ export const useCourseStore = defineStore({
       this.multiStepForm.name = name
       this.multiStepForm.startDate = startDate
       this.multiStepForm.endDate = endDate
+    },
+    async delete(courseIds) {
+      try {
+        this.loading = true
+        const payload = {
+          courseIds: [...courseIds],
+        }
+        const apiResult = await CourseService.delete(payload)
+
+        if (apiResult.status === 200) {
+          this.loading = false
+          this.getCourses() // refresh
+        }
+      } catch (error) {
+        console.log(error)
+      }
     },
   },
 })

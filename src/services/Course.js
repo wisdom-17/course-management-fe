@@ -7,6 +7,9 @@ export default {
   async newDates(payload, courseId) {
     return axiosClient.post(`/api/courses/${courseId}/dates`, payload)
   },
+  async delete(payload) {
+    return axiosClient.patch(`/api/courses`, payload)
+  },
   list() {
     return axiosClient.get('/api/courses')
   },
