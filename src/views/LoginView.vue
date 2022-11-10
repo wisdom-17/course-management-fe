@@ -34,16 +34,16 @@
       </div>
       <small class="p-error">{{ validation.errors.password[0] }}</small>
       <div class="field grid mt-4">
-        <Button @click="login" label="Login" />
+        <Button @click="login" label="Login" :loading="isLoading" />
       </div>
     </form>
   </div>
 </template>
 <script setup>
 import { ref } from 'vue'
+import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
-import Button from 'primevue/button'
 import { useRoute } from 'vue-router'
 import AuthService from '@/services/AuthService'
 import { useAuthStore } from '@/stores/auth'
@@ -56,6 +56,7 @@ const storeAuth = useAuthStore()
 const auth = ref({ email: '', password: '' })
 const validation = ref({ message: '', errors: { email: [], password: [] } })
 const showErrorMessage = ref(false)
+const isLoading = ref(false)
 
 const login = async () => {
   const payload = {
@@ -68,12 +69,15 @@ const login = async () => {
   validation.value.errors = { email: [], password: [] }
 
   try {
+    isLoading.value = true
     await AuthService.login(payload)
     await storeAuth.getAuthenticatedUserDetails()
     if (storeAuth.loggedInUser) {
+      isLoading.value = false
       router.push(route.query.redirect || '/')
     }
   } catch (error) {
+    isLoading.value = false
     validation.value.message = error.response.data.message
     // update validation error messages with ones
     // returned from API call
