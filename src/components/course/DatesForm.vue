@@ -128,7 +128,12 @@ const onClickAdditionalDateRangesButton = () => {
 
 const onClickSaveButton = async (redirectRouteName) => {
   const payload = {
-    dates: selectedDateRanges.value,
+    // only send date ranges with selected values
+    // deleted date range fields are an empty array
+    // so filter them out
+    dates: selectedDateRanges.value.filter(
+      (dateRange) => dateRange.length === 2
+    ),
     dateType: props.type,
   }
   // clear validation errors
