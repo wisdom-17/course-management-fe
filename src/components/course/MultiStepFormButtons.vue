@@ -1,6 +1,8 @@
 <template>
   <div class="flex justify-content-between">
-    <div class="flex">
+    <div class="flex"></div>
+    <div class="flex align-self-end">
+      <CancelButton class="mr-2" />
       <Button
         v-if="hasPreviousButton"
         class="mr-2"
@@ -14,6 +16,7 @@
         icon="pi pi-save"
         label="Save"
         @click="$emit('saveButtonClicked')"
+        :loading="isLoading"
       />
       <Button
         v-if="hasNextButton"
@@ -21,10 +24,8 @@
         icon="pi pi-angle-double-right"
         label="Next Step"
         @click="$emit('nextButtonClicked')"
+        :loading="isLoading"
       />
-    </div>
-    <div class="flex align-self-end">
-      <CancelButton />
     </div>
   </div>
 </template>
@@ -37,5 +38,6 @@ defineProps({
   hasSaveButton: { type: Boolean, default: false },
   hasNextButton: { type: Boolean, default: false },
   hasPreviousButton: { type: Boolean, default: false },
+  isLoading: { type: Boolean, default: false },
 })
 </script>

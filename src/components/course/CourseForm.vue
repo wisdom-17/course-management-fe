@@ -99,6 +99,7 @@
       :hasSaveButton="false"
       @save-button-clicked="onClickSaveButton('courses')"
       @next-button-clicked="onClickSaveButton('courseStepTwo')"
+      :isLoading="isLoading"
     />
   </form>
 </template>
@@ -132,6 +133,8 @@ const onClickCloseErrorMessage = () => {
   validation.value.message = ''
 }
 
+const isLoading = ref(false)
+
 /* This handler is for save and next buttons as 
 both buttons will call API to save the course. The difference
 being where to redirect to after a successful save */
@@ -153,15 +156,16 @@ const onClickSaveButton = async (redirectRouteName) => {
   }
 
   try {
+    isLoading.value = true
     const apiResult = await CourseService.new(payload)
     if (apiResult.status === 201) {
+      isLoading.value = false
       // save newly saved course to store
       const newCourse = {
         id: apiResult.data.id,
         ...payload,
       }
       storeCourse.saveCourseDetails(newCourse)
-
       // emit saveSuccess event to show success toast from parent component
       emit('saveSuccess', 'Course details saved successfully!')
 
@@ -171,6 +175,7 @@ const onClickSaveButton = async (redirectRouteName) => {
       }, 2500)
     }
   } catch (error) {
+    isLoading.value = false
     console.log(error)
     validation.value.message = error.response.data.message
     // update validation error msgs with error msgs
