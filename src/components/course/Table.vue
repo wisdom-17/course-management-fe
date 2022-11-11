@@ -16,12 +16,27 @@
       :header="col.header"
       :key="col.field"
     ></Column>
+    <Column>
+      <template #body="slotProps">
+        <Button
+          icon="pi pi-pencil"
+          class="p-button-rounded p-button-success mr-2"
+          @click="onClickEditButton(slotProps.data)"
+        />
+        <Button
+          icon="pi pi-trash"
+          class="p-button-rounded p-button-danger"
+          @click="onClickDeleteButton(slotProps.data)"
+        />
+      </template>
+    </Column>
   </DataTable>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import DataTable from 'primevue/datatable'
+import Button from 'primevue/button'
 import Column from 'primevue/column'
 import Toolbar from '@/components/course/Toolbar.vue'
 import { useCourseStore } from '@/stores/course'
@@ -37,7 +52,18 @@ const columns = ref([
   { field: 'teachingDays', header: 'Teaching Days' },
   { field: 'createdAt', header: 'Created At' },
   { field: 'updatedAt', header: 'Updated At' },
+  // { header: 'Actions' },
 ])
+
+const onClickEditButton = (rowData) => {
+  console.log('clicked edit button')
+  console.log(rowData)
+}
+
+const onClickDeleteButton = (rowData) => {
+  console.log('clicked delete button')
+  console.log(rowData)
+}
 
 onMounted(() => {
   // check to prevent hammering the API unnecessarily
