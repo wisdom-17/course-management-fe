@@ -47,6 +47,7 @@
       :hasNextButton="hasNextButton"
       :hasPreviousButton="hasPreviousButton"
       :hasSaveButton="hasSaveButton"
+      :isLoading="isLoading"
     />
   </form>
 </template>
@@ -83,6 +84,8 @@ const validation = ref({
   errors: { startDate: [], endDate: [] },
 })
 const successMessage = ref([])
+
+const isLoading = ref(false)
 
 // formattedSelectedDates is used to disable selected
 // dates in daterange pickers for other terms (i.e. cannot
@@ -145,8 +148,10 @@ const onClickSaveButton = async (redirectRouteName) => {
 
   const { id } = storeCourse.multiStepForm
   try {
+    isLoading.value = true
     const apiResult = await CourseService.newDates(payload, id)
     if (apiResult.status === 201) {
+      isLoading.value = false
       successMessage.value = [...apiResult.data]
       emit('saveSuccess', `Course ${props.type} dates saved successfully!`)
       // redirect to route (depending on which button was clicked) after 2.5 seconds
@@ -162,6 +167,7 @@ const onClickSaveButton = async (redirectRouteName) => {
       ...validation.value.errors,
       ...error.response.data.errors,
     }
+    isLoading.value = false
   }
 }
 
