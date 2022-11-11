@@ -1,3 +1,4 @@
+import { useAuthStore } from '@/stores/auth'
 import { createRouter, createWebHistory } from 'vue-router'
 import NotFound from '@/components/404.vue'
 import HomeView from '../views/HomeView.vue'
@@ -8,7 +9,6 @@ import NewCourseView from '@/views/NewCourseView.vue'
 import StepOne from '@/components/course/StepOne.vue'
 import StepTwo from '@/components/course/StepTwo.vue'
 import StepThree from '@/components/course/StepThree.vue'
-import { useAuthStore } from '@/stores/auth'
 
 const routes = [
   {
@@ -20,6 +20,7 @@ const routes = [
   {
     path: '/login',
     name: 'login',
+    meta: { hideForAuth: true },
     component: LoginView,
   },
   {
@@ -73,6 +74,7 @@ router.beforeEach((to, from, next) => {
   const storeAuth = useAuthStore()
   const authUser = storeAuth.loggedInUser
   const reqAuth = to.matched.some((record) => record.meta.requiresAuth)
+  const hideForAuth = to.matched.some((record) => record.meta.hideForAuth)
   const loginQuery = { path: '/login', query: { redirect: to.fullPath } }
 
   if (reqAuth && !authUser) {
@@ -80,9 +82,11 @@ router.beforeEach((to, from, next) => {
       if (!storeAuth.loggedInUser) next(loginQuery)
       else next()
     })
-    // } else if (to.name === 'login' && authUser) {
-    //   // redirect logged in user if they try to access login page
-    //   next({ path: '/' })
+  } else if (!authUser && hideForAuth) {
+    storeAuth.getAuthenticatedUserDetails().then(() => {
+      if (!storeAuth.loggedInUser) next()
+      else return next(from)
+    })
   } else {
     next() // make sure to always call next()!
   }
