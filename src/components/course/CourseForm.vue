@@ -166,6 +166,9 @@ const onClickSaveButton = async (redirectRouteName) => {
         ...payload,
       }
       storeCourse.saveCourseDetails(newCourse)
+
+      // this will ensure the new course appears in the table
+      storeCourse.getCourses()
       // emit saveSuccess event to show success toast from parent component
       emit('saveSuccess', 'Course details saved successfully!')
 
