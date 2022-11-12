@@ -27,6 +27,7 @@
           icon="pi pi-trash"
           class="p-button-rounded p-button-danger"
           @click="onClickDeleteButton(slotProps.data)"
+          :loading="storeCourse.loading"
         />
       </template>
     </Column>
@@ -41,8 +42,10 @@ import SplitButton from 'primevue/splitbutton'
 import Column from 'primevue/column'
 import Toolbar from '@/components/course/Toolbar.vue'
 import { useCourseStore } from '@/stores/course'
+import { useConfirm } from 'primevue/useconfirm'
 
 const storeCourse = useCourseStore()
+const confirm = useConfirm()
 
 const selectedCourses = ref([])
 
@@ -55,9 +58,17 @@ const columns = ref([
   { field: 'updatedAt', header: 'Updated At' },
 ])
 
-const onClickDeleteButton = (rowData) => {
-  console.log('clicked delete button')
-  console.log(rowData)
+const onClickDeleteButton = async (rowData) => {
+  confirm.require({
+    message:
+      'Are you sure you want to delete the selected course(s) with their term and holiday dates?',
+    header: 'Delete',
+    icon: 'pi pi-trash',
+    acceptClass: 'p-button-danger',
+    accept: () => {
+      storeCourse.delete([rowData.id])
+    },
+  })
 }
 
 const editMenuItems = (rowData) => [
@@ -66,7 +77,6 @@ const editMenuItems = (rowData) => [
     command: () => {
       console.log(rowData)
       console.log('clicked edit course details')
-      // console.log(currentRowData.value)
     },
   },
   {
