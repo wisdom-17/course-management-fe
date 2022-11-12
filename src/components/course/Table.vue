@@ -16,11 +16,11 @@
       :header="col.header"
       :key="col.field"
     ></Column>
-    <Column>
+    <Column style="min-width:10rem">
       <template #body="slotProps">
         <SplitButton
           icon="pi pi-pencil"
-          class="p-button-rounded p-button-success mr-2"
+          class="p-button-rounded p-button-primary mr-2"
           :model="editMenuItems(slotProps.data)"
         />
         <Button
