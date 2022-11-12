@@ -5,3 +5,8 @@ body {
 .newCourse .field label {
   display: block;
 }
+
+/* Temporary fix for menu bug */
+.p-menuitem.p-focus > .p-menuitem-content:not(:hover) {
+  background: transparent !important;
+}
