@@ -3,7 +3,8 @@ import App from './App.vue'
 import router from './router'
 import PrimeVue from 'primevue/config'
 import ConfirmationService from 'primevue/confirmationservice'
-import ToastService from 'primevue/toastservice';
+import DialogService from 'primevue/dialogservice'
+import ToastService from 'primevue/toastservice'
 import { createPinia } from 'pinia'
 
 import './assets/main.css'
@@ -19,6 +20,7 @@ app.use(pinia)
 app.use(router)
 app.use(PrimeVue, { ripple: true })
 app.use(ConfirmationService)
+app.use(DialogService)
 app.use(ToastService)
 
 app.mount('#app')

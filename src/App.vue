@@ -2,7 +2,8 @@
   <div class="app">
     <Navigation v-if="currentRoute !== 'login'" />
     <div :class="{ grid: currentRoute !== 'login' }">
-      <ConfirmDialog></ConfirmDialog>
+      <ConfirmDialog />
+      <DynamicDialog />
       <RouterView />
     </div>
   </div>
@@ -12,6 +13,7 @@
 import { computed } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 import ConfirmDialog from 'primevue/confirmdialog'
+import DynamicDialog from 'primevue/dynamicdialog'
 import Navigation from '@/components/Navigation.vue'
 
 const currentRoute = computed(() => {
