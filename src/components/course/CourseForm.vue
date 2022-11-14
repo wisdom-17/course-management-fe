@@ -99,94 +99,52 @@
       :hasSaveButton="false"
       @save-button-clicked="onClickSaveButton('courses')"
       @next-button-clicked="onClickSaveButton('courseStepTwo')"
-      :isLoading="isLoading"
+      :isLoading="storeCourse.loading"
     />
   </form>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import Checkbox from 'primevue/checkbox'
 import InputText from 'primevue/inputtext'
-import CourseService from '@/services/Course'
 import DateRangePicker from '@/components/DateRangePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import MultiStepFormButtons from '@/components/course/MultiStepFormButtons.vue'
 import { useCourseStore } from '@/stores/course'
 
 const storeCourse = useCourseStore()
+const { course, validation } = storeCourse.courseDetailsForm
+
 const emit = defineEmits(['saveSuccess'])
 const router = useRouter()
 
-const course = ref({ name: '', dateRange: [], teachingDays: [] })
-const validation = ref({
-  message: '',
-  errors: { name: [], startDate: [], endDate: [], teachingDays: [] },
-})
-
 const showErrorMessage = computed(() => {
-  return validation.value.message !== ''
+  return validation.message !== ''
 })
 
 const onClickCloseErrorMessage = () => {
-  validation.value.message = ''
+  validation.message = ''
 }
-
-const isLoading = ref(false)
 
 /* This handler is for save and next buttons as 
 both buttons will call API to save the course. The difference
 being where to redirect to after a successful save */
 const onClickSaveButton = async (redirectRouteName) => {
-  const payload = {
-    name: course.value.name,
-    startDate: course.value.dateRange[0],
-    endDate: course.value.dateRange[1],
-    teachingDays: course.value.teachingDays,
-  }
-
-  // clear validation errors
-  validation.value.message = ''
-  validation.value.errors = {
-    name: [],
-    startDate: [],
-    endDate: [],
-    teachingDays: [],
-  }
-
-  try {
-    isLoading.value = true
-    const apiResult = await CourseService.new(payload)
-    if (apiResult.status === 201) {
-      isLoading.value = false
-      // save newly saved course to store
-      const newCourse = {
-        id: apiResult.data.id,
-        ...payload,
-      }
-      storeCourse.saveCourseDetails(newCourse)
-
-      // this will ensure the new course appears in the table
-      storeCourse.getCourses()
+  storeCourse
+    .saveCourseDetails()
+    .then(() => {
       // emit saveSuccess event to show success toast from parent component
       emit('saveSuccess', 'Course details saved successfully!')
 
-      // redirect to route (depending on which button was clicked) after 2.5 seconds
+      // redirect to route (depending on which button was clicked) after 2 seconds
       setTimeout(() => {
         router.push({ name: redirectRouteName })
-      }, 2500)
-    }
-  } catch (error) {
-    isLoading.value = false
-    console.log(error)
-    validation.value.message = error.response.data.message
-    // update validation error msgs with error msgs
-    // returned from API call
-    validation.value.errors = {
-      ...validation.value.errors,
-      ...error.response.data.errors,
-    }
-  }
+      }, 2000)
+    })
+    .catch(() => {
+      console.log('error in new course form')
+    })
 }
 </script>

@@ -26,7 +26,7 @@ const props = defineProps({
     default: false,
   },
   course: {
-    type: Object
-  }
+    type: Object,
+  },
 })
 </script>

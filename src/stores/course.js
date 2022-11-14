@@ -12,6 +12,13 @@ export const useCourseStore = defineStore({
     },
     list: [],
     loading: false,
+    courseDetailsForm: {
+      course: { name: '', dateRange: [], teachingDays: [] },
+      validation: {
+        message: '',
+        errors: { name: [], startDate: [], endDate: [], teachingDays: [] },
+      },
+    },
   }),
   getters: {},
   actions: {
@@ -29,12 +36,52 @@ export const useCourseStore = defineStore({
     selectCourse(id) {
       this.selectedCoursesIds.push(id)
     },
-    saveCourseDetails(course) {
-      const { id, name, startDate, endDate } = course
-      this.multiStepForm.id = id
-      this.multiStepForm.name = name
-      this.multiStepForm.startDate = startDate
-      this.multiStepForm.endDate = endDate
+    async saveCourseDetails() {
+      this.loading = true
+      // clear validation errors
+      this.courseDetailsForm.validation.message = ''
+      this.courseDetailsForm.validation.errors = {
+        name: [],
+        startDate: [],
+        endDate: [],
+        teachingDays: [],
+      }
+
+      const { course } = this.courseDetailsForm
+      const { name, teachingDays } = course
+      const startDate = course.dateRange[0]
+      const endDate = course.dateRange[1]
+
+      const payload = {
+        name,
+        startDate,
+        endDate,
+        teachingDays,
+      }
+      return CourseService.new(payload)
+        .then((response) => {
+          if (response.status === 201) {
+            this.loading = false
+            this.multiStepForm.id = response.data.id
+            this.multiStepForm.name = name
+            this.multiStepForm.startDate = startDate
+            this.multiStepForm.endDate = endDate
+          }
+          this.getCourses() // refresh courses list in store
+        })
+        .catch((error) => {
+          console.log(error)
+          this.loading = false
+          this.courseDetailsForm.validation.message =
+            error.response.data.message
+          // update validation error msgs with error msgs
+          // returned from API call
+          this.courseDetailsForm.validation.errors = {
+            ...this.courseDetailsForm.validation.errors,
+            ...error.response.data.errors,
+          }
+          throw new Error('Error saving new course')
+        })
     },
     async delete(courseIds) {
       try {
