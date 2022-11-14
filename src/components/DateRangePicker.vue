@@ -35,37 +35,7 @@ import { ref } from 'vue'
 import Calendar from 'primevue/calendar'
 import Button from 'primevue/button'
 
-const emit = defineEmits([
-  'selectedDateRange',
-  'clearedDateRange',
-  'clickedDeleteDatePickerButton',
-])
-const selectedDateRange = ref([])
-
-const onSelectedDateRange = () => {
-  // emit event only after two dates (i.e. range) have been selected and formatted
-  if (selectedDateRange.value.filter((elem) => !!elem).length === 2) {
-    const formattedStartDate = new Date(
-      selectedDateRange.value[0]
-    ).toLocaleDateString('fr-CA') // Canadian date format is yyyy-mm-dd
-
-    const formattedEndDate = new Date(
-      selectedDateRange.value[1]
-    ).toLocaleDateString('fr-CA')
-
-    emit('selectedDateRange', [formattedStartDate, formattedEndDate])
-  }
-}
-
-const onClearedDateRange = () => {
-  emit('clearedDateRange')
-}
-
-const onClickDeleteButton = () => {
-  emit('clickedDeleteDatePickerButton')
-}
-
-defineProps({
+const props = defineProps({
   validationErrorMessages: {
     type: Array,
     default() {
@@ -94,5 +64,41 @@ defineProps({
     type: Date,
     default: null,
   },
+  existingDateRange: {
+    type: Array,
+    default: () => [],
+  },
 })
+
+const emit = defineEmits([
+  'selectedDateRange',
+  'clearedDateRange',
+  'clickedDeleteDatePickerButton',
+])
+const selectedDateRange = ref(
+  props.existingDateRange.length === 2 ? props.existingDateRange : []
+)
+
+const onSelectedDateRange = () => {
+  // emit event only after two dates (i.e. range) have been selected and formatted
+  if (selectedDateRange.value.filter((elem) => !!elem).length === 2) {
+    const formattedStartDate = new Date(
+      selectedDateRange.value[0]
+    ).toLocaleDateString('fr-CA') // Canadian date format is yyyy-mm-dd
+
+    const formattedEndDate = new Date(
+      selectedDateRange.value[1]
+    ).toLocaleDateString('fr-CA')
+
+    emit('selectedDateRange', [formattedStartDate, formattedEndDate])
+  }
+}
+
+const onClearedDateRange = () => {
+  emit('clearedDateRange')
+}
+
+const onClickDeleteButton = () => {
+  emit('clickedDeleteDatePickerButton')
+}
 </script>
