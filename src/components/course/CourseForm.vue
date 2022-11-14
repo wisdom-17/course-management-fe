@@ -133,7 +133,7 @@ both buttons will call API to save the course. The difference
 being where to redirect to after a successful save */
 const onClickSaveButton = async (redirectRouteName) => {
   storeCourse
-    .saveCourseDetails()
+    .saveNewCourse()
     .then(() => {
       // emit saveSuccess event to show success toast from parent component
       emit('saveSuccess', 'Course details saved successfully!')

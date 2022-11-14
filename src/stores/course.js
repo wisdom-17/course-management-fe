@@ -36,7 +36,7 @@ export const useCourseStore = defineStore({
     selectCourse(id) {
       this.selectedCoursesIds.push(id)
     },
-    async saveCourseDetails() {
+    async saveNewCourse() {
       this.loading = true
       // clear validation errors
       this.courseDetailsForm.validation.message = ''
