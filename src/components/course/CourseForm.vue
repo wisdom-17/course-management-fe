@@ -95,6 +95,7 @@
     </div>
 
     <MultiStepFormButtons
+      v-if="operationType === 'new'"
       :hasNextButton="true"
       :hasSaveButton="false"
       @save-button-clicked="onClickSaveButton('courses')"
@@ -119,7 +120,24 @@ const storeCourse = useCourseStore()
 const emit = defineEmits(['saveSuccess'])
 const router = useRouter()
 
-const course = ref({ name: '', dateRange: [], teachingDays: [] })
+const props = defineProps({
+  operationType: {
+    type: String,
+    default: 'new',
+  },
+  existingCourse: {
+    type: Object,
+    default: () => {
+      return { name: '', dateRange: [], teachingDays: [] }
+    },
+  },
+})
+
+const course = ref({
+  name: props.existingCourse.name || '',
+  dateRange: props.existingCourse.dateRange.length === 2 || [],
+  teachingDays: props.existingCourse.teachingDays.length > 0 || [],
+})
 const validation = ref({
   message: '',
   errors: { name: [], startDate: [], endDate: [], teachingDays: [] },
@@ -176,6 +194,5 @@ const onClickSaveButton = async (redirectRouteName) => {
         ...error.response.data.errors,
       }
     })
-
 }
 </script>
