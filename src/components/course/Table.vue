@@ -1,4 +1,8 @@
 <template>
+  <EditCourseDetails
+    :displayEditModal="displayEditModal"
+    @editCourseModalHidden="onHideEditCourseModal"
+  />
   <Toolbar
     :selectedCourses="selectedCourses"
     @delete-success="selectedCourses = []"
@@ -36,13 +40,14 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useConfirm } from 'primevue/useconfirm'
 import DataTable from 'primevue/datatable'
 import Button from 'primevue/button'
 import SplitButton from 'primevue/splitbutton'
 import Column from 'primevue/column'
+import EditCourseDetails from './modals/EditCourseDetails.vue'
 import Toolbar from '@/components/course/Toolbar.vue'
 import { useCourseStore } from '@/stores/course'
-import { useConfirm } from 'primevue/useconfirm'
 
 const storeCourse = useCourseStore()
 const confirm = useConfirm()
@@ -57,6 +62,8 @@ const columns = ref([
   { field: 'createdAt', header: 'Created At' },
   { field: 'updatedAt', header: 'Updated At' },
 ])
+
+const displayEditModal = ref(false)
 
 const onClickDeleteButton = async (rowData) => {
   confirm.require({
@@ -77,6 +84,7 @@ const editMenuItems = (rowData) => [
     command: () => {
       console.log(rowData)
       console.log('clicked edit course details')
+      displayEditModal.value = true
     },
   },
   {
@@ -94,6 +102,10 @@ const editMenuItems = (rowData) => [
     },
   },
 ]
+
+const onHideEditCourseModal = () => {
+  displayEditModal.value = false
+}
 
 onMounted(() => {
   // check to prevent hammering the API unnecessarily
