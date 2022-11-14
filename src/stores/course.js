@@ -72,14 +72,7 @@ export const useCourseStore = defineStore({
         .catch((error) => {
           console.log(error)
           this.loading = false
-          this.courseDetailsForm.validation.message =
-            error.response.data.message
-          // update validation error msgs with error msgs
-          // returned from API call
-          this.courseDetailsForm.validation.errors = {
-            ...this.courseDetailsForm.validation.errors,
-            ...error.response.data.errors,
-          }
+          this.updateValidationErrorMessages(error)
           throw new Error('Error saving new course')
         })
     },
@@ -97,6 +90,15 @@ export const useCourseStore = defineStore({
         }
       } catch (error) {
         console.log(error)
+      }
+    },
+    updateValidationErrorMessages(error) {
+      this.courseDetailsForm.validation.message = error.response.data.message
+      // update validation error msgs with error msgs
+      // returned from API call
+      this.courseDetailsForm.validation.errors = {
+        ...this.courseDetailsForm.validation.errors,
+        ...error.response.data.errors,
       }
     },
   },
