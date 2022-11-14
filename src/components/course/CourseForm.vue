@@ -105,7 +105,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Checkbox from 'primevue/checkbox'
 import InputText from 'primevue/inputtext'
@@ -115,42 +115,67 @@ import MultiStepFormButtons from '@/components/course/MultiStepFormButtons.vue'
 import { useCourseStore } from '@/stores/course'
 
 const storeCourse = useCourseStore()
-const { course, validation } = storeCourse.courseDetailsForm
 
 const emit = defineEmits(['saveSuccess'])
 const router = useRouter()
 
+const course = ref({ name: '', dateRange: [], teachingDays: [] })
+const validation = ref({
+  message: '',
+  errors: { name: [], startDate: [], endDate: [], teachingDays: [] },
+})
+
 const showErrorMessage = computed(() => {
-  return validation.message !== ''
+  return validation.value.message !== ''
 })
 
 const onClickCloseErrorMessage = () => {
-  validation.message = ''
+  validation.value.message = ''
 }
 
 /* This handler is for save and next buttons as 
 both buttons will call API to save the course. The difference
 being where to redirect to after a successful save */
 const onClickSaveButton = async (redirectRouteName) => {
+  const payload = {
+    name: course.value.name,
+    startDate: course.value.dateRange[0],
+    endDate: course.value.dateRange[1],
+    teachingDays: course.value.teachingDays,
+  }
+
+  // clear validation errors
+  validation.value.message = ''
+  validation.value.errors = {
+    name: [],
+    startDate: [],
+    endDate: [],
+    teachingDays: [],
+  }
+
   storeCourse
-    .saveNewCourse()
+    .saveNewCourse(payload)
     .then(() => {
       // emit saveSuccess event to show success toast from parent component
       emit('saveSuccess', 'Course details saved successfully!')
 
-      // reset course object data in store
-      storeCourse.courseDetailsForm.course = {
-        dateRange: [],
-        name: '',
-        teachingDays: [],
-      }
       // redirect to route (depending on which button was clicked) after 2 seconds
       setTimeout(() => {
         router.push({ name: redirectRouteName })
       }, 2000)
     })
-    .catch(() => {
-      console.log('error in new course form')
+    .catch((error) => {
+      // console.log(error)
+      storeCourse.loading = false
+      console.log('error in course form')
+      validation.value.message = error.response.data.message
+      // update validation error msgs with error msgs
+      // returned from API call
+      validation.value.errors = {
+        ...validation.value.errors,
+        ...error.response.data.errors,
+      }
     })
+
 }
 </script>
