@@ -1,8 +1,4 @@
 <template>
-  <EditCourseDetails
-    :displayEditModal="displayEditModal"
-    @editCourseModalHidden="onHideEditCourseModal"
-  />
   <Toolbar
     :selectedCourses="selectedCourses"
     @delete-success="selectedCourses = []"
@@ -20,7 +16,7 @@
       :header="col.header"
       :key="col.field"
     ></Column>
-    <Column style="min-width:10rem">
+    <Column style="min-width: 10rem">
       <template #body="slotProps">
         <SplitButton
           icon="pi pi-pencil"
@@ -41,16 +37,18 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useConfirm } from 'primevue/useconfirm'
+import { useDialog } from 'primevue/usedialog'
 import DataTable from 'primevue/datatable'
 import Button from 'primevue/button'
 import SplitButton from 'primevue/splitbutton'
 import Column from 'primevue/column'
-import EditCourseDetails from './modals/EditCourseDetails.vue'
+import CourseForm from '@/components/course/CourseForm.vue'
 import Toolbar from '@/components/course/Toolbar.vue'
 import { useCourseStore } from '@/stores/course'
 
 const storeCourse = useCourseStore()
 const confirm = useConfirm()
+const dialog = useDialog()
 
 const selectedCourses = ref([])
 
@@ -63,7 +61,22 @@ const columns = ref([
   { field: 'updatedAt', header: 'Updated At' },
 ])
 
-const displayEditModal = ref(false)
+const showEditCourseDialog = () => {
+  dialog.open(CourseForm, {
+    props: {
+      style: { width: '60vw' },
+      header: 'Edit Course',
+    },
+    onClose: () => {
+      storeCourse.editForm = {
+        id: null,
+        name: '',
+        dateRange: [],
+        teachingDays: [],
+      }
+    }
+  })
+}
 
 const onClickDeleteButton = async (rowData) => {
   confirm.require({
@@ -82,9 +95,19 @@ const editMenuItems = (rowData) => [
   {
     label: 'Edit Course Details',
     command: () => {
-      console.log(rowData)
-      console.log('clicked edit course details')
-      displayEditModal.value = true
+      const { id, name, teachingDays, startDate, endDate } = rowData
+
+      // format date into JS date
+      const formattedStartDate = convertUKDateToJsDate(startDate)
+      const formattedEndDate = convertUKDateToJsDate(endDate)
+
+      storeCourse.editForm = {
+        id,
+        name,
+        teachingDays,
+        dateRange: [formattedStartDate, formattedEndDate],
+      }
+      showEditCourseDialog()
     },
   },
   {
@@ -103,8 +126,9 @@ const editMenuItems = (rowData) => [
   },
 ]
 
-const onHideEditCourseModal = () => {
-  displayEditModal.value = false
+const convertUKDateToJsDate = (ukDate) => {
+  const [day, month, year] = ukDate.split('/', 3)
+  return new Date(`${year}-${month}-${day}T00:00:00`)
 }
 
 onMounted(() => {

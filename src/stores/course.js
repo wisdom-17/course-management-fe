@@ -10,6 +10,12 @@ export const useCourseStore = defineStore({
       startDate: '',
       endDate: '',
     },
+    editForm: {
+      id: null,
+      name: '',
+      dateRange: [],
+      teachingDays: [],
+    },
     list: [],
     loading: false,
   }),
