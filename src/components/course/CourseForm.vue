@@ -25,6 +25,7 @@
         @selected-date-range="
           (selectedDateRange) => (course.dateRange = selectedDateRange)
         "
+        :existingDateRange="course.dateRange"
       />
     </div>
     <h4>Teaching Days</h4>
@@ -120,23 +121,14 @@ const storeCourse = useCourseStore()
 const emit = defineEmits(['saveSuccess'])
 const router = useRouter()
 
-const props = defineProps({
-  operationType: {
-    type: String,
-    default: 'new',
-  },
-  existingCourse: {
-    type: Object,
-    default: () => {
-      return { name: '', dateRange: [], teachingDays: [] }
-    },
-  },
+const operationType = computed(() => {
+  return storeCourse.editForm.id ? 'edit' : 'new'
 })
 
 const course = ref({
-  name: props.existingCourse.name || '',
-  dateRange: props.existingCourse.dateRange.length === 2 || [],
-  teachingDays: props.existingCourse.teachingDays.length > 0 || [],
+  name: storeCourse.editForm.name || '',
+  dateRange: [...storeCourse.editForm.dateRange],
+  teachingDays: [...storeCourse.editForm.teachingDays],
 })
 const validation = ref({
   message: '',
