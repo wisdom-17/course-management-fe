@@ -138,6 +138,12 @@ const onClickSaveButton = async (redirectRouteName) => {
       // emit saveSuccess event to show success toast from parent component
       emit('saveSuccess', 'Course details saved successfully!')
 
+      // reset course object data in store
+      storeCourse.courseDetailsForm.course = {
+        dateRange: [],
+        name: '',
+        teachingDays: [],
+      }
       // redirect to route (depending on which button was clicked) after 2 seconds
       setTimeout(() => {
         router.push({ name: redirectRouteName })
