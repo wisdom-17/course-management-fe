@@ -154,6 +154,11 @@ const onClickCloseErrorMessage = () => {
   validation.value.message = ''
 }
 
+const emitSuccessfulSaveEvent = () => {
+  // emit saveSuccess event to show success toast from parent component
+  emit('saveSuccess', 'Course details saved successfully!')
+}
+
 /* This handler is for save and next buttons as 
 both buttons will call API to save the course. The difference
 being where to redirect to after a successful save */
@@ -177,9 +182,7 @@ const onClickSaveButton = async (redirectRouteName) => {
   storeCourse
     .saveNewCourse(payload)
     .then(() => {
-      // emit saveSuccess event to show success toast from parent component
-      emit('saveSuccess', 'Course details saved successfully!')
-
+      emitSuccessfulSaveEvent()
       // redirect to route (depending on which button was clicked) after 2 seconds
       setTimeout(() => {
         router.push({ name: redirectRouteName })
@@ -201,10 +204,35 @@ const onClickSaveButton = async (redirectRouteName) => {
 
 const onClickUpdateButton = async () => {
   console.log('Update button clicked')
+  const payload = {
+    id: storeCourse.editForm.id,
+    name: course.value.name,
+    startDate: course.value.dateRange[0],
+    endDate: course.value.dateRange[1],
+    teachingDays: course.value.teachingDays,
+  }
+
+  // const payload = { id: 500, ...course.value }
+
   // update course
-
-  // close dialog
-
-  dialogRef.value.close()
+  storeCourse
+    .update(payload)
+    .then(() => {
+      emitSuccessfulSaveEvent()
+      // close dialog
+      dialogRef.value.close()
+    })
+    .catch((error) => {
+      // console.log(error)
+      storeCourse.editForm.loading = false
+      console.log('error in edit course form')
+      validation.value.message = error.response.data.message
+      // update validation error msgs with error msgs
+      // returned from API call
+      validation.value.errors = {
+        ...validation.value.errors,
+        ...error.response.data.errors,
+      }
+    })
 }
 </script>
