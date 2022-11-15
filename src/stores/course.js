@@ -15,6 +15,7 @@ export const useCourseStore = defineStore({
       name: '',
       dateRange: [],
       teachingDays: [],
+      loading: false,
     },
     list: [],
     loading: false,
@@ -45,8 +46,19 @@ export const useCourseStore = defineStore({
           this.multiStepForm.name = payload.name
           this.multiStepForm.startDate = payload.startDate
           this.multiStepForm.endDate = payload.endDate
+
+          this.getCourses() // refresh courses list in defineStore
         }
-        this.getCourses() // refresh courses list in store
+      })
+    },
+    async update(payload) {
+      console.log(payload)
+      this.editForm.loading = true
+
+      return CourseService.update(payload).then((response) => {
+        if (response.status === 200) {
+          this.getCourses() // refresh courses list in store
+        }
       })
     },
     async delete(courseIds) {
