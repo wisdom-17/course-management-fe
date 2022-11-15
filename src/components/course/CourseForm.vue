@@ -103,12 +103,20 @@
       @next-button-clicked="onClickSaveButton('courseStepTwo')"
       :isLoading="storeCourse.loading"
     />
+
+    <Button
+      v-else-if="operationType === 'edit'"
+      icon="pi pi-save"
+      label="Update"
+      @click="onClickUpdateButton"
+    />
   </form>
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import Button from 'primevue/button'
 import Checkbox from 'primevue/checkbox'
 import InputText from 'primevue/inputtext'
 import DateRangePicker from '@/components/DateRangePicker.vue'
@@ -124,6 +132,9 @@ const router = useRouter()
 const operationType = computed(() => {
   return storeCourse.editForm.id ? 'edit' : 'new'
 })
+
+// inject dialog if editing course
+const dialogRef = operationType.value === 'edit' ? inject('dialogRef') : null
 
 const course = ref({
   name: storeCourse.editForm.name || '',
@@ -186,5 +197,14 @@ const onClickSaveButton = async (redirectRouteName) => {
         ...error.response.data.errors,
       }
     })
+}
+
+const onClickUpdateButton = async () => {
+  console.log('Update button clicked')
+  // update course
+
+  // close dialog
+
+  dialogRef.value.close()
 }
 </script>
