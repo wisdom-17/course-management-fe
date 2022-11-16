@@ -169,6 +169,7 @@ const onClickSaveButton = async (redirectRouteName) => {
     endDate: course.value.dateRange[1],
     teachingDays: course.value.teachingDays,
   }
+  console.log(payload)
 
   // clear validation errors
   validation.value.message = ''
@@ -207,8 +208,8 @@ const onClickUpdateButton = async () => {
   const payload = {
     id: storeCourse.editForm.id,
     name: course.value.name,
-    startDate: course.value.dateRange[0],
-    endDate: course.value.dateRange[1],
+    startDate: new Date(course.value.dateRange[0]).toLocaleDateString('fr-CA'),
+    endDate: new Date(course.value.dateRange[1]).toLocaleDateString('fr-CA'),
     teachingDays: course.value.teachingDays,
   }
 
