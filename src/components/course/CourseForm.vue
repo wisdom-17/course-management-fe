@@ -119,6 +119,7 @@ import { useRouter } from 'vue-router'
 import Button from 'primevue/button'
 import Checkbox from 'primevue/checkbox'
 import InputText from 'primevue/inputtext'
+import { useToast } from 'primevue/usetoast'
 import DateRangePicker from '@/components/DateRangePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import MultiStepFormButtons from '@/components/course/MultiStepFormButtons.vue'
@@ -128,6 +129,7 @@ const storeCourse = useCourseStore()
 
 const emit = defineEmits(['saveSuccess'])
 const router = useRouter()
+const toast = useToast()
 
 const operationType = computed(() => {
   return storeCourse.editForm.id ? 'edit' : 'new'
@@ -169,7 +171,6 @@ const onClickSaveButton = async (redirectRouteName) => {
     endDate: course.value.dateRange[1],
     teachingDays: course.value.teachingDays,
   }
-  console.log(payload)
 
   // clear validation errors
   validation.value.message = ''
@@ -204,7 +205,6 @@ const onClickSaveButton = async (redirectRouteName) => {
 }
 
 const onClickUpdateButton = async () => {
-  console.log('Update button clicked')
   const payload = {
     id: storeCourse.editForm.id,
     name: course.value.name,
@@ -213,15 +213,19 @@ const onClickUpdateButton = async () => {
     teachingDays: course.value.teachingDays,
   }
 
-  // const payload = { id: 500, ...course.value }
-
   // update course
   storeCourse
     .update(payload)
     .then(() => {
-      emitSuccessfulSaveEvent()
-      // close dialog
       dialogRef.value.close()
+      setTimeout(() => {
+        toast.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Course details updated successfully!',
+          life: 2000,
+        })
+      }, 500)
     })
     .catch((error) => {
       // console.log(error)
