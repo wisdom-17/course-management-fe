@@ -1,6 +1,5 @@
 <template>
   <div class="col new-course">
-    <Toast />
     <Steps :model="items" class="mt-4" />
     <RouterView @save-success="showSuccessToast" />
   </div>
@@ -10,7 +9,6 @@
 import { ref } from 'vue'
 import { RouterView } from 'vue-router'
 import Steps from 'primevue/steps'
-import Toast from 'primevue/toast'
 import { useToast } from 'primevue/usetoast'
 
 const toast = useToast()
