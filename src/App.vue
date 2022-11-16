@@ -4,6 +4,7 @@
     <div :class="{ grid: currentRoute !== 'login' }">
       <ConfirmDialog />
       <DynamicDialog />
+      <Toast />
       <RouterView />
     </div>
   </div>
@@ -14,6 +15,7 @@ import { computed } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 import ConfirmDialog from 'primevue/confirmdialog'
 import DynamicDialog from 'primevue/dynamicdialog'
+import Toast from 'primevue/toast'
 import Navigation from '@/components/Navigation.vue'
 
 const currentRoute = computed(() => {
