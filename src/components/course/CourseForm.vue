@@ -109,6 +109,7 @@
       icon="pi pi-save"
       label="Update"
       @click="onClickUpdateButton"
+      :loading="storeCourse.editForm.loading"
     />
   </form>
 </template>
