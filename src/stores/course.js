@@ -52,9 +52,7 @@ export const useCourseStore = defineStore({
       })
     },
     async update(payload) {
-      console.log(payload)
       this.editForm.loading = true
-
       return CourseService.update(payload).then((response) => {
         if (response.status === 200) {
           this.getCourses() // refresh courses list in store
