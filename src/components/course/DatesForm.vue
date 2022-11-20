@@ -57,6 +57,7 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import Button from 'primevue/button'
 import { useConfirm } from 'primevue/useconfirm'
+import { useToast } from 'primevue/usetoast'
 import CourseService from '@/services/Course'
 import DateRangePicker from '@/components/DateRangePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
@@ -65,8 +66,7 @@ import { useCourseStore } from '@/stores/course'
 
 const storeCourse = useCourseStore()
 const confirm = useConfirm()
-
-const emit = defineEmits(['saveSuccess'])
+const toast = useToast()
 
 const router = useRouter()
 const props = defineProps({
@@ -129,6 +129,15 @@ const onClickAdditionalDateRangesButton = () => {
   dateRanges.value.push(dateRanges.value.length + 1)
 }
 
+const showToast = (message) => {
+  toast.add({
+    severity: 'success',
+    summary: 'Success',
+    detail: message,
+    life: 2000,
+  })
+}
+
 const onClickSaveButton = async (redirectRouteName) => {
   const payload = {
     // only send date ranges with selected values
@@ -153,7 +162,7 @@ const onClickSaveButton = async (redirectRouteName) => {
     if (apiResult.status === 201) {
       isLoading.value = false
       successMessage.value = [...apiResult.data]
-      emit('saveSuccess', `Course ${props.type} dates saved successfully!`)
+      showToast(`Course ${props.type} dates saved successfully!`)
       // redirect to route (depending on which button was clicked) after 2.5 seconds
       setTimeout(() => {
         router.push({ name: redirectRouteName })
