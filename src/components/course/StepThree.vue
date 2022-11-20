@@ -6,7 +6,6 @@
         :hasPreviousButton="false"
         :hasNextButton="false"
         hasSaveButton
-        @save-success="emitSaveSuccessEvent"
         hasDeleteDatePickerButton
       />
     </template>
@@ -16,10 +15,4 @@
 <script setup>
 import Card from 'primevue/card'
 import DatesForm from '@/components/course/DatesForm.vue'
-
-const emit = defineEmits(['saveSuccess'])
-
-const emitSaveSuccessEvent = (message) => {
-  emit('saveSuccess', message)
-}
 </script>

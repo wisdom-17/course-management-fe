@@ -128,7 +128,6 @@ import { useCourseStore } from '@/stores/course'
 
 const storeCourse = useCourseStore()
 
-const emit = defineEmits(['saveSuccess'])
 const router = useRouter()
 const toast = useToast()
 
@@ -157,9 +156,13 @@ const onClickCloseErrorMessage = () => {
   validation.value.message = ''
 }
 
-const emitSuccessfulSaveEvent = () => {
-  // emit saveSuccess event to show success toast from parent component
-  emit('saveSuccess', 'Course details saved successfully!')
+const showToast = (message) => {
+  toast.add({
+    severity: 'success',
+    summary: 'Success',
+    detail: message,
+    life: 2000,
+  })
 }
 
 /* This handler is for save and next buttons as 
@@ -185,7 +188,7 @@ const onClickSaveButton = async (redirectRouteName) => {
   storeCourse
     .saveNewCourse(payload)
     .then(() => {
-      emitSuccessfulSaveEvent()
+      showToast('Course details saved succesfully')
       // redirect to route (depending on which button was clicked) after 2 seconds
       setTimeout(() => {
         router.push({ name: redirectRouteName })
@@ -220,12 +223,7 @@ const onClickUpdateButton = async () => {
     .then(() => {
       dialogRef.value.close()
       setTimeout(() => {
-        toast.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Course details updated successfully!',
-          life: 2000,
-        })
+        showToast('Course details updated successfully!')
       }, 500)
     })
     .catch((error) => {
