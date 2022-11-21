@@ -110,15 +110,11 @@ const editMenuItems = (rowData) => [
     command: () => {
       const { id, name, teachingDays, startDate, endDate } = rowData
 
-      // format date into JS date
-      const formattedStartDate = convertUKDateToJsDate(startDate)
-      const formattedEndDate = convertUKDateToJsDate(endDate)
-
       storeCourse.editForm = {
         id,
         name,
         teachingDays,
-        dateRange: [formattedStartDate, formattedEndDate],
+        dateRange: [startDate, endDate],
       }
       showEditCourseDialog()
     },
@@ -139,13 +135,10 @@ const editMenuItems = (rowData) => [
   },
 ]
 
-const convertUKDateToJsDate = (ukDate) => {
-  const [day, month, year] = ukDate.split('/', 3)
-  return new Date(`${year}-${month}-${day}T00:00:00`)
-}
-
 const formatDate = (dateObj) => {
-  return `${dateObj.getDate()}/${dateObj.getMonth()}/${dateObj.getFullYear()}`
+  return `${dateObj.getDate()}/${
+    dateObj.getMonth() + 1
+  }/${dateObj.getFullYear()}`
 }
 
 onMounted(() => {
