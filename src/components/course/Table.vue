@@ -11,11 +11,21 @@
   >
     <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
     <Column
-      v-for="col in columns"
+      v-for="col in stringValueColumns"
       :field="col.field"
       :header="col.header"
       :key="col.field"
     ></Column>
+    <Column
+      v-for="col in dateValueColumns"
+      :field="col.field"
+      :header="col.header"
+      :key="col.field"
+    >
+      <template #body="slotProps">
+        {{ formatDate(slotProps.data[col.field]) }}
+      </template>
+    </Column>
     <Column style="min-width: 10rem">
       <template #body="slotProps">
         <SplitButton
@@ -52,11 +62,14 @@ const dialog = useDialog()
 
 const selectedCourses = ref([])
 
-const columns = ref([
+const stringValueColumns = ref([
   { field: 'name', header: 'Name' },
+  { field: 'teachingDays', header: 'Teaching Days' },
+])
+
+const dateValueColumns = ref([
   { field: 'startDate', header: 'Start Date' },
   { field: 'endDate', header: 'End Date' },
-  { field: 'teachingDays', header: 'Teaching Days' },
   { field: 'createdAt', header: 'Created At' },
   { field: 'updatedAt', header: 'Updated At' },
 ])
@@ -74,7 +87,7 @@ const showEditCourseDialog = () => {
         dateRange: [],
         teachingDays: [],
       }
-    }
+    },
   })
 }
 
@@ -129,6 +142,10 @@ const editMenuItems = (rowData) => [
 const convertUKDateToJsDate = (ukDate) => {
   const [day, month, year] = ukDate.split('/', 3)
   return new Date(`${year}-${month}-${day}T00:00:00`)
+}
+
+const formatDate = (dateObj) => {
+  return `${dateObj.getDate()}/${dateObj.getMonth()}/${dateObj.getFullYear()}`
 }
 
 onMounted(() => {
