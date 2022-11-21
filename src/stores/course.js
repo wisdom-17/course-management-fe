@@ -26,7 +26,18 @@ export const useCourseStore = defineStore({
       try {
         this.loading = true
         CourseService.list().then((data) => {
-          this.list = data.data
+          // convert date string JS Date object
+          const formattedData = data.data.map((obj) => {
+            return {
+              ...obj,
+              startDate: new Date(obj.startDate),
+              endDate: new Date(obj.endDate),
+              createdAt: new Date(obj.createdAt),
+              updatedAt: new Date(obj.updatedAt),
+              deletedAt: new Date(obj.deletedAt),
+            }
+          })
+          this.list = formattedData
           this.loading = false
         })
       } catch (error) {
