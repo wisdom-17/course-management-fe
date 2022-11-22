@@ -1,12 +1,13 @@
 import { useAuthStore } from '@/stores/auth'
 import { useCourseStore } from '@/stores/course'
 import { createRouter, createWebHistory } from 'vue-router'
-import NotFound from '@/components/404.vue'
-import HomeView from '../views/HomeView.vue'
-import LoginView from '@/views/LoginView.vue'
 import AboutView from '@/views/AboutView.vue'
 import CoursesView from '@/views/CoursesView.vue'
+import HomeView from '../views/HomeView.vue'
+import LoginView from '@/views/LoginView.vue'
 import NewCourseView from '@/views/NewCourseView.vue'
+import NotFound from '@/components/404.vue'
+import TeacherView from '@/views/TeacherView.vue'
 import StepOne from '@/components/course/StepOne.vue'
 import StepTwo from '@/components/course/StepTwo.vue'
 import StepThree from '@/components/course/StepThree.vue'
@@ -62,6 +63,12 @@ const routes = [
         component: StepThree,
       },
     ],
+  },
+  {
+    path: '/teachers',
+    name: 'teachers',
+    meta: { requiresAuth: true },
+    component: TeacherView,
   },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
 ]
