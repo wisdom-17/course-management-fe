@@ -1,4 +1,9 @@
 <template>
+  <ErrorMessage
+    :message="validation.message"
+    v-show="showErrorMessage"
+    @close="onClickCloseErrorMessage"
+  />
   <form class="teacher">
     <div class="field">
       <label for="teacherName">Name</label>
@@ -10,29 +15,85 @@
       />
     </div>
     <div class="field">
-      <label for="hourlyPay">Hourly Pay</label>
+      <label for="hourlyRate">Hourly Rate</label>
       <InputNumber
-        id="hourlyPay"
+        id="hourlyRate"
         class="mr-1 w-6"
-        v-model="teacher.hourlyPay"
+        v-model="teacher.hourlyRate"
         mode="currency"
         currency="GBP"
         locale="en-GB"
       />
     </div>
 
-    <Button icon="pi pi-save" label="Save" />
+    <Button
+      icon="pi pi-save"
+      label="Save"
+      @click="onClickSaveButton"
+      :loading="storeTeacher.newForm.loading"
+    />
   </form>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 import InputNumber from 'primevue/inputnumber'
+import { useTeacherStore } from '@/stores/teacher'
+import ErrorMessage from '@/components/ErrorMessage.vue'
+
+const storeTeacher = useTeacherStore()
 
 const teacher = ref({
   name: '',
-  hourlyPay: 0,
+  hourlyRate: 0,
 })
+
+const validation = ref({
+  message: '',
+  errors: { name: [], hourlyRate: [] },
+})
+
+const showErrorMessage = computed(() => {
+  return validation.value.message !== ''
+})
+
+const onClickCloseErrorMessage = () => {
+  validation.value.message = ''
+}
+
+const onClickSaveButton = async () => {
+  console.log('clicked saved button')
+
+  const payload = teacher.value
+
+  // clear validation errors
+  validation.value.message = ''
+  validation.value.errors = {
+    name: [],
+    hourlyRate: [],
+  }
+
+  storeTeacher
+    .saveNew(payload)
+    .then(() => {
+      // showToast('Course details saved succesfully')
+      // redirect to route (depending on which button was clicked) after 2 seconds
+      // setTimeout(() => {
+      //   router.push({ name: redirectRouteName })
+      // }, 2000)
+    })
+    .catch((error) => {
+      // console.log(error)
+      storeTeacher.newForm.loading = false
+      validation.value.message = error.response.data.message
+      // update validation error msgs with error msgs
+      // returned from API call
+      validation.value.errors = {
+        ...validation.value.errors,
+        ...error.response.data.errors,
+      }
+    })
+}
 </script>
