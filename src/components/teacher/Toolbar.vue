@@ -29,7 +29,8 @@ const dialog = useDialog()
 
 const onClickNewButton = () => {
   console.log('new button clicked')
-  dialog.open(TeacherForm, { props: {
+  dialog.open(TeacherForm, {
+    props: {
       style: { width: '60vw' },
       header: 'New Teacher',
     },
