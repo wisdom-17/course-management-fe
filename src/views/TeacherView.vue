@@ -7,5 +7,4 @@
 
 <script setup>
 import Toolbar from '@/components/teacher/Toolbar.vue'
-
 </script>
