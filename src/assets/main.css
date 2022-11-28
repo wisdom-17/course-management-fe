@@ -2,7 +2,11 @@ body {
   font-family:Arial, Helvetica, sans-serif;
 }
 
-.newCourse, .teacher .field label {
+.newCourse .field label {
+  display: block;
+}
+
+.teacher .field label {
   display: block;
 }
 
