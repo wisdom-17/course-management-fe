@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 import InputNumber from 'primevue/inputnumber'
@@ -44,6 +44,8 @@ import { useTeacherStore } from '@/stores/teacher'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 
 const storeTeacher = useTeacherStore()
+
+const dialogRef = inject('dialogRef')
 
 const teacher = ref({
   name: '',
@@ -78,14 +80,10 @@ const onClickSaveButton = async () => {
   storeTeacher
     .saveNew(payload)
     .then(() => {
-      // showToast('Course details saved succesfully')
-      // redirect to route (depending on which button was clicked) after 2 seconds
-      // setTimeout(() => {
-      //   router.push({ name: redirectRouteName })
-      // }, 2000)
+      dialogRef.value.close()
     })
     .catch((error) => {
-      // console.log(error)
+      console.log(error)
       storeTeacher.newForm.loading = false
       validation.value.message = error.response.data.message
       // update validation error msgs with error msgs
