@@ -17,7 +17,7 @@ export const useTeacherStore = defineStore({
   }),
   getters: {},
   actions: {
-    async getCourses() {
+    async getTeachers() {
       try {
         this.loading = true
         TeacherService.list().then((data) => {
@@ -48,7 +48,7 @@ export const useTeacherStore = defineStore({
       return TeacherService.new(payload).then((response) => {
         if (response.status === 201) {
           this.newForm.loading = false
-          this.getCourses() // refresh courses list in defineStore
+          // this.getTeachers() // refresh courses list in defineStore
         }
       })
     },
