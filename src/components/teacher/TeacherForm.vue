@@ -40,9 +40,11 @@ import { computed, inject, ref } from 'vue'
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 import InputNumber from 'primevue/inputnumber'
-import { useTeacherStore } from '@/stores/teacher'
 import ErrorMessage from '@/components/ErrorMessage.vue'
+import { useTeacherStore } from '@/stores/teacher'
+import { useToast } from 'primevue/usetoast'
 
+const toast = useToast()
 const storeTeacher = useTeacherStore()
 
 const dialogRef = inject('dialogRef')
@@ -61,13 +63,20 @@ const showErrorMessage = computed(() => {
   return validation.value.message !== ''
 })
 
+const showToast = (message) => {
+  toast.add({
+    severity: 'success',
+    summary: 'Success',
+    detail: message,
+    life: 2000,
+  })
+}
+
 const onClickCloseErrorMessage = () => {
   validation.value.message = ''
 }
 
 const onClickSaveButton = async () => {
-  console.log('clicked saved button')
-
   const payload = teacher.value
 
   // clear validation errors
@@ -81,6 +90,7 @@ const onClickSaveButton = async () => {
     .saveNew(payload)
     .then(() => {
       dialogRef.value.close()
+      showToast('Successfully saved new teacher')
     })
     .catch((error) => {
       console.log(error)
