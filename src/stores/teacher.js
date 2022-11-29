@@ -13,27 +13,28 @@ export const useTeacherStore = defineStore({
       hourlyPay: 0,
       loading: false,
     },
-    list: [],
+    list: {
+      data: [],
+      loading: false,
+    },
   }),
   getters: {},
   actions: {
     async getTeachers() {
       try {
-        this.loading = true
+        this.list.loading = true
         TeacherService.list().then((data) => {
           // convert date string JS Date object
           const formattedData = data.data.map((obj) => {
             return {
               ...obj,
-              startDate: new Date(obj.startDate),
-              endDate: new Date(obj.endDate),
               createdAt: new Date(obj.createdAt),
               updatedAt: new Date(obj.updatedAt),
               deletedAt: new Date(obj.deletedAt),
             }
           })
-          this.list = formattedData
-          this.loading = false
+          this.list.data = formattedData
+          this.list.loading = false
         })
       } catch (error) {
         console.log(error)
@@ -48,7 +49,7 @@ export const useTeacherStore = defineStore({
       return TeacherService.new(payload).then((response) => {
         if (response.status === 201) {
           this.newForm.loading = false
-          // this.getTeachers() // refresh courses list in defineStore
+          this.getTeachers() // refresh courses list in defineStore
         }
       })
     },
