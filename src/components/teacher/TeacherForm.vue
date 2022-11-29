@@ -10,20 +10,24 @@
       <InputText
         id="teacherName"
         class="mr-1 w-6"
+        :class="{ 'p-invalid': validation.errors.name.length > 0 }"
         type="text"
         v-model="teacher.name"
       />
+      <small class="p-error">{{ validation.errors.name[0] }}</small>
     </div>
     <div class="field">
       <label for="hourlyRate">Hourly Rate</label>
       <InputNumber
         id="hourlyRate"
         class="mr-1 w-6"
+        :class="{ 'p-invalid': validation.errors.hourlyRate.length > 0 }"
         v-model="teacher.hourlyRate"
         mode="currency"
         currency="GBP"
         locale="en-GB"
       />
+      <small class="p-error">{{ validation.errors.hourlyRate[0] }}</small>
     </div>
 
     <Button
@@ -93,7 +97,6 @@ const onClickSaveButton = async () => {
       showToast('Successfully saved new teacher')
     })
     .catch((error) => {
-      console.log(error)
       storeTeacher.newForm.loading = false
       validation.value.message = error.response.data.message
       // update validation error msgs with error msgs
