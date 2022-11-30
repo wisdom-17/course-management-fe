@@ -26,9 +26,14 @@ const items = ref([
     to: { name: 'teachers' },
   },
   {
-    label: 'Courses',
-    icon: 'pi pi-calculator',
+    label: 'Dates',
+    icon: 'pi pi-calendar',
     to: { name: 'courses' },
+  },
+  {
+    label: 'Modules',
+    icon: 'pi pi-calculator',
+    to: { name: 'modules' },
   },
   {
     label: 'About',
