@@ -20,7 +20,7 @@
         {{ formatDate(slotProps.data[col.field]) }}
       </template>
     </Column>
-    <Column style="min-width: 10rem">
+    <Column style="min-width: 5rem">
       <template #body="slotProps">
         <Button
           icon="pi pi-pencil"
@@ -80,8 +80,7 @@ const showEditTeacherDialog = () => {
 
 const onClickDeleteButton = async (rowData) => {
   confirm.require({
-    message:
-      'Are you sure you want to delete the selected course(s) with their term and holiday dates?',
+    message: 'Are you sure you want to delete the teacher?',
     header: 'Delete',
     icon: 'pi pi-trash',
     acceptClass: 'p-button-danger',

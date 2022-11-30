@@ -17,6 +17,7 @@ export const useTeacherStore = defineStore({
       data: [],
       loading: false,
     },
+    loading: false,
   }),
   getters: {},
   actions: {
@@ -40,16 +41,13 @@ export const useTeacherStore = defineStore({
         console.log(error)
       }
     },
-    selectCourse(id) {
-      this.selectedCoursesIds.push(id)
-    },
     async saveNew(payload) {
       this.newForm.loading = true
 
       return TeacherService.new(payload).then((response) => {
         if (response.status === 201) {
           this.newForm.loading = false
-          this.getTeachers() // refresh courses list in defineStore
+          this.getTeachers() // refresh teachers list in store
         }
       })
     },
@@ -57,17 +55,14 @@ export const useTeacherStore = defineStore({
       this.editForm.loading = true
       return TeacherService.update(payload).then((response) => {
         if (response.status === 200) {
-          this.getTeachers() // refresh courses list in store
+          this.getTeachers() // refresh teachers list in store
         }
       })
     },
-    async delete(courseIds) {
+    async delete(teacherId) {
       try {
         this.loading = true
-        const payload = {
-          courseIds: [...courseIds],
-        }
-        const apiResult = await TeacherService.delete(payload)
+        const apiResult = await TeacherService.delete(teacherId)
 
         if (apiResult.status === 200) {
           this.loading = false

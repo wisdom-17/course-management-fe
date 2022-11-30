@@ -10,8 +10,8 @@ export default {
   async newDates(payload, teacherId) {
     return axiosClient.post(`/api/teachers/${teacherId}/dates`, payload)
   },
-  async delete(payload) {
-    return axiosClient.patch(`/api/teachers`, payload)
+  async delete(teacherId) {
+    return axiosClient.delete(`/api/teachers/${teacherId}`)
   },
   list() {
     return axiosClient.get('/api/teachers')
