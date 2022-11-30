@@ -4,12 +4,12 @@
     :loading="storeTeacher.list.loading"
     class="mt-4"
   >
-    <Column
-      v-for="col in stringValueColumns"
-      :field="col.field"
-      :header="col.header"
-      :key="col.field"
-    ></Column>
+    <Column field="name" header="Name"></Column>
+    <Column field="hourlyRate" header="Hourly Rate">
+      <template #body="slotProps">
+        {{ UKPound.format(slotProps.data.hourlyRate) }}
+      </template>
+    </Column>
     <Column
       v-for="col in dateValueColumns"
       :field="col.field"
@@ -52,15 +52,15 @@ const storeTeacher = useTeacherStore()
 const confirm = useConfirm()
 const dialog = useDialog()
 
-const stringValueColumns = ref([
-  { field: 'name', header: 'Name' },
-  { field: 'hourlyRate', header: 'Hourly Rate' },
-])
-
 const dateValueColumns = ref([
   { field: 'createdAt', header: 'Created At' },
   { field: 'updatedAt', header: 'Updated At' },
 ])
+
+const UKPound = new Intl.NumberFormat('en-GB', {
+  style: 'currency',
+  currency: 'GBP',
+})
 
 const showEditTeacherDialog = () => {
   dialog.open(TeacherForm, {
