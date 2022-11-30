@@ -24,6 +24,7 @@ const onClickNewButton = () => {
     props: {
       style: { width: '60vw' },
       header: 'New Teacher',
+      modal: true,
     },
   })
 }
