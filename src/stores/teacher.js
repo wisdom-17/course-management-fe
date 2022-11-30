@@ -57,7 +57,7 @@ export const useTeacherStore = defineStore({
       this.editForm.loading = true
       return TeacherService.update(payload).then((response) => {
         if (response.status === 200) {
-          this.getCourses() // refresh courses list in store
+          this.getTeachers() // refresh courses list in store
         }
       })
     },
@@ -71,7 +71,7 @@ export const useTeacherStore = defineStore({
 
         if (apiResult.status === 200) {
           this.loading = false
-          this.getCourses() // refresh
+          this.getTeachers() // refresh
         }
       } catch (error) {
         console.log(error)

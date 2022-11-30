@@ -31,10 +31,19 @@
     </div>
 
     <Button
+      v-if="operationType === 'new'"
       icon="pi pi-save"
       label="Save"
       @click="onClickSaveButton"
       :loading="storeTeacher.newForm.loading"
+    />
+
+    <Button
+      v-else-if="operationType === 'edit'"
+      icon="pi pi-save"
+      label="Update"
+      @click="onClickUpdateButton"
+      :loading="storeTeacher.editForm.loading"
     />
   </form>
 </template>
@@ -53,9 +62,13 @@ const storeTeacher = useTeacherStore()
 
 const dialogRef = inject('dialogRef')
 
+const operationType = computed(() => {
+  return storeTeacher.editForm.id ? 'edit' : 'new'
+})
+
 const teacher = ref({
-  name: '',
-  hourlyRate: 0,
+  name: storeTeacher.editForm.name || '',
+  hourlyRate: storeTeacher.editForm.hourlyRate || '',
 })
 
 const validation = ref({
@@ -98,6 +111,36 @@ const onClickSaveButton = async () => {
     })
     .catch((error) => {
       storeTeacher.newForm.loading = false
+      validation.value.message = error.response.data.message
+      // update validation error msgs with error msgs
+      // returned from API call
+      validation.value.errors = {
+        ...validation.value.errors,
+        ...error.response.data.errors,
+      }
+    })
+}
+
+const onClickUpdateButton = async () => {
+  const payload = {
+    id: storeTeacher.editForm.id,
+    name: teacher.value.name,
+    hourlyRate: teacher.value.hourlyRate,
+  }
+
+  // update teacher
+  storeTeacher
+    .update(payload)
+    .then(() => {
+      dialogRef.value.close()
+      setTimeout(() => {
+        showToast('Teacher updated successfully!')
+      }, 500)
+    })
+    .catch((error) => {
+      // console.log(error)
+      storeTeacher.editForm.loading = false
+      console.log('error in edit teacher form')
       validation.value.message = error.response.data.message
       // update validation error msgs with error msgs
       // returned from API call

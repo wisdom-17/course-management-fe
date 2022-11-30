@@ -22,10 +22,10 @@
     </Column>
     <Column style="min-width: 10rem">
       <template #body="slotProps">
-        <SplitButton
+        <Button
           icon="pi pi-pencil"
           class="p-button-rounded p-button-primary mr-2"
-          :model="editMenuItems(slotProps.data)"
+          @click="onClickEditButton(slotProps.data)"
         />
         <Button
           icon="pi pi-trash"
@@ -44,9 +44,8 @@ import { useConfirm } from 'primevue/useconfirm'
 import { useDialog } from 'primevue/usedialog'
 import DataTable from 'primevue/datatable'
 import Button from 'primevue/button'
-import SplitButton from 'primevue/splitbutton'
 import Column from 'primevue/column'
-import CourseForm from '@/components/course/CourseForm.vue'
+import TeacherForm from '@/components/teacher/TeacherForm.vue'
 import { useTeacherStore } from '@/stores/teacher'
 
 const storeTeacher = useTeacherStore()
@@ -63,18 +62,17 @@ const dateValueColumns = ref([
   { field: 'updatedAt', header: 'Updated At' },
 ])
 
-const showEditCourseDialog = () => {
-  dialog.open(CourseForm, {
+const showEditTeacherDialog = () => {
+  dialog.open(TeacherForm, {
     props: {
       style: { width: '60vw' },
-      header: 'Edit Course',
+      header: 'Edit Teacher',
     },
     onClose: () => {
       storeTeacher.editForm = {
         id: null,
         name: '',
-        dateRange: [],
-        teachingDays: [],
+        hourlyRate: 0,
       }
     },
   })
@@ -93,36 +91,15 @@ const onClickDeleteButton = async (rowData) => {
   })
 }
 
-const editMenuItems = (rowData) => [
-  {
-    label: 'Edit Course Details',
-    command: () => {
-      const { id, name, teachingDays, startDate, endDate } = rowData
-
-      storeTeacher.editForm = {
-        id,
-        name,
-        teachingDays,
-        dateRange: [startDate, endDate],
-      }
-      showEditCourseDialog()
-    },
-  },
-  {
-    label: 'Edit Term Dates',
-    command: () => {
-      console.log('clicked edit term dates details')
-      console.log(rowData)
-    },
-  },
-  {
-    label: 'Edit Holiday Dates',
-    command: () => {
-      console.log('clicked edit holiday details')
-      console.log(rowData)
-    },
-  },
-]
+const onClickEditButton = async (rowData) => {
+  const { id, name, hourlyRate } = rowData
+  storeTeacher.editForm = {
+    id,
+    name,
+    hourlyRate: parseFloat(hourlyRate),
+  }
+  showEditTeacherDialog()
+}
 
 const formatDate = (dateObj) => {
   return `${dateObj.getDate()}/${
