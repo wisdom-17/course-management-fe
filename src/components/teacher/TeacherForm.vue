@@ -68,7 +68,7 @@ const operationType = computed(() => {
 
 const teacher = ref({
   name: storeTeacher.editForm.name || '',
-  hourlyRate: storeTeacher.editForm.hourlyRate || '',
+  hourlyRate: storeTeacher.editForm.hourlyRate || 0,
 })
 
 const validation = ref({
