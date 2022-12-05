@@ -101,7 +101,7 @@
       :hasSaveButton="false"
       @save-button-clicked="onClickSaveButton('courses')"
       @next-button-clicked="onClickSaveButton('courseStepTwo')"
-      :isLoading="storeCourse.loading"
+      :isLoading="storeCourse.multiStepForm.loading"
     />
 
     <Button
@@ -196,7 +196,7 @@ const onClickSaveButton = async (redirectRouteName) => {
     })
     .catch((error) => {
       // console.log(error)
-      storeCourse.loading = false
+      storeCourse.multiStepForm.loading = false
       console.log('error in course form')
       validation.value.message = error.response.data.message
       // update validation error msgs with error msgs
