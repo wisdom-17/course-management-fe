@@ -9,6 +9,7 @@ export const useCourseStore = defineStore({
       name: '',
       startDate: '',
       endDate: '',
+      loading: false,
     },
     editForm: {
       id: null,
@@ -50,11 +51,11 @@ export const useCourseStore = defineStore({
       this.selectedCoursesIds.push(id)
     },
     async saveNewCourse(payload) {
-      this.loading = true
+      this.multiStepForm.loading = true
 
       return CourseService.new(payload).then((response) => {
         if (response.status === 201) {
-          this.loading = false
+          this.multiStepForm.loading = false
           this.multiStepForm.id = response.data.id
           this.multiStepForm.name = payload.name
           this.multiStepForm.startDate = payload.startDate
@@ -74,14 +75,14 @@ export const useCourseStore = defineStore({
     },
     async delete(courseIds) {
       try {
-        this.loading = true
+        this.list.loading = true
         const payload = {
           courseIds: [...courseIds],
         }
         const apiResult = await CourseService.delete(payload)
 
         if (apiResult.status === 200) {
-          this.loading = false
+          this.list.loading = false
           this.getCourses() // refresh
         }
       } catch (error) {
