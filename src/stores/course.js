@@ -17,14 +17,16 @@ export const useCourseStore = defineStore({
       teachingDays: [],
       loading: false,
     },
-    list: [],
-    loading: false,
+    list: {
+      data: [],
+      loading: false,
+    },
   }),
   getters: {},
   actions: {
     async getCourses() {
       try {
-        this.loading = true
+        this.list.loading = true
         CourseService.list().then((data) => {
           // convert date string JS Date object
           const formattedData = data.data.map((obj) => {
@@ -37,8 +39,8 @@ export const useCourseStore = defineStore({
               deletedAt: new Date(obj.deletedAt),
             }
           })
-          this.list = formattedData
-          this.loading = false
+          this.list.data = formattedData
+          this.list.loading = false
         })
       } catch (error) {
         console.log(error)
