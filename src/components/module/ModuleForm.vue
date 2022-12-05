@@ -11,6 +11,12 @@
       <small class="p-error">{{ validation.errors.name[0] }}</small>
     </div>
 
+    <div class="field">
+      <label for="dates">Course Dates</label>
+      <CourseDatesDropdown id="dates" class="mr-1 w-6" />
+      <small class="p-error">{{ validation.errors.name[0] }}</small>
+    </div>
+
     <Button
       v-if="operationType === 'new'"
       icon="pi pi-save"
@@ -34,6 +40,7 @@ import { computed, inject, ref } from 'vue'
 import Button from 'primevue/button'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import TeacherDropdown from '@/components/TeacherDropdown.vue'
+import CourseDatesDropdown from '@/components/CourseDatesDropdown.vue'
 import { useTeacherStore } from '@/stores/teacher'
 import { useToast } from 'primevue/usetoast'
 
