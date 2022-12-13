@@ -8,13 +8,80 @@
     <div class="field">
       <label for="teacher">Teacher</label>
       <TeacherDropdown id="teacher" class="mr-1 w-6" />
-      <small class="p-error">{{ validation.errors.name[0] }}</small>
+      <small class="p-error">{{ validation.errors.teacher[0] }}</small>
     </div>
 
     <div class="field">
       <label for="dates">Course Dates</label>
       <CourseDatesDropdown id="dates" class="mr-1 w-6" />
-      <small class="p-error">{{ validation.errors.name[0] }}</small>
+      <small class="p-error">{{ validation.errors.courseDate[0] }}</small>
+    </div>
+
+    <h4>Teaching Days</h4>
+    <div class="formgrid grid">
+      <div class="col-2">
+        <div class="field-checkbox">
+          <Checkbox
+            inputId="monday"
+            value="monday"
+            v-model="module.teachingDays"
+          />
+          <label for="monday">Monday</label>
+        </div>
+        <div class="field-checkbox">
+          <Checkbox
+            inputId="tuesday"
+            value="tuesday"
+            v-model="module.teachingDays"
+          />
+          <label for="tuesday">Tuesday</label>
+        </div>
+        <div class="field-checkbox">
+          <Checkbox
+            inputId="wednesday"
+            value="wednesday"
+            v-model="module.teachingDays"
+          />
+          <label for="wednesday">Wednesday</label>
+        </div>
+        <div class="field-checkbox">
+          <Checkbox
+            inputId="thursday"
+            value="thursday"
+            v-model="module.teachingDays"
+          />
+          <label for="thursday">Thursday</label>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="field-checkbox">
+          <Checkbox
+            inputId="friday"
+            value="friday"
+            v-model="module.teachingDays"
+          />
+          <label for="friday">Friday</label>
+        </div>
+        <div class="field-checkbox">
+          <Checkbox
+            inputId="saturday"
+            value="saturday"
+            v-model="module.teachingDays"
+          />
+          <label for="saturday">Saturday</label>
+        </div>
+        <div class="field-checkbox">
+          <Checkbox
+            inputId="sunday"
+            value="sunday"
+            v-model="module.teachingDays"
+          />
+          <label for="sunday">Sunday</label>
+        </div>
+      </div>
+      <div class="col-4">
+        <small class="p-error">{{ validation.errors.teachingDays[0] }}</small>
+      </div>
     </div>
 
     <Button
@@ -38,6 +105,7 @@
 <script setup>
 import { computed, inject, ref } from 'vue'
 import Button from 'primevue/button'
+import Checkbox from 'primevue/checkbox'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import TeacherDropdown from '@/components/TeacherDropdown.vue'
 import CourseDatesDropdown from '@/components/CourseDatesDropdown.vue'
@@ -53,14 +121,13 @@ const operationType = computed(() => {
   return storeTeacher.editForm.id ? 'edit' : 'new'
 })
 
-const teacher = ref({
-  name: storeTeacher.editForm.name || '',
-  hourlyRate: storeTeacher.editForm.hourlyRate || '',
+const module = ref({
+  teachingDays: '',
 })
 
 const validation = ref({
   message: '',
-  errors: { name: [], hourlyRate: [] },
+  errors: { teacher: [], courseDate: [], teachingDays: [] },
 })
 
 const showErrorMessage = computed(() => {
@@ -81,7 +148,7 @@ const onClickCloseErrorMessage = () => {
 }
 
 const onClickSaveButton = async () => {
-  const payload = teacher.value
+  const payload = module.value
 
   // clear validation errors
   validation.value.message = ''
@@ -111,8 +178,8 @@ const onClickSaveButton = async () => {
 const onClickUpdateButton = async () => {
   const payload = {
     id: storeTeacher.editForm.id,
-    name: teacher.value.name,
-    hourlyRate: teacher.value.hourlyRate,
+    name: module.value.name,
+    hourlyRate: module.value.hourlyRate,
   }
 
   // update teacher

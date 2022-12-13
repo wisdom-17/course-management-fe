@@ -5,7 +5,7 @@ import AboutView from '@/views/AboutView.vue'
 import CoursesView from '@/views/CoursesView.vue'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
-import ModuleView from '@/views/ModuleView.vue'
+import SubjectView from '@/views/SubjectView.vue'
 import NewCourseView from '@/views/NewCourseView.vue'
 import NotFound from '@/components/404.vue'
 import TeacherView from '@/views/TeacherView.vue'
@@ -72,10 +72,10 @@ const routes = [
     component: TeacherView,
   },
   {
-    path: '/modules',
-    name: 'modules',
+    path: '/subjects',
+    name: 'subjects',
     meta: { requiresAuth: true },
-    component: ModuleView,
+    component: SubjectView,
   },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
 ]
