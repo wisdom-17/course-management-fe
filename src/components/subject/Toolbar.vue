@@ -15,15 +15,15 @@
 import Toolbar from 'primevue/toolbar'
 import Button from 'primevue/button'
 import { useDialog } from 'primevue/usedialog'
-import ModuleForm from '@/components/module/ModuleForm.vue'
+import SubjectForm from '@/components/subject/SubjectForm.vue'
 
 const dialog = useDialog()
 
 const onClickNewButton = () => {
-  dialog.open(ModuleForm, {
+  dialog.open(SubjectForm, {
     props: {
       style: { width: '60vw' },
-      header: 'New Module',
+      header: 'New Subject',
       modal: true,
     },
   })
