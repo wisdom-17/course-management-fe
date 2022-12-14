@@ -31,7 +31,7 @@ const items = ref([
     to: { name: 'courses' },
   },
   {
-    label: 'Modules',
+    label: 'Subjects',
     icon: 'pi pi-calculator',
     to: { name: 'subjects' },
   },
