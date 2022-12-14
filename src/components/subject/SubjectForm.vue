@@ -4,7 +4,7 @@
     v-show="showErrorMessage"
     @close="onClickCloseErrorMessage"
   />
-  <form class="teacher">
+  <form class="subject">
     <div class="field">
       <label for="teacher">Teacher</label>
       <TeacherDropdown id="teacher" class="mr-1 w-6" />
@@ -17,95 +17,35 @@
       <small class="p-error">{{ validation.errors.courseDate[0] }}</small>
     </div>
 
-    <h4>Teaching Days</h4>
-    <div class="formgrid grid">
-      <div class="col-2">
-        <div class="field-checkbox">
-          <Checkbox
-            inputId="monday"
-            value="monday"
-            v-model="module.teachingDays"
-          />
-          <label for="monday">Monday</label>
-        </div>
-        <div class="field-checkbox">
-          <Checkbox
-            inputId="tuesday"
-            value="tuesday"
-            v-model="module.teachingDays"
-          />
-          <label for="tuesday">Tuesday</label>
-        </div>
-        <div class="field-checkbox">
-          <Checkbox
-            inputId="wednesday"
-            value="wednesday"
-            v-model="module.teachingDays"
-          />
-          <label for="wednesday">Wednesday</label>
-        </div>
-        <div class="field-checkbox">
-          <Checkbox
-            inputId="thursday"
-            value="thursday"
-            v-model="module.teachingDays"
-          />
-          <label for="thursday">Thursday</label>
-        </div>
-      </div>
-      <div class="col-2">
-        <div class="field-checkbox">
-          <Checkbox
-            inputId="friday"
-            value="friday"
-            v-model="module.teachingDays"
-          />
-          <label for="friday">Friday</label>
-        </div>
-        <div class="field-checkbox">
-          <Checkbox
-            inputId="saturday"
-            value="saturday"
-            v-model="module.teachingDays"
-          />
-          <label for="saturday">Saturday</label>
-        </div>
-        <div class="field-checkbox">
-          <Checkbox
-            inputId="sunday"
-            value="sunday"
-            v-model="module.teachingDays"
-          />
-          <label for="sunday">Sunday</label>
-        </div>
-      </div>
-      <div class="col-4">
-        <small class="p-error">{{ validation.errors.teachingDays[0] }}</small>
-      </div>
+    <h4 for="dayTime">Subject Days and Times</h4>
+    <div class="field">
+      <DayAndTimePicker />
     </div>
+    <div class="mt-3">
+      <Button
+        v-if="operationType === 'new'"
+        icon="pi pi-save"
+        label="Save"
+        @click="onClickSaveButton"
+        :loading="storeTeacher.newForm.loading"
+      />
 
-    <Button
-      v-if="operationType === 'new'"
-      icon="pi pi-save"
-      label="Save"
-      @click="onClickSaveButton"
-      :loading="storeTeacher.newForm.loading"
-    />
-
-    <Button
-      v-else-if="operationType === 'edit'"
-      icon="pi pi-save"
-      label="Update"
-      @click="onClickUpdateButton"
-      :loading="storeTeacher.editForm.loading"
-    />
+      <Button
+        v-else-if="operationType === 'edit'"
+        icon="pi pi-save"
+        label="Update"
+        @click="onClickUpdateButton"
+        :loading="storeTeacher.editForm.loading"
+      />
+    </div>
   </form>
 </template>
 
 <script setup>
 import { computed, inject, ref } from 'vue'
 import Button from 'primevue/button'
-import Checkbox from 'primevue/checkbox'
+
+import DayAndTimePicker from '@/components/subject/DayAndTimePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import TeacherDropdown from '@/components/TeacherDropdown.vue'
 import CourseDatesDropdown from '@/components/CourseDatesDropdown.vue'
