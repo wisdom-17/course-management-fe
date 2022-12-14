@@ -4,9 +4,9 @@
     @delete-success="selectedCourses = []"
   />
   <DataTable
-    :value="storeCourse.list"
+    :value="storeCourse.list.data"
     v-model:selection="selectedCourses"
-    :loading="storeCourse.loading"
+    :loading="storeCourse.list.loading"
     class="mt-4"
   >
     <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
@@ -37,7 +37,7 @@
           icon="pi pi-trash"
           class="p-button-rounded p-button-danger"
           @click="onClickDeleteButton(slotProps.data)"
-          :loading="storeCourse.loading"
+          :loading="storeCourse.list.loading"
         />
       </template>
     </Column>
@@ -143,7 +143,7 @@ const formatDate = (dateObj) => {
 
 onMounted(() => {
   // check to prevent hammering the API unnecessarily
-  if (storeCourse.list.length === 0) {
+  if (storeCourse.list.data.length === 0) {
     storeCourse.getCourses()
   }
 })
