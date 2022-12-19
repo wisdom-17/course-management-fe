@@ -18,8 +18,21 @@
     </div>
 
     <h4 for="dayTime">Subject Days and Times</h4>
+    <template v-for="(dayAndTime, index) in daysAndTimes" :key="index">
+      <div v-if="dayAndTime" class="field">
+        <DayAndTimePicker
+          @clicked-delete-day-and-time-button="onClickDeleteDatePicker(index)"
+          :hasDeleteButton="showDeleteDayAndTimeButton"
+        />
+      </div>
+    </template>
     <div class="field">
-      <DayAndTimePicker />
+      <Button
+        class="p-button-sm"
+        :label="`Additional day and time`"
+        icon="pi pi-plus"
+        @click="onClickAdditionalDayAndTimesButton"
+      />
     </div>
     <div class="mt-3">
       <Button
@@ -44,14 +57,16 @@
 <script setup>
 import { computed, inject, ref } from 'vue'
 import Button from 'primevue/button'
-
+import { useConfirm } from 'primevue/useconfirm'
 import DayAndTimePicker from '@/components/subject/DayAndTimePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import TeacherDropdown from '@/components/TeacherDropdown.vue'
 import CourseDatesDropdown from '@/components/CourseDatesDropdown.vue'
+
 import { useTeacherStore } from '@/stores/teacher'
 import { useToast } from 'primevue/usetoast'
 
+const confirm = useConfirm()
 const toast = useToast()
 const storeTeacher = useTeacherStore()
 
@@ -61,13 +76,16 @@ const operationType = computed(() => {
   return storeTeacher.editForm.id ? 'edit' : 'new'
 })
 
-const module = ref({
-  teachingDays: '',
-})
+const daysAndTimes = ref([1]) // show one day and time selector field by default
 
 const validation = ref({
   message: '',
   errors: { teacher: [], courseDate: [], teachingDays: [] },
+})
+
+// Don't show delete button if there is only one datepicker
+const showDeleteDayAndTimeButton = computed(() => {
+  return daysAndTimes.value.filter((x) => x).length > 1 ? true : false
 })
 
 const showErrorMessage = computed(() => {
@@ -143,5 +161,26 @@ const onClickUpdateButton = async () => {
         ...error.response.data.errors,
       }
     })
+}
+
+const onClickAdditionalDayAndTimesButton = () => {
+  daysAndTimes.value.push(daysAndTimes.value.length + 1)
+}
+
+const onClickDeleteDatePicker = (rangeIndex) => {
+  confirm.require({
+    message:
+      'Are you sure you want to delete this day and time selector? Any unsaved changes will be lost.',
+    header: 'Delete day and time selector',
+    icon: 'pi pi-exclamation-triangle',
+    accept: () => {
+      // delete removes the element from the array and preserves the index
+      // we need to preserve the index to ensure selected dates are handled correctly
+      // howevever, the deleted element index position will still return 'empty'
+      // so this needs to be handled
+      delete daysAndTimes.value[rangeIndex]
+      // selectedDateRanges.value[rangeIndex] = []
+    },
+  })
 }
 </script>
