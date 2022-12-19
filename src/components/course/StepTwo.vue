@@ -6,7 +6,6 @@
         :hasPreviousButton="false"
         :hasSaveButton="false"
         hasNextButton
-        hasDeleteDatePickerButton
       />
     </template>
   </Card>
