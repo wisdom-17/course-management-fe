@@ -24,9 +24,7 @@
               (selectedDateRanges[index] = selectedDateRange)
           "
           @cleared-date-range="() => (selectedDateRanges[index] = [])"
-          :hasDeleteButton="
-            hasDeleteDatePickerButton && showDeleteDatePickerButton
-          "
+          :hasDeleteButton="showDeleteDatePickerButton"
           @clicked-delete-date-picker-button="onClickDeleteDatePicker(index)"
           :minDate="minAndMaxDates.minDate"
           :maxDate="minAndMaxDates.maxDate"
@@ -74,7 +72,6 @@ const props = defineProps({
   hasPreviousButton: { type: Boolean, default: false },
   hasNextButton: { type: Boolean, default: true },
   hasSaveButton: { type: Boolean, default: false },
-  hasDeleteDatePickerButton: { type: Boolean, default: false },
 })
 
 const dateRanges = ref([1]) // show one date range picker field by default
