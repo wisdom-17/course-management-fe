@@ -6,6 +6,10 @@
   />
   <form class="subject">
     <div class="field">
+      <label for="subjectName">Subject Name</label>
+      <InputText id="subjectName" class="mr-1 w-6" type="text" />
+    </div>
+    <div class="field">
       <label for="teacher">Teacher</label>
       <TeacherDropdown id="teacher" class="mr-1 w-6" />
       <small class="p-error">{{ validation.errors.teacher[0] }}</small>
@@ -57,6 +61,7 @@
 <script setup>
 import { computed, inject, ref } from 'vue'
 import Button from 'primevue/button'
+import InputText from 'primevue/inputtext'
 import { useConfirm } from 'primevue/useconfirm'
 import DayAndTimePicker from '@/components/subject/DayAndTimePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
