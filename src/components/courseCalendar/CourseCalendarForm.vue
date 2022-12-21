@@ -6,7 +6,7 @@
   />
   <form class="newCourse">
     <div class="field">
-      <label for="courseName">Course Name</label>
+      <label for="courseName">Course Calendar Name</label>
       <InputText
         id="courseName"
         :class="{ 'p-invalid': validation.errors.name.length > 0 }"
@@ -27,72 +27,6 @@
         "
         :existingDateRange="course.dateRange"
       />
-    </div>
-    <h4>Teaching Days</h4>
-    <div class="formgrid grid">
-      <div class="col-2">
-        <div class="field-checkbox">
-          <Checkbox
-            inputId="monday"
-            value="monday"
-            v-model="course.teachingDays"
-          />
-          <label for="monday">Monday</label>
-        </div>
-        <div class="field-checkbox">
-          <Checkbox
-            inputId="tuesday"
-            value="tuesday"
-            v-model="course.teachingDays"
-          />
-          <label for="tuesday">Tuesday</label>
-        </div>
-        <div class="field-checkbox">
-          <Checkbox
-            inputId="wednesday"
-            value="wednesday"
-            v-model="course.teachingDays"
-          />
-          <label for="wednesday">Wednesday</label>
-        </div>
-        <div class="field-checkbox">
-          <Checkbox
-            inputId="thursday"
-            value="thursday"
-            v-model="course.teachingDays"
-          />
-          <label for="thursday">Thursday</label>
-        </div>
-      </div>
-      <div class="col-2">
-        <div class="field-checkbox">
-          <Checkbox
-            inputId="friday"
-            value="friday"
-            v-model="course.teachingDays"
-          />
-          <label for="friday">Friday</label>
-        </div>
-        <div class="field-checkbox">
-          <Checkbox
-            inputId="saturday"
-            value="saturday"
-            v-model="course.teachingDays"
-          />
-          <label for="saturday">Saturday</label>
-        </div>
-        <div class="field-checkbox">
-          <Checkbox
-            inputId="sunday"
-            value="sunday"
-            v-model="course.teachingDays"
-          />
-          <label for="sunday">Sunday</label>
-        </div>
-      </div>
-      <div class="col-4">
-        <small class="p-error">{{ validation.errors.teachingDays[0] }}</small>
-      </div>
     </div>
 
     <MultiStepFormButtons
@@ -118,12 +52,11 @@
 import { computed, inject, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Button from 'primevue/button'
-import Checkbox from 'primevue/checkbox'
 import InputText from 'primevue/inputtext'
 import { useToast } from 'primevue/usetoast'
 import DateRangePicker from '@/components/DateRangePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
-import MultiStepFormButtons from '@/components/course/MultiStepFormButtons.vue'
+import MultiStepFormButtons from '@/components/courseCalendar/MultiStepFormButtons.vue'
 import { useCourseStore } from '@/stores/course'
 
 const storeCourse = useCourseStore()
@@ -140,12 +73,11 @@ const dialogRef = operationType.value === 'edit' ? inject('dialogRef') : null
 
 const course = ref({
   name: storeCourse.editForm.name || '',
-  dateRange: [...storeCourse.editForm.dateRange],
-  teachingDays: [...storeCourse.editForm.teachingDays],
+  dateRange: [...storeCourse.editForm.dateRange]
 })
 const validation = ref({
   message: '',
-  errors: { name: [], startDate: [], endDate: [], teachingDays: [] },
+  errors: { name: [], startDate: [], endDate: [] },
 })
 
 const showErrorMessage = computed(() => {
@@ -172,8 +104,7 @@ const onClickSaveButton = async (redirectRouteName) => {
   const payload = {
     name: course.value.name,
     startDate: course.value.dateRange[0],
-    endDate: course.value.dateRange[1],
-    teachingDays: course.value.teachingDays,
+    endDate: course.value.dateRange[1]
   }
 
   // clear validation errors
@@ -182,13 +113,12 @@ const onClickSaveButton = async (redirectRouteName) => {
     name: [],
     startDate: [],
     endDate: [],
-    teachingDays: [],
   }
 
   storeCourse
     .saveNewCourse(payload)
     .then(() => {
-      showToast('Course details saved succesfully')
+      showToast('Course Calendar saved successfully')
       // redirect to route (depending on which button was clicked) after 2 seconds
       setTimeout(() => {
         router.push({ name: redirectRouteName })
@@ -197,7 +127,7 @@ const onClickSaveButton = async (redirectRouteName) => {
     .catch((error) => {
       // console.log(error)
       storeCourse.multiStepForm.loading = false
-      console.log('error in course form')
+      console.log('error in course calendar form')
       validation.value.message = error.response.data.message
       // update validation error msgs with error msgs
       // returned from API call
@@ -223,13 +153,13 @@ const onClickUpdateButton = async () => {
     .then(() => {
       dialogRef.value.close()
       setTimeout(() => {
-        showToast('Course details updated successfully!')
+        showToast('Course Calendar updated successfully!')
       }, 500)
     })
     .catch((error) => {
       // console.log(error)
       storeCourse.editForm.loading = false
-      console.log('error in edit course form')
+      console.log('error in edit course calendar form')
       validation.value.message = error.response.data.message
       // update validation error msgs with error msgs
       // returned from API call

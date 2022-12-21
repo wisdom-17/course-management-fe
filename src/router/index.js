@@ -2,16 +2,16 @@ import { useAuthStore } from '@/stores/auth'
 import { useCourseStore } from '@/stores/course'
 import { createRouter, createWebHistory } from 'vue-router'
 import AboutView from '@/views/AboutView.vue'
-import CoursesView from '@/views/CoursesView.vue'
+import CourseCalendarsView from '@/views/CourseCalendarsView.vue'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import SubjectView from '@/views/SubjectView.vue'
 import NewCourseView from '@/views/NewCourseView.vue'
 import NotFound from '@/components/404.vue'
 import TeacherView from '@/views/TeacherView.vue'
-import StepOne from '@/components/course/StepOne.vue'
-import StepTwo from '@/components/course/StepTwo.vue'
-import StepThree from '@/components/course/StepThree.vue'
+import StepOne from '@/components/courseCalendar/StepOne.vue'
+import StepTwo from '@/components/courseCalendar/StepTwo.vue'
+import StepThree from '@/components/courseCalendar/StepThree.vue'
 
 const routes = [
   {
@@ -37,13 +37,13 @@ const routes = [
     component: AboutView,
   },
   {
-    path: '/courses',
-    name: 'courses',
+    path: '/course-calendars',
+    name: 'courseCalendars',
     meta: { requiresAuth: true },
-    component: CoursesView,
+    component: CourseCalendarsView,
   },
   {
-    path: '/new-course',
+    path: '/new-course-calendar',
     name: 'newCourse',
     meta: { requiresAuth: true },
     component: NewCourseView,

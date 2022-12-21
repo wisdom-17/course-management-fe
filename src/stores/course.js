@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import CourseService from '@/services/Course'
+import CourseCalendarService from '@/services/CourseCalendar'
 
 export const useCourseStore = defineStore({
   id: 'course',
@@ -28,7 +28,7 @@ export const useCourseStore = defineStore({
     async getCourses() {
       try {
         this.list.loading = true
-        CourseService.list().then((data) => {
+        CourseCalendarService.list().then((data) => {
           // convert date string JS Date object
           const formattedData = data.data.map((obj) => {
             return {
@@ -53,7 +53,7 @@ export const useCourseStore = defineStore({
     async saveNewCourse(payload) {
       this.multiStepForm.loading = true
 
-      return CourseService.new(payload).then((response) => {
+      return CourseCalendarService.new(payload).then((response) => {
         if (response.status === 201) {
           this.multiStepForm.loading = false
           this.multiStepForm.id = response.data.id
@@ -67,7 +67,7 @@ export const useCourseStore = defineStore({
     },
     async update(payload) {
       this.editForm.loading = true
-      return CourseService.update(payload).then((response) => {
+      return CourseCalendarService.update(payload).then((response) => {
         if (response.status === 200) {
           this.getCourses() // refresh courses list in store
         }
@@ -79,7 +79,7 @@ export const useCourseStore = defineStore({
         const payload = {
           courseIds: [...courseIds],
         }
-        const apiResult = await CourseService.delete(payload)
+        const apiResult = await CourseCalendarService.delete(payload)
 
         if (apiResult.status === 200) {
           this.list.loading = false

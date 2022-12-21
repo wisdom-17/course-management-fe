@@ -40,7 +40,7 @@
       />
     </div>
     <MultiStepFormButtons
-      @save-button-clicked="onClickSaveButton('courses')"
+      @save-button-clicked="onClickSaveButton('courseCalendars')"
       @next-button-clicked="onClickSaveButton('courseStepThree')"
       :hasNextButton="hasNextButton"
       :hasPreviousButton="hasPreviousButton"
@@ -56,10 +56,10 @@ import { useRouter } from 'vue-router'
 import Button from 'primevue/button'
 import { useConfirm } from 'primevue/useconfirm'
 import { useToast } from 'primevue/usetoast'
-import CourseService from '@/services/Course'
+import CourseCalendarService from '@/services/CourseCalendar'
 import DateRangePicker from '@/components/DateRangePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
-import MultiStepFormButtons from '@/components/course/MultiStepFormButtons.vue'
+import MultiStepFormButtons from '@/components/courseCalendar/MultiStepFormButtons.vue'
 import { useCourseStore } from '@/stores/course'
 
 const storeCourse = useCourseStore()
@@ -155,7 +155,7 @@ const onClickSaveButton = async (redirectRouteName) => {
   const { id } = storeCourse.multiStepForm
   try {
     isLoading.value = true
-    const apiResult = await CourseService.newDates(payload, id)
+    const apiResult = await CourseCalendarService.newDates(payload, id)
     if (apiResult.status === 201) {
       isLoading.value = false
       successMessage.value = [...apiResult.data]
