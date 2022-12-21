@@ -6,7 +6,6 @@
         :hasPreviousButton="false"
         :hasNextButton="false"
         hasSaveButton
-        hasDeleteDatePickerButton
       />
     </template>
   </Card>
@@ -14,5 +13,5 @@
 
 <script setup>
 import Card from 'primevue/card'
-import DatesForm from '@/components/course/DatesForm.vue'
+import DatesForm from '@/components/courseCalendar/DatesForm.vue'
 </script>

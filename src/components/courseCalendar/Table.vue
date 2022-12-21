@@ -52,8 +52,8 @@ import DataTable from 'primevue/datatable'
 import Button from 'primevue/button'
 import SplitButton from 'primevue/splitbutton'
 import Column from 'primevue/column'
-import CourseForm from '@/components/course/CourseForm.vue'
-import Toolbar from '@/components/course/Toolbar.vue'
+import CourseCalendarForm from '@/components/courseCalendar/CourseCalendarForm.vue'
+import Toolbar from '@/components/courseCalendar/Toolbar.vue'
 import { useCourseStore } from '@/stores/course'
 
 const storeCourse = useCourseStore()
@@ -75,7 +75,7 @@ const dateValueColumns = ref([
 ])
 
 const showEditCourseDialog = () => {
-  dialog.open(CourseForm, {
+  dialog.open(CourseCalendarForm, {
     props: {
       style: { width: '60vw' },
       header: 'Edit Course',
