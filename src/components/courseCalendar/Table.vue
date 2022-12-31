@@ -4,9 +4,9 @@
     @delete-success="selectedCourses = []"
   />
   <DataTable
-    :value="storeCourse.list.data"
+    :value="storeCourseCalendar.list.data"
     v-model:selection="selectedCourses"
-    :loading="storeCourse.list.loading"
+    :loading="storeCourseCalendar.list.loading"
     class="mt-4"
   >
     <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
@@ -37,7 +37,7 @@
           icon="pi pi-trash"
           class="p-button-rounded p-button-danger"
           @click="onClickDeleteButton(slotProps.data)"
-          :loading="storeCourse.list.loading"
+          :loading="storeCourseCalendar.list.loading"
         />
       </template>
     </Column>
@@ -54,9 +54,9 @@ import SplitButton from 'primevue/splitbutton'
 import Column from 'primevue/column'
 import CourseCalendarForm from '@/components/courseCalendar/CourseCalendarForm.vue'
 import Toolbar from '@/components/courseCalendar/Toolbar.vue'
-import { useCourseStore } from '@/stores/course'
+import { useCourseCalendarStore } from '@/stores/courseCalendar'
 
-const storeCourse = useCourseStore()
+const storeCourseCalendar = useCourseCalendarStore()
 const confirm = useConfirm()
 const dialog = useDialog()
 
@@ -81,7 +81,7 @@ const showEditCourseDialog = () => {
       header: 'Edit Course',
     },
     onClose: () => {
-      storeCourse.editForm = {
+      storeCourseCalendar.editForm = {
         id: null,
         name: '',
         dateRange: [],
@@ -99,7 +99,7 @@ const onClickDeleteButton = async (rowData) => {
     icon: 'pi pi-trash',
     acceptClass: 'p-button-danger',
     accept: () => {
-      storeCourse.delete([rowData.id])
+      storeCourseCalendar.delete([rowData.id])
     },
   })
 }
@@ -110,7 +110,7 @@ const editMenuItems = (rowData) => [
     command: () => {
       const { id, name, teachingDays, startDate, endDate } = rowData
 
-      storeCourse.editForm = {
+      storeCourseCalendar.editForm = {
         id,
         name,
         teachingDays,
@@ -143,8 +143,8 @@ const formatDate = (dateObj) => {
 
 onMounted(() => {
   // check to prevent hammering the API unnecessarily
-  if (storeCourse.list.data.length === 0) {
-    storeCourse.getCourses()
+  if (storeCourseCalendar.list.data.length === 0) {
+    storeCourseCalendar.getCourseCalendars()
   }
 })
 </script>

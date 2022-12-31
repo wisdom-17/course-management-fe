@@ -35,7 +35,7 @@
       :hasSaveButton="false"
       @save-button-clicked="onClickSaveButton('courses')"
       @next-button-clicked="onClickSaveButton('courseStepTwo')"
-      :isLoading="storeCourse.multiStepForm.loading"
+      :isLoading="storeCourseCalendar.multiStepForm.loading"
     />
 
     <Button
@@ -43,7 +43,7 @@
       icon="pi pi-save"
       label="Update"
       @click="onClickUpdateButton"
-      :loading="storeCourse.editForm.loading"
+      :loading="storeCourseCalendar.editForm.loading"
     />
   </form>
 </template>
@@ -57,23 +57,23 @@ import { useToast } from 'primevue/usetoast'
 import DateRangePicker from '@/components/DateRangePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import MultiStepFormButtons from '@/components/courseCalendar/MultiStepFormButtons.vue'
-import { useCourseStore } from '@/stores/course'
+import { useCourseCalendarStore } from '@/stores/courseCalendar'
 
-const storeCourse = useCourseStore()
+const storeCourseCalendar = useCourseCalendarStore()
 
 const router = useRouter()
 const toast = useToast()
 
 const operationType = computed(() => {
-  return storeCourse.editForm.id ? 'edit' : 'new'
+  return storeCourseCalendar.editForm.id ? 'edit' : 'new'
 })
 
 // inject dialog if editing course
 const dialogRef = operationType.value === 'edit' ? inject('dialogRef') : null
 
 const course = ref({
-  name: storeCourse.editForm.name || '',
-  dateRange: [...storeCourse.editForm.dateRange]
+  name: storeCourseCalendar.editForm.name || '',
+  dateRange: [...storeCourseCalendar.editForm.dateRange]
 })
 const validation = ref({
   message: '',
@@ -115,7 +115,7 @@ const onClickSaveButton = async (redirectRouteName) => {
     endDate: [],
   }
 
-  storeCourse
+  storeCourseCalendar
     .saveNewCourse(payload)
     .then(() => {
       showToast('Course Calendar saved successfully')
@@ -126,7 +126,7 @@ const onClickSaveButton = async (redirectRouteName) => {
     })
     .catch((error) => {
       // console.log(error)
-      storeCourse.multiStepForm.loading = false
+      storeCourseCalendar.multiStepForm.loading = false
       console.log('error in course calendar form')
       validation.value.message = error.response.data.message
       // update validation error msgs with error msgs
@@ -140,7 +140,7 @@ const onClickSaveButton = async (redirectRouteName) => {
 
 const onClickUpdateButton = async () => {
   const payload = {
-    id: storeCourse.editForm.id,
+    id: storeCourseCalendar.editForm.id,
     name: course.value.name,
     startDate: new Date(course.value.dateRange[0]).toLocaleDateString('fr-CA'),
     endDate: new Date(course.value.dateRange[1]).toLocaleDateString('fr-CA'),
@@ -148,7 +148,7 @@ const onClickUpdateButton = async () => {
   }
 
   // update course
-  storeCourse
+  storeCourseCalendar
     .update(payload)
     .then(() => {
       dialogRef.value.close()
@@ -158,7 +158,7 @@ const onClickUpdateButton = async () => {
     })
     .catch((error) => {
       // console.log(error)
-      storeCourse.editForm.loading = false
+      storeCourseCalendar.editForm.loading = false
       console.log('error in edit course calendar form')
       validation.value.message = error.response.data.message
       // update validation error msgs with error msgs

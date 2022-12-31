@@ -16,8 +16,8 @@
     </div>
 
     <div class="field">
-      <label for="dates">Course Dates</label>
-      <CourseDatesDropdown id="dates" class="mr-1 w-6" />
+      <label for="calendars">Course Calendar</label>
+      <CourseCalendarsDropdown id="calendars" class="mr-1 w-6" />
       <small class="p-error">{{ validation.errors.courseDate[0] }}</small>
     </div>
 
@@ -66,7 +66,7 @@ import { useConfirm } from 'primevue/useconfirm'
 import DayAndTimePicker from '@/components/subject/DayAndTimePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import TeacherDropdown from '@/components/TeacherDropdown.vue'
-import CourseDatesDropdown from '@/components/CourseDatesDropdown.vue'
+import CourseCalendarsDropdown from '@/components/CourseCalendarsDropdown.vue'
 
 import { useTeacherStore } from '@/stores/teacher'
 import { useToast } from 'primevue/usetoast'

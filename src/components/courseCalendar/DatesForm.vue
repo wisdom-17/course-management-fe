@@ -60,9 +60,9 @@ import CourseCalendarService from '@/services/CourseCalendar'
 import DateRangePicker from '@/components/DateRangePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import MultiStepFormButtons from '@/components/courseCalendar/MultiStepFormButtons.vue'
-import { useCourseStore } from '@/stores/course'
+import { useCourseCalendarStore } from '@/stores/courseCalendar'
 
-const storeCourse = useCourseStore()
+const storeCourseCalendar = useCourseCalendarStore()
 const confirm = useConfirm()
 const toast = useToast()
 
@@ -100,8 +100,12 @@ const formattedSelectedDates = computed(() => {
 
 const minAndMaxDates = computed(() => {
   return {
-    minDate: new Date(storeCourse.multiStepForm.startDate.replace(/-/g, '/')),
-    maxDate: new Date(storeCourse.multiStepForm.endDate.replace(/-/g, '/')),
+    minDate: new Date(
+      storeCourseCalendar.multiStepForm.startDate.replace(/-/g, '/')
+    ),
+    maxDate: new Date(
+      storeCourseCalendar.multiStepForm.endDate.replace(/-/g, '/')
+    ),
   }
 })
 
@@ -152,7 +156,7 @@ const onClickSaveButton = async (redirectRouteName) => {
     endDate: [],
   }
 
-  const { id } = storeCourse.multiStepForm
+  const { id } = storeCourseCalendar.multiStepForm
   try {
     isLoading.value = true
     const apiResult = await CourseCalendarService.newDates(payload, id)
