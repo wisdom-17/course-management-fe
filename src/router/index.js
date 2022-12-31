@@ -1,12 +1,12 @@
 import { useAuthStore } from '@/stores/auth'
-import { useCourseStore } from '@/stores/course'
+import { useCourseCalendarStore } from '@/stores/courseCalendar'
 import { createRouter, createWebHistory } from 'vue-router'
 import AboutView from '@/views/AboutView.vue'
 import CourseCalendarsView from '@/views/CourseCalendarsView.vue'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import SubjectView from '@/views/SubjectView.vue'
-import NewCourseView from '@/views/NewCourseView.vue'
+import NewCourseCalendarView from '@/views/NewCourseCalendarView.vue'
 import NotFound from '@/components/404.vue'
 import TeacherView from '@/views/TeacherView.vue'
 import StepOne from '@/components/courseCalendar/StepOne.vue'
@@ -44,9 +44,9 @@ const routes = [
   },
   {
     path: '/new-course-calendar',
-    name: 'newCourse',
+    name: 'newCourseCalendar',
     meta: { requiresAuth: true },
-    component: NewCourseView,
+    component: NewCourseCalendarView,
     children: [
       {
         path: '',
@@ -87,7 +87,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const storeAuth = useAuthStore()
-  const storeCourse = useCourseStore()
+  const storeCourseCalendar = useCourseCalendarStore()
   const authUser = storeAuth.loggedInUser
   const reqAuth = to.matched.some((record) => record.meta.requiresAuth)
   const hideForAuth = to.matched.some((record) => record.meta.hideForAuth)
@@ -98,7 +98,7 @@ router.beforeEach((to, from, next) => {
       if (!storeAuth.loggedInUser) next(loginQuery)
       else if (
         ['courseStepTwo', 'courseStepThree'].includes(to.name) &&
-        !storeCourse.multiStepForm.id
+        !storeCourseCalendar.multiStepForm.id
       ) {
         return next(from)
       } else next()

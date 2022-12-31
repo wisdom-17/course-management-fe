@@ -1,31 +1,31 @@
 <template>
   <Dropdown
-    v-model="selectedCourseDate"
+    v-model="selectedCalendar"
     :options="courseDateOptions"
     optionLabel="name"
-    placeholder="Select a Course Date"
+    placeholder="Select a Course Calendar"
     :loading="storeCourseDates.list.loading"
   />
 </template>
 <script setup>
 import { computed, ref, onMounted } from 'vue'
 import Dropdown from 'primevue/dropdown'
-import { useCourseStore } from '@/stores/course'
+import { useCourseCalendarStore } from '@/stores/courseCalendar'
 
-const storeCourseDates = useCourseStore()
+const storeCourseCalendar = useCourseCalendarStore()
 
-const selectedCourseDate = ref(null)
+const selectedCalendar = ref(null)
 
 const courseDateOptions = computed(() => {
-  return storeCourseDates.list.data.map((courseDateObj) => {
+  return storeCourseCalendar.list.data.map((courseDateObj) => {
     return { id: courseDateObj.id, name: courseDateObj.name }
   })
 })
 
 onMounted(() => {
   // check to prevent hammering the API unnecessarily
-  if (storeCourseDates.list.data.length === 0) {
-    storeCourseDates.getCourses()
+  if (storeCourseCalendar.list.data.length === 0) {
+    storeCourseCalendar.getCourseCalendars()
   }
 })
 </script>

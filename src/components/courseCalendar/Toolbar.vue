@@ -22,10 +22,10 @@
 import Toolbar from 'primevue/toolbar'
 import Button from 'primevue/button'
 import { useRouter } from 'vue-router'
-import { useCourseStore } from '@/stores/course'
+import { useCourseCalendarStore } from '@/stores/courseCalendar'
 import { useConfirm } from 'primevue/useconfirm'
 
-const storeCourse = useCourseStore()
+const storeCourseCalendar = useCourseCalendarStore()
 const confirm = useConfirm()
 
 const props = defineProps({
@@ -50,7 +50,7 @@ const onClickNewButton = () => {
 const onClickDeleteButton = async () => {
   confirm.require({
     message:
-      'Are you sure you want to delete the selected course(s) with their term and holiday dates?',
+      'Are you sure you want to delete the selected course calendar(s) with their term and holiday dates?',
     header: 'Delete',
     icon: 'pi pi-trash',
     acceptClass: 'p-button-danger',
@@ -58,7 +58,7 @@ const onClickDeleteButton = async () => {
       const selectedCoursesIds = props.selectedCourses.map((obj) => obj.id)
       // this event is used to clear the selected courses which
       // in turn is used to determine the delete buttons active/disabled status
-      storeCourse.delete(selectedCoursesIds).then(() => {
+      storeCourseCalendar.delete(selectedCoursesIds).then(() => {
         emit('deleteSuccess')
       })
     },
