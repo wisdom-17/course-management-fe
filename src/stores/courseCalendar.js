@@ -69,7 +69,7 @@ export const useCourseCalendarStore = defineStore({
       this.editForm.loading = true
       return CourseCalendarService.update(payload).then((response) => {
         if (response.status === 200) {
-          this.getCourses() // refresh courses list in store
+          this.getCourseCalendars() // refresh courses list in store
         }
       })
     },
