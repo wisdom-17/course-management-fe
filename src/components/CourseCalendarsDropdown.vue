@@ -4,7 +4,7 @@
     :options="courseDateOptions"
     optionLabel="name"
     placeholder="Select a Course Calendar"
-    :loading="storeCourseDates.list.loading"
+    :loading="storeCourseCalendar.list.loading"
   />
 </template>
 <script setup>
