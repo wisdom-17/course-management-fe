@@ -10,8 +10,8 @@
       <InputText id="subjectName" class="mr-1 w-6" type="text" />
     </div>
     <div class="field">
-      <label for="teacher">Teacher</label>
-      <TeacherDropdown id="teacher" class="mr-1 w-6" />
+      <label for="teacher">Teacher(s)</label>
+      <TeacherMultiSelect id="teacher" class="mr-1 w-6" />
       <small class="p-error">{{ validation.errors.teacher[0] }}</small>
     </div>
 
@@ -65,6 +65,7 @@ import InputText from 'primevue/inputtext'
 import { useConfirm } from 'primevue/useconfirm'
 import DayAndTimePicker from '@/components/subject/DayAndTimePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
+import TeacherMultiSelect from '@/components/TeacherMultiSelect.vue'
 import TeacherDropdown from '@/components/TeacherDropdown.vue'
 import CourseCalendarsDropdown from '@/components/CourseCalendarsDropdown.vue'
 
