@@ -5,9 +5,10 @@
       <Dropdown
         id="day"
         class="w-full"
-        v-model="selectedDay"
         :options="days"
         placeholder="Select a Day"
+        @change="onChangeDay"
+        v-model="selectedDay"
       />
     </div>
     <div class="field col-3">
@@ -17,6 +18,7 @@
         v-model="selectedStartTime"
         :showTime="true"
         :timeOnly="true"
+        @date-select="onChangeStartTime"
       />
     </div>
     <div class="field col-4">
@@ -27,6 +29,7 @@
         :showTime="true"
         :timeOnly="true"
         class="mr-1"
+        @date-select="onChangeEndTime"
       />
       <Button
         v-if="hasDeleteButton"
@@ -44,7 +47,12 @@ import Button from 'primevue/button'
 import Calendar from 'primevue/calendar'
 import Dropdown from 'primevue/dropdown'
 
-const emit = defineEmits(['clickedDeleteDayAndTimeButton'])
+const emit = defineEmits([
+  'clickedDeleteDayAndTimeButton',
+  'selectedDay',
+  'selectedStartTime',
+  'selectedEndTime',
+])
 
 const days = ref([
   'Monday',
@@ -60,7 +68,7 @@ const selectedDay = ref('')
 const selectedStartTime = ref('')
 const selectedEndTime = ref('')
 
-const props = defineProps({
+defineProps({
   hasDeleteButton: {
     type: Boolean,
     default: false,
@@ -69,5 +77,17 @@ const props = defineProps({
 
 const onClickDeleteButton = () => {
   emit('clickedDeleteDayAndTimeButton')
+}
+
+const onChangeDay = (event) => {
+  emit('selectedDay', event.value)
+}
+
+const onChangeStartTime = (startTime) => {
+  emit('selectedStartTime', startTime.toLocaleTimeString().substring(0, 5))
+}
+
+const onChangeEndTime = (endTime) => {
+  emit('selectedEndTime', endTime.toLocaleTimeString().substring(0, 5))
 }
 </script>

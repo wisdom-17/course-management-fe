@@ -7,7 +7,12 @@
   <form class="subject">
     <div class="field">
       <label for="subjectName">Subject Name</label>
-      <InputText id="subjectName" class="mr-1 w-6" type="text" />
+      <InputText
+        id="subjectName"
+        class="mr-1 w-6"
+        type="text"
+        v-model="storeSubject.newForm.name"
+      />
     </div>
     <div class="field">
       <label for="teacher">Teacher(s)</label>
@@ -25,11 +30,25 @@
     <template v-for="(dayAndTime, index) in daysAndTimes" :key="index">
       <div v-if="dayAndTime" class="field">
         <DayAndTimePicker
-          @clicked-delete-day-and-time-button="onClickDeleteDatePicker(index)"
+          @clicked-delete-day-and-time-button="onClickDeleteDayTime(index)"
+          @selected-day="
+            (day) => (storeSubject.newForm.daysAndTimes[index].day = day)
+          "
+          @selected-start-time="
+            (startTime) =>
+              (storeSubject.newForm.daysAndTimes[index].startTime = startTime)
+          "
+          @selected-end-time="
+            (endTime) =>
+              (storeSubject.newForm.daysAndTimes[index].endTime = endTime)
+          "
           :hasDeleteButton="showDeleteDayAndTimeButton"
         />
       </div>
     </template>
+    <pre>
+      {{ storeSubject.newForm.daysAndTimes }}
+    </pre>
     <div class="field">
       <Button
         class="p-button-sm"
@@ -66,14 +85,15 @@ import { useConfirm } from 'primevue/useconfirm'
 import DayAndTimePicker from '@/components/subject/DayAndTimePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import TeacherMultiSelect from '@/components/TeacherMultiSelect.vue'
-import TeacherDropdown from '@/components/TeacherDropdown.vue'
 import CourseCalendarsDropdown from '@/components/CourseCalendarsDropdown.vue'
 
+import { useSubjectStore } from '@/stores/subject'
 import { useTeacherStore } from '@/stores/teacher'
 import { useToast } from 'primevue/usetoast'
 
 const confirm = useConfirm()
 const toast = useToast()
+const storeSubject = useSubjectStore()
 const storeTeacher = useTeacherStore()
 
 const dialogRef = inject('dialogRef')
@@ -171,9 +191,14 @@ const onClickUpdateButton = async () => {
 
 const onClickAdditionalDayAndTimesButton = () => {
   daysAndTimes.value.push(daysAndTimes.value.length + 1)
+  storeSubject.newForm.daysAndTimes.push({
+    day: '',
+    startTime: null,
+    endTime: null,
+  })
 }
 
-const onClickDeleteDatePicker = (rangeIndex) => {
+const onClickDeleteDayTime = (index) => {
   confirm.require({
     message:
       'Are you sure you want to delete this day and time selector? Any unsaved changes will be lost.',
@@ -184,7 +209,8 @@ const onClickDeleteDatePicker = (rangeIndex) => {
       // we need to preserve the index to ensure selected dates are handled correctly
       // howevever, the deleted element index position will still return 'empty'
       // so this needs to be handled
-      delete daysAndTimes.value[rangeIndex]
+      delete daysAndTimes.value[index]
+      delete storeSubject.newForm.daysAndTimes[index]
       // selectedDateRanges.value[rangeIndex] = []
     },
   })

@@ -1,10 +1,14 @@
 import { defineStore } from 'pinia'
 import TeacherService from '@/services/Teacher'
 
-export const useTeacherStore = defineStore({
-  id: 'teacher',
+export const useSubjectStore = defineStore({
+  id: 'subject',
   state: () => ({
     newForm: {
+      name: '',
+      selectedTeachers: [],
+      courseCalendar: null,
+      daysAndTimes: [{ day: '', startTime: null, endTime: null }],
       loading: false,
     },
     editForm: {
