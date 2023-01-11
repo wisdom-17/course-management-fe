@@ -1,6 +1,6 @@
 <template>
   <MultiSelect
-    v-model="selectedTeacher"
+    v-model="storeSubject.newForm.selectedTeachers"
     :options="teacherOptions"
     optionLabel="name"
     placeholder="Select Teacher(s)"
@@ -8,13 +8,13 @@
   />
 </template>
 <script setup>
-import { computed, ref, onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import MultiSelect from 'primevue/multiselect'
+import { useSubjectStore } from '@/stores/subject'
 import { useTeacherStore } from '@/stores/teacher'
 
+const storeSubject = useSubjectStore()
 const storeTeacher = useTeacherStore()
-
-const selectedTeacher = ref(null)
 
 const teacherOptions = computed(() => {
   return storeTeacher.list.data.map((teacherObj) => {
