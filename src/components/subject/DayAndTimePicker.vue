@@ -10,6 +10,7 @@
         @change="onChangeDay"
         v-model="selectedDay"
       />
+      <small class="p-error">{{ validationErrors.day[0] }}</small>
     </div>
     <div class="field col-3">
       <label for="startTime">Start Time</label>
@@ -20,6 +21,7 @@
         :timeOnly="true"
         @date-select="onChangeStartTime"
       />
+      <small class="p-error">{{ validationErrors.startTime[0] }}</small>
     </div>
     <div class="field col-4">
       <label for="endTime">End Time</label>
@@ -37,6 +39,7 @@
         icon="pi pi-trash"
         class="p-button-danger"
       />
+      <small class="p-error">{{ validationErrors.endTime[0] }}</small>
     </div>
   </div>
 </template>
@@ -72,6 +75,16 @@ defineProps({
   hasDeleteButton: {
     type: Boolean,
     default: false,
+  },
+  validationErrors: {
+    type: Object,
+    default() {
+      return {
+        day: [],
+        startTime: [],
+        endTime: [],
+      }
+    },
   },
 })
 
