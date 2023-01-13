@@ -2,10 +2,10 @@ import { axiosClient } from '@/services/Axios'
 
 export default {
   async new(payload) {
-    return axiosClient.post('/api/subject', payload)
+    return axiosClient.post('/api/subjects', payload)
   },
   async update(payload) {
-    return axiosClient.patch(`/api/subject/${payload.id}`, payload)
+    return axiosClient.patch(`/api/subjects/${payload.id}`, payload)
   },
   async newDates(payload, subjectId) {
     return axiosClient.post(`/api/subjects/${subjectId}/dates`, payload)
