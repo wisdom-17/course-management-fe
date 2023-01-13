@@ -13,17 +13,18 @@
         type="text"
         v-model="storeSubject.newForm.name"
       />
+      <small class="p-error">{{ validation.errors.name[0] }}</small>
     </div>
     <div class="field">
       <label for="teacher">Teacher(s)</label>
       <TeacherMultiSelect id="teacher" class="mr-1 w-6" />
-      <small class="p-error">{{ validation.errors.teacher[0] }}</small>
+      <small class="p-error">{{ validation.errors.teacherIds[0] }}</small>
     </div>
 
     <div class="field">
       <label for="calendars">Course Calendar</label>
       <CourseCalendarsDropdown id="calendars" class="mr-1 w-6" />
-      <small class="p-error">{{ validation.errors.courseDate[0] }}</small>
+      <small class="p-error">{{ validation.errors.courseCalendarId[0] }}</small>
     </div>
 
     <h4 for="dayTime">Subject Days and Times</h4>
@@ -43,12 +44,22 @@
               (storeSubject.newForm.daysAndTimes[index].endTime = endTime)
           "
           :hasDeleteButton="showDeleteDayAndTimeButton"
+          :validationErrors="{
+            day:
+              (validation.errors &&
+                validation['errors'][`daysTimes.${index}.day`]) ||
+              [],
+            endTime:
+              (validation.errors &&
+                validation['errors'][`daysTimes.${index}.endTime`]) ||
+              [],
+            startTime:
+              validation['errors'][`daysTimes.${index}.startTime`] || [],
+          }"
         />
       </div>
+      <!-- <pre>{{ validation['errors'] }}</pre> -->
     </template>
-    <pre>
-      {{ storeSubject.newForm.daysAndTimes }}
-    </pre>
     <div class="field">
       <Button
         class="p-button-sm"
@@ -63,7 +74,7 @@
         icon="pi pi-save"
         label="Save"
         @click="onClickSaveButton"
-        :loading="storeTeacher.newForm.loading"
+        :loading="storeSubject.newForm.loading"
       />
 
       <Button
@@ -71,7 +82,7 @@
         icon="pi pi-save"
         label="Update"
         @click="onClickUpdateButton"
-        :loading="storeTeacher.editForm.loading"
+        :loading="storeSubject.editForm.loading"
       />
     </div>
   </form>
@@ -106,7 +117,11 @@ const daysAndTimes = ref([1]) // show one day and time selector field by default
 
 const validation = ref({
   message: '',
-  errors: { teacher: [], courseDate: [], teachingDays: [] },
+  errors: {
+    name: [],
+    teacherIds: [],
+    courseCalendarId: [],
+  },
 })
 
 // Don't show delete button if there is only one datepicker
@@ -132,23 +147,34 @@ const onClickCloseErrorMessage = () => {
 }
 
 const onClickSaveButton = async () => {
-  const payload = module.value
+  const formData = storeSubject.newForm
+  const selectedTeacherIds = formData.teachers.map((obj) => obj.id)
+
+  const selectedCourseCalendarId = formData.courseCalendar?.id
+
+  const payload = {
+    name: formData.name,
+    teacherIds: selectedTeacherIds,
+    courseCalendarId: selectedCourseCalendarId,
+    daysTimes: formData.daysAndTimes,
+  }
 
   // clear validation errors
   validation.value.message = ''
   validation.value.errors = {
     name: [],
-    hourlyRate: [],
+    teacherIds: [],
+    courseCalendarId: [],
   }
 
-  storeTeacher
+  storeSubject
     .saveNew(payload)
     .then(() => {
       dialogRef.value.close()
-      showToast('Successfully saved new teacher')
+      showToast('Successfully saved new subject')
     })
     .catch((error) => {
-      storeTeacher.newForm.loading = false
+      storeSubject.newForm.loading = false
       validation.value.message = error.response.data.message
       // update validation error msgs with error msgs
       // returned from API call

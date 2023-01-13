@@ -1,6 +1,6 @@
 <template>
   <MultiSelect
-    v-model="storeSubject.newForm.selectedTeachers"
+    v-model="storeSubject.newForm.teachers"
     :options="teacherOptions"
     optionLabel="name"
     placeholder="Select Teacher(s)"
