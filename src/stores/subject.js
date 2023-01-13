@@ -29,8 +29,9 @@ export const useSubjectStore = defineStore({
       try {
         this.list.loading = true
         SubjectService.list().then((data) => {
+          console.log(data.data)
           // convert date string JS Date object
-          const formattedData = data.data.map((obj) => {
+          const formattedData = data.data.subjects.map((obj) => {
             return {
               ...obj,
               createdAt: new Date(obj.createdAt),
