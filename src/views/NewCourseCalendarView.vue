@@ -11,8 +11,8 @@ import { RouterView } from 'vue-router'
 import Steps from 'primevue/steps'
 
 const items = ref([
-  { label: 'Course Details', to: { name: 'courseStepOne' } },
-  { label: 'Term Dates', to: { name: 'courseStepTwo' } },
-  { label: 'Holiday Dates', to: { name: 'courseStepThree' } },
+  { label: 'Course Details', to: { name: 'courseCalendarStepOne' } },
+  { label: 'Term Dates', to: { name: 'courseCalendarStepTwo' } },
+  { label: 'Holiday Dates', to: { name: 'courseCalendarStepThree' } },
 ])
 </script>

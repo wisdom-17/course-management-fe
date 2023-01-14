@@ -50,17 +50,17 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'courseStepOne',
+        name: 'courseCalendarStepOne',
         component: StepOne,
       },
       {
         path: 'step-two',
-        name: 'courseStepTwo',
+        name: 'courseCalendarStepTwo',
         component: StepTwo,
       },
       {
         path: 'step-three',
-        name: 'courseStepThree',
+        name: 'courseCalendarStepThree',
         component: StepThree,
       },
     ],
@@ -97,7 +97,9 @@ router.beforeEach((to, from, next) => {
     storeAuth.getAuthenticatedUserDetails().then(() => {
       if (!storeAuth.loggedInUser) next(loginQuery)
       else if (
-        ['courseStepTwo', 'courseStepThree'].includes(to.name) &&
+        ['courseCalendarStepTwo', 'courseCalendarStepThree'].includes(
+          to.name
+        ) &&
         !storeCourseCalendar.multiStepForm.id
       ) {
         return next(from)
