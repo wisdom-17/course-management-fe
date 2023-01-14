@@ -3,7 +3,7 @@
     <template #content>
       <DatesForm
         type="Term"
-        :hasPreviousButton="false"
+        :hasPreviousButton="true"
         :hasSaveButton="false"
         hasNextButton
       />

@@ -42,6 +42,7 @@
     <MultiStepFormButtons
       @save-button-clicked="onClickSaveButton('courseCalendars')"
       @next-button-clicked="onClickSaveButton('courseStepThree')"
+      @previous-button-clicked="onClickPreviousButton"
       :hasNextButton="hasNextButton"
       :hasPreviousButton="hasPreviousButton"
       :hasSaveButton="hasSaveButton"
@@ -179,6 +180,18 @@ const onClickSaveButton = async (redirectRouteName) => {
     }
     isLoading.value = false
   }
+}
+
+const onClickPreviousButton = () => {
+  let redirectRouteName = ''
+  if (props.type === 'Term') {
+    redirectRouteName = 'courseCalendarStepOne'
+  } else if (props.type === 'Holiday') {
+    redirectRouteName = 'courseCalendarStepTwo'
+  }
+  setTimeout(() => {
+    router.push({ name: redirectRouteName })
+  }, 2000)
 }
 
 const showErrorMessage = computed(() => {
