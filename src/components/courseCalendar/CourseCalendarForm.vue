@@ -4,15 +4,16 @@
     v-show="showErrorMessage"
     @close="onClickCloseErrorMessage"
   />
-  <form class="newCourse">
+  <pre>{{ courseCalendar }}</pre>
+  <form class="newCourseCalendar">
     <div class="field">
-      <label for="courseName">Course Calendar Name</label>
+      <label for="courseCalendarName">Course Calendar Name</label>
       <InputText
-        id="courseName"
+        id="courseCalendarName"
         :class="{ 'p-invalid': validation.errors.name.length > 0 }"
         class="mr-1 w-6"
         type="text"
-        v-model="course.name"
+        v-model="courseCalendar.name"
       />
       <small class="p-error">{{ validation.errors.name[0] }}</small>
     </div>
@@ -23,9 +24,9 @@
           ...validation.errors.endDate,
         ]"
         @selected-date-range="
-          (selectedDateRange) => (course.dateRange = selectedDateRange)
+          (selectedDateRange) => (courseCalendar.dateRange = selectedDateRange)
         "
-        :existingDateRange="course.dateRange"
+        :existingDateRange="courseCalendar.dateRange"
       />
     </div>
 
@@ -33,8 +34,8 @@
       v-if="operationType === 'new'"
       :hasNextButton="true"
       :hasSaveButton="false"
-      @save-button-clicked="onClickSaveButton('courses')"
-      @next-button-clicked="onClickSaveButton('courseStepTwo')"
+      @save-button-clicked="onClickSaveButton('newCourseCalendar')"
+      @next-button-clicked="onClickSaveButton('courseCalendarStepTwo')"
       :isLoading="storeCourseCalendar.multiStepForm.loading"
     />
 
@@ -73,8 +74,12 @@ const dialogRef = operationType.value === 'edit' ? inject('dialogRef') : null
 
 const course = ref({
   name: storeCourseCalendar.editForm.name || '',
-  dateRange: [...storeCourseCalendar.editForm.dateRange]
+  dateRange: [...storeCourseCalendar.editForm.dateRange],
 })
+
+const courseCalendar =
+  storeCourseCalendar.multiStepForm.formData.courseCalendarDetails
+
 const validation = ref({
   message: '',
   errors: { name: [], startDate: [], endDate: [] },

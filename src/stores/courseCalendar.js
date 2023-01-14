@@ -10,6 +10,15 @@ export const useCourseCalendarStore = defineStore({
       startDate: '',
       endDate: '',
       loading: false,
+      courseCalendarStatus: 'new',
+      formData: {
+        courseCalendarDetails: {
+          name: '',
+          dateRange: [],
+        },
+        termDates: {},
+        holidayDates: {},
+      },
     },
     editForm: {
       id: null,
