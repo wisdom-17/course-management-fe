@@ -15,6 +15,7 @@
     @clear-click="onClearedDateRange"
     :minDate="minDate"
     :maxDate="maxDate"
+    :hide-on-range-selection="true"
   />
   <Button
     v-if="hasDeleteButton"
