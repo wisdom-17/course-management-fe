@@ -2,14 +2,9 @@ body {
   font-family:Arial, Helvetica, sans-serif;
 }
 
-.newCourseCalendar .field label {
-  display: block;
-}
-
-.teacher .field label {
-  display: block;
-}
-
+.newCourse .field label,
+.newCourseCalendar .field label,
+.teacher .field label,
 .subject .field label {
   display: block;
 }
