@@ -2,8 +2,7 @@
   <label for="dateRange">{{ label }}</label>
   <Calendar
     id="dateRange"
-    :class="{ 'p-invalid': validationErrorMessages.length > 0 }"
-    class="mr-1 w-4"
+    :class="cssClasses"
     v-model="selectedDateRange"
     selectionMode="range"
     dateFormat="dd/mm/yy"
@@ -32,7 +31,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import Calendar from 'primevue/calendar'
 import Button from 'primevue/button'
 
@@ -46,6 +45,10 @@ const props = defineProps({
   label: {
     type: String,
     default: 'Start and End Dates',
+  },
+  cssClass: {
+    type: String,
+    default: 'mr-1 w-4',
   },
   disabledDates: {
     type: Array,
@@ -79,6 +82,13 @@ const emit = defineEmits([
 const selectedDateRange = ref(
   props.existingDateRange.length === 2 ? props.existingDateRange : []
 )
+
+const cssClasses = computed(() => {
+  const validationErrorClass =
+    props.validationErrorMessages.length > 0 ? 'p-invalid' : ''
+
+  return `${props.cssClass} ${validationErrorClass}`
+})
 
 const onSelectedDateRange = () => {
   // emit event only after two dates (i.e. range) have been selected and formatted
