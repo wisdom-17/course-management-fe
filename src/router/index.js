@@ -6,6 +6,7 @@ import CourseCalendarsView from '@/views/CourseCalendarsView.vue'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import SubjectView from '@/views/SubjectView.vue'
+import OldNewCourseCalendarView from '@/views/OldNewCourseCalendarView.vue'
 import NewCourseCalendarView from '@/views/NewCourseCalendarView.vue'
 import NotFound from '@/components/404.vue'
 import TeacherView from '@/views/TeacherView.vue'
@@ -47,6 +48,12 @@ const routes = [
     name: 'newCourseCalendar',
     meta: { requiresAuth: true },
     component: NewCourseCalendarView,
+  },
+  {
+    path: '/old-new-course-calendar',
+    name: 'oldNewCourseCalendar',
+    meta: { requiresAuth: true },
+    component: OldNewCourseCalendarView,
     children: [
       {
         path: '',

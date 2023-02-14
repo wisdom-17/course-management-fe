@@ -1,12 +1,12 @@
 <template>
   <Card class="mt-4 surface-ground w-auto">
     <template #content>
-      <CourseCalendarForm />
+      <CourseCalendarFormOld />
     </template>
   </Card>
 </template>
 
 <script setup>
 import Card from 'primevue/card'
-import CourseCalendarForm from '@/components/courseCalendar/CourseCalendarForm.vue'
+import CourseCalendarFormOld from '@/components/courseCalendar/CourseCalendarFormOld.vue'
 </script>
