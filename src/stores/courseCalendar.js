@@ -4,6 +4,12 @@ import CourseCalendarService from '@/services/CourseCalendar'
 export const useCourseCalendarStore = defineStore({
   id: 'courseCalendar',
   state: () => ({
+    newForm: {
+      calendarName: '',
+      startDate: '',
+      endDate: '',
+      semesters: [{ name: '' }], // show one semester field by default
+    },
     multiStepForm: {
       id: null,
       name: '',

@@ -1,177 +1,170 @@
 <template>
-  <ErrorMessage
-    :message="validation.message"
-    v-show="showErrorMessage"
-    @close="onClickCloseErrorMessage"
-  />
-  <pre>{{ courseCalendar }}</pre>
-  <form class="newCourseCalendar">
-    <div class="field">
-      <label for="courseCalendarName">Course Calendar Name</label>
-      <InputText
-        id="courseCalendarName"
-        :class="{ 'p-invalid': validation.errors.name.length > 0 }"
-        class="mr-1 w-6"
-        type="text"
-        v-model="courseCalendar.name"
-      />
-      <small class="p-error">{{ validation.errors.name[0] }}</small>
-    </div>
-    <div class="field">
-      <DateRangePicker
-        :validationErrorMessages="[
-          ...validation.errors.startDate,
-          ...validation.errors.endDate,
-        ]"
-        @selected-date-range="
-          (selectedDateRange) => (courseCalendar.dateRange = selectedDateRange)
-        "
-        :existingDateRange="courseCalendar.dateRange"
-      />
-    </div>
+  <div class="col">
+    <h1>Create New Course Calendar</h1>
 
-    <MultiStepFormButtons
-      v-if="operationType === 'new'"
-      :hasNextButton="true"
-      :hasSaveButton="false"
-      @save-button-clicked="onClickSaveButton('newCourseCalendar')"
-      @next-button-clicked="onClickSaveButton('courseCalendarStepTwo')"
-      :isLoading="storeCourseCalendar.multiStepForm.loading"
-    />
+    <form class="newCourseCalendar">
+      <Fieldset legend="Calendar Details">
+        <div class="field">
+          <label for="courseCalendarName">Course Calendar Name</label>
+          <InputText
+            id="courseCalendarName"
+            class="mr-1 w-6"
+            type="text"
+            v-model="storeCourseCalendar.newForm.calendarName"
+          />
+          <small class="p-error"></small>
+        </div>
 
-    <Button
-      v-else-if="operationType === 'edit'"
-      icon="pi pi-save"
-      label="Update"
-      @click="onClickUpdateButton"
-      :loading="storeCourseCalendar.editForm.loading"
-    />
-  </form>
+        <div class="field">
+          <DateRangePicker
+            label="Calendar Start and End Dates"
+            @selected-date-range="
+              (selectedDateRange) => {
+                storeCourseCalendar.newForm.startDate = selectedDateRange[0]
+                storeCourseCalendar.newForm.endDate = selectedDateRange[1]
+              }
+            "
+          />
+          <small class="p-error"></small>
+        </div>
+      </Fieldset>
+
+      <Fieldset legend="Semesters" :toggleable="true" class="mt-4">
+        <template
+          v-for="(semester, index) in storeCourseCalendar.newForm.semesters"
+          :key="index"
+        >
+          <!-- we need the v-if="semester" check to ensure deleted semester fields are handled as expected-->
+          <div v-if="semester" class="field">
+            <label for="semesterName">{{ `Semester ${index + 1} Name` }}</label>
+            <InputText id="semesterName" class="mr-1 w-6" type="text" />
+            <small class="p-error"></small>
+            <Button
+              v-if="showDeleteSemesterButton"
+              @click="onClickDeleteSemesterButton(index)"
+              icon="pi pi-trash"
+              class="p-button-danger"
+            />
+          </div>
+        </template>
+        <div class="field">
+          <Button
+            class="p-button-sm"
+            label="Additional Semesters"
+            icon="pi pi-plus"
+            @click="onClickAdditionalSemestersButton"
+          />
+        </div>
+      </Fieldset>
+
+      <Fieldset legend="Terms" class="mt-4">
+        <div class="formgrid grid">
+          <div class="field col-3">
+            <label for="semester">Semester</label>
+            <Dropdown id="semester" class="w-full" />
+            <small class="p-error"></small>
+          </div>
+          <div class="field col-3">
+            <label for="termName">Term 1 Name</label>
+            <InputText id="termName" class="w-full" type="text" />
+            <small class="p-error"></small>
+          </div>
+          <div class="field col-4">
+            <DateRangePicker
+              label="Term 1 Start and End Dates"
+              cssClass="w-8 mr-1"
+            />
+            <small class="p-error"></small>
+            <Button icon="pi pi-trash" class="p-button-danger" />
+          </div>
+        </div>
+        <div class="field">
+          <Button
+            class="p-button-sm"
+            label="Additional Term Dates"
+            icon="pi pi-plus"
+            @click="onClickAdditionalTermsButton"
+          />
+        </div>
+      </Fieldset>
+
+      <Fieldset legend="Holidays" class="mt-4">
+        <div class="formgrid grid">
+          <div class="field col-3">
+            <label for="semester">Semester</label>
+            <Dropdown id="semester" class="w-full" />
+            <small class="p-error"></small>
+          </div>
+          <div class="field col-3">
+            <label for="holidayName">Holiday 1 Name</label>
+            <InputText id="holidayName" class="w-full" type="text" />
+            <small class="p-error"></small>
+          </div>
+          <div class="field col-4">
+            <DateRangePicker
+              label="Holiday 1 Start and End Dates"
+              cssClass="w-8 mr-1"
+            />
+            <small class="p-error"></small>
+            <Button icon="pi pi-trash" class="p-button-danger" />
+          </div>
+        </div>
+        <div class="field">
+          <Button
+            class="p-button-sm"
+            label="Additional Holiday Dates"
+            icon="pi pi-plus"
+            @click="onClickAdditionalHolidaysButton"
+          />
+        </div>
+      </Fieldset>
+
+      <Fieldset legend="Actions" class="mt-4"></Fieldset>
+    </form>
+  </div>
 </template>
 
 <script setup>
-import { computed, inject, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed } from 'vue'
 import Button from 'primevue/button'
+import Dropdown from 'primevue/dropdown'
+import Fieldset from 'primevue/fieldset'
 import InputText from 'primevue/inputtext'
-import { useToast } from 'primevue/usetoast'
-import DateRangePicker from '@/components/DateRangePicker.vue'
-import ErrorMessage from '@/components/ErrorMessage.vue'
-import MultiStepFormButtons from '@/components/courseCalendar/MultiStepFormButtons.vue'
+import { useConfirm } from 'primevue/useconfirm'
 import { useCourseCalendarStore } from '@/stores/courseCalendar'
+import DateRangePicker from '@/components/DateRangePicker.vue'
 
+const confirm = useConfirm()
 const storeCourseCalendar = useCourseCalendarStore()
 
-const router = useRouter()
-const toast = useToast()
-
-const operationType = computed(() => {
-  return storeCourseCalendar.editForm.id ? 'edit' : 'new'
-})
-
-// inject dialog if editing course
-const dialogRef = operationType.value === 'edit' ? inject('dialogRef') : null
-
-const course = ref({
-  name: storeCourseCalendar.editForm.name || '',
-  dateRange: [...storeCourseCalendar.editForm.dateRange],
-})
-
-const courseCalendar =
-  storeCourseCalendar.multiStepForm.formData.courseCalendarDetails
-
-const validation = ref({
-  message: '',
-  errors: { name: [], startDate: [], endDate: [] },
-})
-
-const showErrorMessage = computed(() => {
-  return validation.value.message !== ''
-})
-
-const onClickCloseErrorMessage = () => {
-  validation.value.message = ''
+const onClickAdditionalSemestersButton = () => {
+  console.log('clicked + semester button')
+  storeCourseCalendar.newForm.semesters.push({ name: '' })
 }
 
-const showToast = (message) => {
-  toast.add({
-    severity: 'success',
-    summary: 'Success',
-    detail: message,
-    life: 2000,
+const onClickAdditionalTermsButton = () => console.log('clicked + term button')
+const onClickAdditionalHolidaysButton = () =>
+  console.log('clicked + holiday button')
+
+const showDeleteSemesterButton = computed(() => {
+  return storeCourseCalendar.newForm.semesters.filter((x) => x).length > 1
+    ? true
+    : false
+})
+
+const onClickDeleteSemesterButton = (index) => {
+  confirm.require({
+    message:
+      'Are you sure you want to delete this semester? Any unsaved changes will be lost.',
+    header: 'Delete Semester',
+    icon: 'pi pi-exclamation-triangle',
+    accept: () => {
+      // delete removes the element from the array and preserves the index
+      // we need to preserve the index to ensure selected dates are handled correctly
+      // howevever, the deleted element index position will still return 'empty'
+      // so this needs to be handled
+      delete storeCourseCalendar.newForm.semesters[index]
+    },
   })
-}
-
-/* This handler is for save and next buttons as 
-both buttons will call API to save the course. The difference
-being where to redirect to after a successful save */
-const onClickSaveButton = async (redirectRouteName) => {
-  const payload = {
-    name: course.value.name,
-    startDate: course.value.dateRange[0],
-    endDate: course.value.dateRange[1]
-  }
-
-  // clear validation errors
-  validation.value.message = ''
-  validation.value.errors = {
-    name: [],
-    startDate: [],
-    endDate: [],
-  }
-
-  storeCourseCalendar
-    .saveNewCourse(payload)
-    .then(() => {
-      showToast('Course Calendar saved successfully')
-      // redirect to route (depending on which button was clicked) after 2 seconds
-      setTimeout(() => {
-        router.push({ name: redirectRouteName })
-      }, 2000)
-    })
-    .catch((error) => {
-      // console.log(error)
-      storeCourseCalendar.multiStepForm.loading = false
-      console.log('error in course calendar form')
-      validation.value.message = error.response.data.message
-      // update validation error msgs with error msgs
-      // returned from API call
-      validation.value.errors = {
-        ...validation.value.errors,
-        ...error.response.data.errors,
-      }
-    })
-}
-
-const onClickUpdateButton = async () => {
-  const payload = {
-    id: storeCourseCalendar.editForm.id,
-    name: course.value.name,
-    startDate: new Date(course.value.dateRange[0]).toLocaleDateString('fr-CA'),
-    endDate: new Date(course.value.dateRange[1]).toLocaleDateString('fr-CA'),
-    teachingDays: course.value.teachingDays,
-  }
-
-  // update course
-  storeCourseCalendar
-    .update(payload)
-    .then(() => {
-      dialogRef.value.close()
-      setTimeout(() => {
-        showToast('Course Calendar updated successfully!')
-      }, 500)
-    })
-    .catch((error) => {
-      // console.log(error)
-      storeCourseCalendar.editForm.loading = false
-      console.log('error in edit course calendar form')
-      validation.value.message = error.response.data.message
-      // update validation error msgs with error msgs
-      // returned from API call
-      validation.value.errors = {
-        ...validation.value.errors,
-        ...error.response.data.errors,
-      }
-    })
 }
 </script>
