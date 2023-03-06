@@ -70,12 +70,22 @@
           <div v-if="term" class="formgrid grid">
             <div class="field col-3">
               <label for="semester">Semester</label>
-              <Dropdown id="semester" class="w-full" :options="semesterNames" />
+              <Dropdown
+                id="semester"
+                class="w-full"
+                :options="semesterNames"
+                v-model="storeCourseCalendar.newForm.terms[index].semester"
+              />
               <small class="p-error"></small>
             </div>
             <div class="field col-3">
               <label for="termName">{{ `Term ${index + 1} Name` }}</label>
-              <InputText id="termName" class="w-full" type="text" />
+              <InputText
+                id="termName"
+                class="w-full"
+                type="text"
+                v-model="storeCourseCalendar.newForm.terms[index].name"
+              />
               <small class="p-error"></small>
             </div>
             <div class="field col-4">
@@ -104,26 +114,43 @@
       </Fieldset>
 
       <Fieldset legend="Holidays" class="mt-4">
-        <div class="formgrid grid">
-          <div class="field col-3">
-            <label for="semester">Semester</label>
-            <Dropdown id="semester" class="w-full" />
-            <small class="p-error"></small>
+        <template
+          v-for="(holiday, index) in storeCourseCalendar.newForm.holidays"
+          :key="index"
+        >
+          <div v-if="holiday" class="formgrid grid">
+            <div class="field col-3">
+              <label for="semester">Semester</label>
+              <Dropdown
+                id="semester"
+                class="w-full"
+                :options="semesterNames"
+                v-model="storeCourseCalendar.newForm.holidays[index].semester"
+              />
+              <small class="p-error"></small>
+            </div>
+            <div class="field col-3">
+              <label for="holidayName">{{
+                `Holiday  ${index + 1} Name`
+              }}</label>
+              <InputText id="holidayName" class="w-full" type="text" />
+              <small class="p-error"></small>
+            </div>
+            <div class="field col-4">
+              <DateRangePicker
+                label="Holiday Start and End Dates"
+                cssClass="w-8 mr-1"
+              />
+              <small class="p-error"></small>
+              <Button
+                v-if="showDeleteHolidayButton"
+                icon="pi pi-trash"
+                class="p-button-danger"
+                @click="onClickDeleteHolidayButton(index)"
+              />
+            </div>
           </div>
-          <div class="field col-3">
-            <label for="holidayName">Holiday 1 Name</label>
-            <InputText id="holidayName" class="w-full" type="text" />
-            <small class="p-error"></small>
-          </div>
-          <div class="field col-4">
-            <DateRangePicker
-              label="Holiday 1 Start and End Dates"
-              cssClass="w-8 mr-1"
-            />
-            <small class="p-error"></small>
-            <Button icon="pi pi-trash" class="p-button-danger" />
-          </div>
-        </div>
+        </template>
         <div class="field">
           <Button
             class="p-button-sm"
@@ -161,8 +188,11 @@ const onClickAdditionalTermsButton = () => {
   console.log('clicked + term button')
   storeCourseCalendar.newForm.terms.push({ name: '' })
 }
-const onClickAdditionalHolidaysButton = () =>
+
+const onClickAdditionalHolidaysButton = () => {
   console.log('clicked + holiday button')
+  storeCourseCalendar.newForm.holidays.push({ name: '' })
+}
 
 const showDeleteSemesterButton = computed(() => {
   return storeCourseCalendar.newForm.semesters.filter((x) => x).length > 1
@@ -172,6 +202,12 @@ const showDeleteSemesterButton = computed(() => {
 
 const showDeleteTermButton = computed(() => {
   return storeCourseCalendar.newForm.terms.filter((x) => x).length > 1
+    ? true
+    : false
+})
+
+const showDeleteHolidayButton = computed(() => {
+  return storeCourseCalendar.newForm.holidays.filter((x) => x).length > 1
     ? true
     : false
 })
@@ -210,6 +246,22 @@ const onClickDeleteTermButton = (index) => {
       // howevever, the deleted element index position will still return 'empty'
       // so this needs to be handled
       delete storeCourseCalendar.newForm.terms[index]
+    },
+  })
+}
+
+const onClickDeleteHolidayButton = (index) => {
+  confirm.require({
+    message:
+      'Are you sure you want to delete this holiday? Any unsaved changes will be lost.',
+    header: 'Delete Holiday',
+    icon: 'pi pi-exclamation-triangle',
+    accept: () => {
+      // delete removes the element from the array and preserves the index
+      // we need to preserve the index to ensure selected dates are handled correctly
+      // howevever, the deleted element index position will still return 'empty'
+      // so this needs to be handled
+      delete storeCourseCalendar.newForm.holidays[index]
     },
   })
 }
