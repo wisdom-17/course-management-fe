@@ -8,7 +8,14 @@ export const useCourseCalendarStore = defineStore({
       calendarName: '',
       startDate: '',
       endDate: '',
-      semesters: [{ name: '' }], // show one semester field by default
+      // default value for semester is:
+      // 1 semester
+      // 1 term date
+      // 1 holiday date
+      // (need to show at least one field in the form)
+      semesters: [{ name: '' }],
+      terms: [{ name: '' }],
+      holidays: [{ name: '' }],
     },
     multiStepForm: {
       id: null,
