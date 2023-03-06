@@ -92,6 +92,14 @@
               <DateRangePicker
                 label="Term Start and End Dates"
                 cssClass="w-8 mr-1"
+                @selected-date-range="
+                  (selectedDateRange) => {
+                    storeCourseCalendar.newForm.terms[index].startDate =
+                      selectedDateRange[0]
+                    storeCourseCalendar.newForm.terms[index].endDate =
+                      selectedDateRange[1]
+                  }
+                "
               />
               <small class="p-error"></small>
               <Button
@@ -140,6 +148,14 @@
               <DateRangePicker
                 label="Holiday Start and End Dates"
                 cssClass="w-8 mr-1"
+                @selected-date-range="
+                  (selectedDateRange) => {
+                    storeCourseCalendar.newForm.holidays[index].startDate =
+                      selectedDateRange[0]
+                    storeCourseCalendar.newForm.holidays[index].endDate =
+                      selectedDateRange[1]
+                  }
+                "
               />
               <small class="p-error"></small>
               <Button
