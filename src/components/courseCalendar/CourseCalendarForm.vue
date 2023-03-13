@@ -92,6 +92,8 @@
               <DateRangePicker
                 label="Term Start and End Dates"
                 cssClass="w-8 mr-1"
+                :minDate="new Date(storeCourseCalendar.newForm.startDate)"
+                :maxDate="new Date(storeCourseCalendar.newForm.endDate)"
                 @selected-date-range="
                   (selectedDateRange) => {
                     storeCourseCalendar.newForm.terms[index].startDate =
@@ -148,6 +150,8 @@
               <DateRangePicker
                 label="Holiday Start and End Dates"
                 cssClass="w-8 mr-1"
+                :minDate="new Date(storeCourseCalendar.newForm.startDate)"
+                :maxDate="new Date(storeCourseCalendar.newForm.endDate)"
                 @selected-date-range="
                   (selectedDateRange) => {
                     storeCourseCalendar.newForm.holidays[index].startDate =
