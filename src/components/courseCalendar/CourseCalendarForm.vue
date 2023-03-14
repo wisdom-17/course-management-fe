@@ -94,6 +94,7 @@
                 cssClass="w-8 mr-1"
                 :minDate="new Date(storeCourseCalendar.newForm.startDate)"
                 :maxDate="new Date(storeCourseCalendar.newForm.endDate)"
+                :disabledDates="getDisabledDates(index, 'terms')"
                 @selected-date-range="
                   (selectedDateRange) => {
                     storeCourseCalendar.newForm.terms[index].startDate =
@@ -152,6 +153,7 @@
                 cssClass="w-8 mr-1"
                 :minDate="new Date(storeCourseCalendar.newForm.startDate)"
                 :maxDate="new Date(storeCourseCalendar.newForm.endDate)"
+                :disabledDates="getDisabledDates(index, 'holidays')"
                 @selected-date-range="
                   (selectedDateRange) => {
                     storeCourseCalendar.newForm.holidays[index].startDate =
@@ -199,21 +201,6 @@ import DateRangePicker from '@/components/DateRangePicker.vue'
 const confirm = useConfirm()
 const storeCourseCalendar = useCourseCalendarStore()
 
-const onClickAdditionalSemestersButton = () => {
-  console.log('clicked + semester button')
-  storeCourseCalendar.newForm.semesters.push({ name: '' })
-}
-
-const onClickAdditionalTermsButton = () => {
-  console.log('clicked + term button')
-  storeCourseCalendar.newForm.terms.push({ name: '' })
-}
-
-const onClickAdditionalHolidaysButton = () => {
-  console.log('clicked + holiday button')
-  storeCourseCalendar.newForm.holidays.push({ name: '' })
-}
-
 const showDeleteSemesterButton = computed(() => {
   return storeCourseCalendar.newForm.semesters.filter((x) => x).length > 1
     ? true
@@ -231,6 +218,21 @@ const showDeleteHolidayButton = computed(() => {
     ? true
     : false
 })
+
+const onClickAdditionalSemestersButton = () => {
+  console.log('clicked + semester button')
+  storeCourseCalendar.newForm.semesters.push({ name: '' })
+}
+
+const onClickAdditionalTermsButton = () => {
+  console.log('clicked + term button')
+  storeCourseCalendar.newForm.terms.push({ name: '' })
+}
+
+const onClickAdditionalHolidaysButton = () => {
+  console.log('clicked + holiday button')
+  storeCourseCalendar.newForm.holidays.push({ name: '' })
+}
 
 const semesterNames = computed(() =>
   storeCourseCalendar.newForm.semesters
@@ -284,5 +286,31 @@ const onClickDeleteHolidayButton = (index) => {
       delete storeCourseCalendar.newForm.holidays[index]
     },
   })
+}
+
+// This is used to disable dates selected in the other term and holiday fields
+const getDisabledDates = (fieldIndex, type) => {
+  const allDisabledDates = storeCourseCalendar.newForm[type]
+    .filter((obj) => !!obj.startDate && !!obj.endDate)
+    .map((obj) =>
+      getDatesInRange(new Date(obj.startDate), new Date(obj.endDate))
+    )
+
+  // return selected dates from other fields
+  const otherDisabledDates = allDisabledDates.filter(
+    (obj, index) => index !== fieldIndex
+  )
+  return otherDisabledDates.flat()
+}
+
+const getDatesInRange = (startDate, endDate) => {
+  const date = new Date(startDate.getTime())
+  const dates = []
+
+  while (date <= endDate) {
+    dates.push(new Date(date))
+    date.setDate(date.getDate() + 1)
+  }
+  return dates
 }
 </script>
