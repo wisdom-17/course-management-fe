@@ -1,7 +1,6 @@
 <template>
   <div class="col">
     <h1>Create New Course Calendar</h1>
-
     <form class="newCourseCalendar">
       <Fieldset legend="Calendar Details">
         <div class="field">
@@ -225,12 +224,10 @@ const onClickAdditionalSemestersButton = () => {
 }
 
 const onClickAdditionalTermsButton = () => {
-  console.log('clicked + term button')
   storeCourseCalendar.newForm.terms.push({ name: '' })
 }
 
 const onClickAdditionalHolidaysButton = () => {
-  console.log('clicked + holiday button')
   storeCourseCalendar.newForm.holidays.push({ name: '' })
 }
 
@@ -288,19 +285,39 @@ const onClickDeleteHolidayButton = (index) => {
   })
 }
 
-// This is used to disable dates selected in the other term and holiday fields
 const getDisabledDates = (fieldIndex, type) => {
-  const allDisabledDates = storeCourseCalendar.newForm[type]
-    .filter((obj) => !!obj.startDate && !!obj.endDate)
+  // get all selected term dates
+  const selectedTermsDates = storeCourseCalendar.newForm.terms
+    .filter((obj, index) => {
+      if (!!obj.startDate && !!obj.endDate) {
+        if (type === 'terms') {
+          // this check removes dates that are selected by the field calling this method
+          return index !== fieldIndex
+        } else {
+          return obj
+        }
+      }
+    })
     .map((obj) =>
       getDatesInRange(new Date(obj.startDate), new Date(obj.endDate))
     )
 
-  // return selected dates from other fields
-  const otherDisabledDates = allDisabledDates.filter(
-    (obj, index) => index !== fieldIndex
-  )
-  return otherDisabledDates.flat()
+  // get all selected holiday dates
+  const selectedHolidaysDates = storeCourseCalendar.newForm.holidays
+    .filter((obj, index) => {
+      if (!!obj.startDate && !!obj.endDate) {
+        if (type === 'holidays') {
+          return index !== fieldIndex
+        } else {
+          return obj
+        }
+      }
+    })
+    .map((obj) =>
+      getDatesInRange(new Date(obj.startDate), new Date(obj.endDate))
+    )
+
+  return [...selectedTermsDates.flat(), ...selectedHolidaysDates.flat()]
 }
 
 const getDatesInRange = (startDate, endDate) => {
