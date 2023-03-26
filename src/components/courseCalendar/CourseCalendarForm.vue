@@ -1,11 +1,11 @@
 <template>
-  <ErrorMessage
-    :message="validation.message"
-    v-show="showErrorMessage"
-    @close="onClickCloseErrorMessage"
-  />
   <div class="col">
-    <h1>Create New Course Calendar</h1>
+    <h1 ref="top">Create New Course Calendar</h1>
+    <ErrorMessage
+      :message="validation.message"
+      v-show="showErrorMessage"
+      @close="onClickCloseErrorMessage"
+    />
     <form class="newCourseCalendar">
       <Fieldset legend="Calendar Details">
         <div class="field">
@@ -210,6 +210,7 @@ import Dropdown from 'primevue/dropdown'
 import Fieldset from 'primevue/fieldset'
 import InputText from 'primevue/inputtext'
 import { useConfirm } from 'primevue/useconfirm'
+import ErrorMessage from '@/components/ErrorMessage.vue'
 import { useCourseCalendarStore } from '@/stores/courseCalendar'
 import DateRangePicker from '@/components/DateRangePicker.vue'
 
@@ -220,6 +221,8 @@ const validation = ref({
   message: '',
   errors: { name: [], startDate: [], endDate: [] },
 })
+
+const top = ref(null)
 
 const showDeleteSemesterButton = computed(() => {
   return storeCourseCalendar.newForm.semesters.filter((x) => x).length > 1
@@ -237,6 +240,10 @@ const showDeleteHolidayButton = computed(() => {
   return storeCourseCalendar.newForm.holidays.filter((x) => x).length > 1
     ? true
     : false
+})
+
+const showErrorMessage = computed(() => {
+  return validation.value.message !== ''
 })
 
 const onClickAdditionalSemestersButton = () => {
@@ -380,13 +387,14 @@ const onClickSaveButton = async () => {
       console.log(error)
       storeCourseCalendar.newForm.loading = false
       console.log('error in course calendar form')
-      // validation.value.message = error.response.data.message
+      validation.value.message = error.response.data.message
       // update validation error msgs with error msgs
       // returned from API call
       validation.value.errors = {
         ...validation.value.errors,
         ...error.response.data.errors,
       }
+      top.value.scrollIntoView({ behavior: 'smooth' })
     })
 }
 
