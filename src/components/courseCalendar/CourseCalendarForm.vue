@@ -1,4 +1,9 @@
 <template>
+  <ErrorMessage
+    :message="validation.message"
+    v-show="showErrorMessage"
+    @close="onClickCloseErrorMessage"
+  />
   <div class="col">
     <h1>Create New Course Calendar</h1>
     <form class="newCourseCalendar">
@@ -11,7 +16,7 @@
             type="text"
             v-model="storeCourseCalendar.newForm.calendarName"
           />
-          <small class="p-error"></small>
+          <small class="p-error">{{ validation.errors.name[0] }}</small>
         </div>
 
         <div class="field">
@@ -23,6 +28,10 @@
                 storeCourseCalendar.newForm.endDate = selectedDateRange[1]
               }
             "
+            :validationErrorMessages="[
+              ...validation.errors.startDate,
+              ...validation.errors.endDate,
+            ]"
           />
           <small class="p-error"></small>
         </div>
@@ -182,13 +191,20 @@
         </div>
       </Fieldset>
 
-      <Fieldset legend="Actions" class="mt-4"></Fieldset>
+      <Fieldset legend="Actions" class="mt-4">
+        <Button
+          icon="pi pi-save"
+          label="Save"
+          @click="onClickSaveButton"
+          :loading="storeCourseCalendar.newForm.loading"
+        />
+      </Fieldset>
     </form>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import Button from 'primevue/button'
 import Dropdown from 'primevue/dropdown'
 import Fieldset from 'primevue/fieldset'
@@ -199,6 +215,11 @@ import DateRangePicker from '@/components/DateRangePicker.vue'
 
 const confirm = useConfirm()
 const storeCourseCalendar = useCourseCalendarStore()
+
+const validation = ref({
+  message: '',
+  errors: { name: [], startDate: [], endDate: [] },
+})
 
 const showDeleteSemesterButton = computed(() => {
   return storeCourseCalendar.newForm.semesters.filter((x) => x).length > 1
@@ -329,5 +350,47 @@ const getDatesInRange = (startDate, endDate) => {
     date.setDate(date.getDate() + 1)
   }
   return dates
+}
+
+const onClickSaveButton = async () => {
+  const payload = {
+    // name: course.value.name,
+    // startDate: course.value.dateRange[0],
+    // endDate: course.value.dateRange[1]
+  }
+
+  // clear validation errors
+  validation.value.message = ''
+  validation.value.errors = {
+    name: [],
+    startDate: [],
+    endDate: [],
+  }
+
+  storeCourseCalendar
+    .saveNewCalendar(payload)
+    .then(() => {
+      // showToast('Course Calendar saved successfully')
+      // redirect to route (depending on which button was clicked) after 2 seconds
+      setTimeout(() => {
+        // router.push({ name: redirectRouteName })
+      }, 2000)
+    })
+    .catch((error) => {
+      console.log(error)
+      storeCourseCalendar.newForm.loading = false
+      console.log('error in course calendar form')
+      // validation.value.message = error.response.data.message
+      // update validation error msgs with error msgs
+      // returned from API call
+      validation.value.errors = {
+        ...validation.value.errors,
+        ...error.response.data.errors,
+      }
+    })
+}
+
+const onClickCloseErrorMessage = () => {
+  validation.value.message = ''
 }
 </script>

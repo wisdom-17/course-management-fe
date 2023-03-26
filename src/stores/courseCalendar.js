@@ -16,6 +16,7 @@ export const useCourseCalendarStore = defineStore({
       semesters: [{ name: '' }],
       terms: [{ name: '' }],
       holidays: [{ name: '' }],
+      loading: false,
     },
     multiStepForm: {
       id: null,
@@ -83,6 +84,16 @@ export const useCourseCalendarStore = defineStore({
           this.multiStepForm.startDate = payload.startDate
           this.multiStepForm.endDate = payload.endDate
 
+          this.getCourseCalendars() // refresh courses list in defineStore
+        }
+      })
+    },
+    async saveNewCalendar(payload) {
+      this.newForm.loading = true
+
+      return CourseCalendarService.new(payload).then((response) => {
+        if (response.status === 201) {
+          this.newForm.loading = false
           this.getCourseCalendars() // refresh courses list in defineStore
         }
       })
