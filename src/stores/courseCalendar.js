@@ -93,7 +93,17 @@ export const useCourseCalendarStore = defineStore({
 
       return CourseCalendarService.new(payload).then((response) => {
         if (response.status === 201) {
-          this.newForm.loading = false
+          // reset newForm properties
+          this.newForm = {
+            calendarName: '',
+            startDate: '',
+            endDate: '',
+            semesters: [{ name: '' }],
+            terms: [{ name: '' }],
+            holidays: [{ name: '' }],
+            loading: false,
+          }
+
           this.getCourseCalendars() // refresh courses list in defineStore
         }
       })
