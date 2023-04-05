@@ -12,6 +12,7 @@
           <label for="courseCalendarName">Course Calendar Name</label>
           <InputText
             id="courseCalendarName"
+            :class="{ 'p-invalid': validation.errors.name.length > 0 }"
             class="mr-1 w-6"
             type="text"
             v-model="storeCourseCalendar.newForm.calendarName"
@@ -81,7 +82,7 @@
               <Dropdown
                 id="semester"
                 class="w-full"
-                :options="semesterNames"
+                :options="semesters.map((obj) => obj.name)"
                 v-model="storeCourseCalendar.newForm.terms[index].semester"
               />
               <small class="p-error"></small>
@@ -143,7 +144,7 @@
               <Dropdown
                 id="semester"
                 class="w-full"
-                :options="semesterNames"
+                :options="semesters.map((obj) => obj.name)"
                 v-model="storeCourseCalendar.newForm.holidays[index].semester"
               />
               <small class="p-error"></small>
@@ -152,7 +153,12 @@
               <label for="holidayName">{{
                 `Holiday  ${index + 1} Name`
               }}</label>
-              <InputText id="holidayName" class="w-full" type="text" />
+              <InputText
+                id="holidayName"
+                class="w-full"
+                type="text"
+                v-model="storeCourseCalendar.newForm.holidays[index].name"
+              />
               <small class="p-error"></small>
             </div>
             <div class="field col-4">
@@ -210,12 +216,16 @@ import Dropdown from 'primevue/dropdown'
 import Fieldset from 'primevue/fieldset'
 import InputText from 'primevue/inputtext'
 import { useConfirm } from 'primevue/useconfirm'
+import { useToast } from 'primevue/usetoast'
+import { useRouter } from 'vue-router'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import { useCourseCalendarStore } from '@/stores/courseCalendar'
 import DateRangePicker from '@/components/DateRangePicker.vue'
 
 const confirm = useConfirm()
+const router = useRouter()
 const storeCourseCalendar = useCourseCalendarStore()
+const toast = useToast()
 
 const validation = ref({
   message: '',
@@ -259,10 +269,38 @@ const onClickAdditionalHolidaysButton = () => {
   storeCourseCalendar.newForm.holidays.push({ name: '' })
 }
 
-const semesterNames = computed(() =>
+const semesters = computed(() =>
   storeCourseCalendar.newForm.semesters
     .filter((obj) => obj.name !== '')
-    .map((obj) => obj.name)
+    .map((obj) => {
+      return { name: obj.name }
+    })
+)
+
+const terms = computed(() =>
+  storeCourseCalendar.newForm.terms
+    .filter((obj) => obj.name !== '')
+    .map((obj) => {
+      return {
+        name: obj.name,
+        semester: obj.semester,
+        startDate: obj.startDate,
+        endDate: obj.endDate,
+      }
+    })
+)
+
+const holidays = computed(() =>
+  storeCourseCalendar.newForm.holidays
+    .filter((obj) => obj.name !== '')
+    .map((obj) => {
+      return {
+        name: obj.name,
+        startDate: obj.startDate,
+        endDate: obj.endDate,
+        semester: obj.semester,
+      }
+    })
 )
 
 const onClickDeleteSemesterButton = (index) => {
@@ -361,9 +399,12 @@ const getDatesInRange = (startDate, endDate) => {
 
 const onClickSaveButton = async () => {
   const payload = {
-    // name: course.value.name,
-    // startDate: course.value.dateRange[0],
-    // endDate: course.value.dateRange[1]
+    name: storeCourseCalendar.newForm.calendarName,
+    startDate: storeCourseCalendar.newForm.startDate,
+    endDate: storeCourseCalendar.newForm.endDate,
+    semesters: semesters.value,
+    terms: terms.value,
+    holidays: holidays.value,
   }
 
   // clear validation errors
@@ -377,10 +418,10 @@ const onClickSaveButton = async () => {
   storeCourseCalendar
     .saveNewCalendar(payload)
     .then(() => {
-      // showToast('Course Calendar saved successfully')
-      // redirect to route (depending on which button was clicked) after 2 seconds
+      showToast('Course Calendar saved successfully')
       setTimeout(() => {
-        // router.push({ name: redirectRouteName })
+        // redirect to course calendar list page
+        router.push({ name: 'courseCalendars' })
       }, 2000)
     })
     .catch((error) => {
@@ -400,5 +441,14 @@ const onClickSaveButton = async () => {
 
 const onClickCloseErrorMessage = () => {
   validation.value.message = ''
+}
+
+const showToast = (message) => {
+  toast.add({
+    severity: 'success',
+    summary: 'Success',
+    detail: message,
+    life: 1500,
+  })
 }
 </script>
