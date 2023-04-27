@@ -34,7 +34,12 @@
       </div>
       <small class="p-error">{{ validation.errors.password[0] }}</small>
       <div class="field grid mt-4">
-        <Button @click="login" label="Login" :loading="isLoading" />
+        <Button
+          @click="login"
+          label="Login"
+          :loading="isLoading"
+          class="w-full"
+        />
       </div>
     </form>
   </div>
