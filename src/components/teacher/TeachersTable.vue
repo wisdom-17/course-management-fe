@@ -36,13 +36,17 @@
       </template>
     </Column>
   </DataTable>
-  <div class="card">
-    <Paginator
-      :rows="15"
-      :totalRecords="teacherStore.list.total"
-      @page="(e) => onPageChange(e)"
-    ></Paginator>
-  </div>
+
+  <!-- <Paginator
+    :rows="15"
+    :totalRecords="teacherStore.list.total"
+    @page="(e) => onPageChange(e)"
+  ></Paginator> -->
+  <TablePaginator
+    :totalRecords="teacherStore.list.total"
+    :rowsPerPage="15"
+    @page-changed="(page) => onPageChange(page)"
+  />
 </template>
 
 <script setup>
@@ -52,7 +56,8 @@ import { useDialog } from 'primevue/usedialog'
 import DataTable from 'primevue/datatable'
 import Button from 'primevue/button'
 import Column from 'primevue/column'
-import Paginator from 'primevue/paginator';
+// import Paginator from 'primevue/paginator'
+import TablePaginator from '@/components/TablePaginator.vue'
 import TeacherForm from '@/components/teacher/TeacherForm.vue'
 import { useTeacherStore } from '@/stores/teacher'
 
@@ -114,8 +119,8 @@ const formatDate = (dateObj) => {
   }/${dateObj.getFullYear()}`
 }
 
-const onPageChange = (e) => {
-  teacherStore.getTeachers(e.page + 1)
+const onPageChange = (page) => {
+  teacherStore.getTeachers(page)
 }
 
 onMounted(() => {
