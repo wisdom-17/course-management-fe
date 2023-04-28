@@ -2,11 +2,11 @@
   <div class="col courses">
     <h1>Teachers</h1>
     <Toolbar />
-    <Table />
+    <TeachersTable />
   </div>
 </template>
 
 <script setup>
 import Toolbar from '@/components/teacher/Toolbar.vue'
-import Table from '@/components/teacher/Table.vue'
+import TeachersTable from '@/components/teacher/TeachersTable.vue'
 </script>
