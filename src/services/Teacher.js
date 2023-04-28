@@ -13,7 +13,7 @@ export default {
   async delete(teacherId) {
     return axiosClient.delete(`/api/teachers/${teacherId}`)
   },
-  list() {
-    return axiosClient.get('/api/teachers')
+  list(page = 1) {
+    return axiosClient.get(`/api/teachers?page=${page}`)
   },
 }

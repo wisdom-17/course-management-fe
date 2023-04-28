@@ -1,7 +1,7 @@
 <template>
   <DataTable
-    :value="storeTeacher.list.data"
-    :loading="storeTeacher.list.loading"
+    :value="teacherStore.list.data"
+    :loading="teacherStore.list.loading"
     class="mt-4"
   >
     <Column field="name" header="Name"></Column>
@@ -31,11 +31,18 @@
           icon="pi pi-trash"
           class="p-button-rounded p-button-danger"
           @click="onClickDeleteButton(slotProps.data)"
-          :loading="storeTeacher.loading"
+          :loading="teacherStore.loading"
         />
       </template>
     </Column>
   </DataTable>
+  <div class="card">
+    <Paginator
+      :rows="15"
+      :totalRecords="teacherStore.list.total"
+      @page="(e) => onPageChange(e)"
+    ></Paginator>
+  </div>
 </template>
 
 <script setup>
@@ -45,10 +52,11 @@ import { useDialog } from 'primevue/usedialog'
 import DataTable from 'primevue/datatable'
 import Button from 'primevue/button'
 import Column from 'primevue/column'
+import Paginator from 'primevue/paginator';
 import TeacherForm from '@/components/teacher/TeacherForm.vue'
 import { useTeacherStore } from '@/stores/teacher'
 
-const storeTeacher = useTeacherStore()
+const teacherStore = useTeacherStore()
 const confirm = useConfirm()
 const dialog = useDialog()
 
@@ -69,7 +77,7 @@ const showEditTeacherDialog = () => {
       header: 'Edit Teacher',
     },
     onClose: () => {
-      storeTeacher.editForm = {
+      teacherStore.editForm = {
         id: null,
         name: '',
         hourlyRate: 0,
@@ -85,14 +93,14 @@ const onClickDeleteButton = async (rowData) => {
     icon: 'pi pi-trash',
     acceptClass: 'p-button-danger',
     accept: () => {
-      storeTeacher.delete([rowData.id])
+      teacherStore.delete([rowData.id])
     },
   })
 }
 
 const onClickEditButton = async (rowData) => {
   const { id, name, hourlyRate } = rowData
-  storeTeacher.editForm = {
+  teacherStore.editForm = {
     id,
     name,
     hourlyRate: parseFloat(hourlyRate),
@@ -106,10 +114,14 @@ const formatDate = (dateObj) => {
   }/${dateObj.getFullYear()}`
 }
 
+const onPageChange = (e) => {
+  teacherStore.getTeachers(e.page + 1)
+}
+
 onMounted(() => {
   // check to prevent hammering the API unnecessarily
-  if (storeTeacher.list.data.length === 0) {
-    storeTeacher.getTeachers()
+  if (teacherStore.list.data.length === 0) {
+    teacherStore.getTeachers()
   }
 })
 </script>

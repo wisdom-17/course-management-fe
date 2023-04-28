@@ -16,17 +16,18 @@ export const useTeacherStore = defineStore({
     list: {
       data: [],
       loading: false,
+      total: 0,
     },
     loading: false,
   }),
   getters: {},
   actions: {
-    async getTeachers() {
+    async getTeachers(page = 1) {
       try {
         this.list.loading = true
-        TeacherService.list().then((data) => {
+        TeacherService.list(page).then((data) => {
           // convert date string JS Date object
-          const formattedData = data.data.map((obj) => {
+          const formattedData = data.data.teachers.map((obj) => {
             return {
               ...obj,
               createdAt: new Date(obj.createdAt),
@@ -35,6 +36,7 @@ export const useTeacherStore = defineStore({
             }
           })
           this.list.data = formattedData
+          this.list.total = data.data.meta.total
           this.list.loading = false
         })
       } catch (error) {
