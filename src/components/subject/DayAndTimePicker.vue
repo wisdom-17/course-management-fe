@@ -7,8 +7,8 @@
         class="w-full"
         :options="days"
         placeholder="Select a Day"
-        @change="onChangeDay"
         v-model="selectedDay"
+        @change="(e) => $emit('selectedDay', e.value)"
       />
       <small class="p-error">{{ validationErrors.day[0] }}</small>
     </div>
@@ -19,7 +19,13 @@
         v-model="selectedStartTime"
         :showTime="true"
         :timeOnly="true"
-        @date-select="onChangeStartTime"
+        @update:model-value="
+          (value) =>
+            $emit(
+              'selectedStartTime',
+              value.toLocaleTimeString().substring(0, 5)
+            )
+        "
       />
       <small class="p-error">{{ validationErrors.startTime[0] }}</small>
     </div>
@@ -31,11 +37,14 @@
         :showTime="true"
         :timeOnly="true"
         class="mr-1"
-        @date-select="onChangeEndTime"
+        @update:model-value="
+          (value) =>
+            $emit('selectedEndTime', value.toLocaleTimeString().substring(0, 5))
+        "
       />
       <Button
         v-if="hasDeleteButton"
-        @click="onClickDeleteButton"
+        @click="() => $emit('clickedDeleteDayAndTimeButton')"
         icon="pi pi-trash"
         class="p-button-danger"
       />
@@ -49,13 +58,6 @@ import { ref } from 'vue'
 import Button from 'primevue/button'
 import Calendar from 'primevue/calendar'
 import Dropdown from 'primevue/dropdown'
-
-const emit = defineEmits([
-  'clickedDeleteDayAndTimeButton',
-  'selectedDay',
-  'selectedStartTime',
-  'selectedEndTime',
-])
 
 const days = ref([
   'Monday',
@@ -87,20 +89,4 @@ defineProps({
     },
   },
 })
-
-const onClickDeleteButton = () => {
-  emit('clickedDeleteDayAndTimeButton')
-}
-
-const onChangeDay = (event) => {
-  emit('selectedDay', event.value)
-}
-
-const onChangeStartTime = (startTime) => {
-  emit('selectedStartTime', startTime.toLocaleTimeString().substring(0, 5))
-}
-
-const onChangeEndTime = (endTime) => {
-  emit('selectedEndTime', endTime.toLocaleTimeString().substring(0, 5))
-}
 </script>
