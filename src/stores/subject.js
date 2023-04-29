@@ -1,5 +1,27 @@
 import { defineStore } from 'pinia'
+import _pick from 'lodash/pick'
 import SubjectService from '@/services/Subject'
+
+const defaultState = {
+  newForm: {
+    name: '',
+    teachers: [],
+    courseCalendar: null,
+    daysAndTimes: [{ day: '', startTime: null, endTime: null }],
+    loading: false,
+  },
+  editForm: {
+    id: null,
+    name: '',
+    hourlyPay: 0,
+    loading: false,
+  },
+  list: {
+    data: [],
+    loading: false,
+  },
+  loading: false,
+}
 
 export const useSubjectStore = defineStore({
   id: 'subject',
@@ -52,6 +74,7 @@ export const useSubjectStore = defineStore({
       return SubjectService.new(payload).then((response) => {
         if (response.status === 201) {
           this.newForm.loading = false
+          this.reset(['newForm'])
           this.getSubjects() // refresh teachers list in store
         }
       })
@@ -76,6 +99,12 @@ export const useSubjectStore = defineStore({
       } catch (error) {
         console.log(error)
       }
+    },
+    reset(keys) {
+      Object.assign(
+        this,
+        keys?.length ? _pick(defaultState, keys) : defaultState
+      )
     },
   },
 })

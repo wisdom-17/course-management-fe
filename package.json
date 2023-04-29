@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "axios": "^0.27.2",
+    "lodash": "^4.17.21",
     "pinia": "^2.0.22",
     "primeflex": "^3.2.1",
     "primeicons": "^6.0.1",
