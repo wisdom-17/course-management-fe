@@ -33,7 +33,9 @@
         <DayAndTimePicker
           @clicked-delete-day-and-time-button="onClickDeleteDayTime(index)"
           @selected-day="
-            (day) => (storeSubject.newForm.daysAndTimes[index].day = day)
+            (day) => {
+              storeSubject.newForm.daysAndTimes[index].day = day
+            }
           "
           @selected-start-time="
             (startTime) =>
@@ -188,8 +190,10 @@ const onClickSaveButton = async () => {
 const onClickUpdateButton = async () => {
   const payload = {
     id: storeTeacher.editForm.id,
-    name: module.value.name,
-    hourlyRate: module.value.hourlyRate,
+    name: 'module.value.name',
+    hourlyRate: 'module.value.hourlyRate',
+    // name: module.value.name,
+    // hourlyRate: module.value.hourlyRate,
   }
 
   // update teacher
