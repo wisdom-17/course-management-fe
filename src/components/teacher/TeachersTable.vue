@@ -36,12 +36,6 @@
       </template>
     </Column>
   </DataTable>
-
-  <!-- <Paginator
-    :rows="15"
-    :totalRecords="teacherStore.list.total"
-    @page="(e) => onPageChange(e)"
-  ></Paginator> -->
   <TablePaginator
     :totalRecords="teacherStore.list.total"
     :rowsPerPage="15"
@@ -126,7 +120,7 @@ const onPageChange = (page) => {
 onMounted(() => {
   // check to prevent hammering the API unnecessarily
   if (teacherStore.list.data.length === 0) {
-    teacherStore.getTeachers()
+    teacherStore.getTeachers(1)
   }
 })
 </script>
