@@ -3,6 +3,7 @@
     :rows="props.rowsPerPage"
     :totalRecords="props.totalRecords"
     @page="(e) => $emit('pageChanged', e.page + 1)"
+    :alwaysShow="false"
   ></Paginator>
 </template>
 
