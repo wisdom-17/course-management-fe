@@ -26,12 +26,26 @@
           icon="pi pi-pencil"
           class="p-button-rounded p-button-primary mr-2"
           @click="onClickEditButton(slotProps.data)"
+          aria-label="Edit Teacher"
+          title="Edit Teacher"
         />
         <Button
           icon="pi pi-trash"
           class="p-button-rounded p-button-danger"
           @click="onClickDeleteButton(slotProps.data)"
           :loading="teacherStore.loading"
+          :disabled="slotProps.data.subjectsCount > 0"
+          :aria-label="
+            slotProps.data.subjectsCount > 0
+              ? 'Teacher has subjects so cannot be deleted'
+              : 'Delete Teacher'
+          "
+          :title="
+            slotProps.data.subjectsCount > 0
+              ? 'Teacher has subjects so cannot be deleted'
+              : 'Delete Teacher'
+          "
+          style="pointer-events: auto"
         />
       </template>
     </Column>
