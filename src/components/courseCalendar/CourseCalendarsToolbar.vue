@@ -8,12 +8,6 @@
         label="New"
       />
       <Button
-        class="mr-2"
-        @click="onClickNewOldButton()"
-        icon="pi pi-plus"
-        label="New (Old)"
-      />
-      <Button
         class="p-button-danger"
         @click="onClickDeleteButton()"
         icon="pi pi-trash"
