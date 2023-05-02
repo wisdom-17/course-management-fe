@@ -26,21 +26,7 @@
         {{ formatDate(slotProps.data[col.field]) }}
       </template>
     </Column>
-    <Column style="min-width: 10rem">
-      <template #body="slotProps">
-        <SplitButton
-          icon="pi pi-pencil"
-          class="p-button-rounded p-button-primary mr-2"
-          :model="editMenuItems(slotProps.data)"
-        />
-        <Button
-          icon="pi pi-trash"
-          class="p-button-rounded p-button-danger"
-          @click="onClickDeleteButton(slotProps.data)"
-          :loading="storeCourseCalendar.list.loading"
-        />
-      </template>
-    </Column>
+    <Column style="min-width: 10rem">{{ Todo }} </Column>
   </DataTable>
 </template>
 
