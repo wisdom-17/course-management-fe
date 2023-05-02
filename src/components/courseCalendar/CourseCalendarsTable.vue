@@ -1,5 +1,5 @@
 <template>
-  <Toolbar
+  <CourseCalendarsToolbar
     :selectedCourses="selectedCourses"
     @delete-success="selectedCourses = []"
   />
@@ -53,7 +53,7 @@ import Button from 'primevue/button'
 import SplitButton from 'primevue/splitbutton'
 import Column from 'primevue/column'
 import CourseCalendarForm from '@/components/courseCalendar/CourseCalendarForm.vue'
-import Toolbar from '@/components/courseCalendar/Toolbar.vue'
+import CourseCalendarsToolbar from '@/components/courseCalendar/CourseCalendarsToolbar.vue'
 import { useCourseCalendarStore } from '@/stores/courseCalendar'
 
 const storeCourseCalendar = useCourseCalendarStore()

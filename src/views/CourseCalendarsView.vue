@@ -1,10 +1,10 @@
 <template>
   <div class="col courses">
     <h1>Course Calendars</h1>
-    <Table />
+    <CourseCalendarsTable />
   </div>
 </template>
 
 <script setup>
-import Table from '@/components/courseCalendar/Table.vue'
+import CourseCalendarsTable from '@/components/courseCalendar/CourseCalendarsTable.vue'
 </script>
