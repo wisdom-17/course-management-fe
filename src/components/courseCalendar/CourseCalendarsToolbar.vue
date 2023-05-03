@@ -7,13 +7,6 @@
         icon="pi pi-plus"
         label="New"
       />
-      <Button
-        class="p-button-danger"
-        @click="onClickDeleteButton()"
-        icon="pi pi-trash"
-        label="Delete"
-        :disabled="selectedCourses.length === 0"
-      />
     </template>
   </Toolbar>
 </template>
@@ -45,15 +38,6 @@ const onClickNewButton = () => {
   // details form
   // router.push({ name: 'newCourse' })
   router.push({ path: 'new-course-calendar' })
-}
-
-const onClickNewOldButton = () => {
-  // for some reason, using route name doesn't
-  // load the nested route component, in this case
-  // /new-course/ should should show the step 1 course
-  // details form
-  // router.push({ name: 'newCourse' })
-  router.push({ path: 'old-new-course-calendar' })
 }
 
 const onClickDeleteButton = async () => {
