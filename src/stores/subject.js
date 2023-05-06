@@ -51,8 +51,6 @@ export const useSubjectStore = defineStore({
       try {
         this.list.loading = true
         SubjectService.list().then((data) => {
-          // console.log(data.data)
-          // convert date string JS Date object
           const formattedData = data.data.subjects.map((obj) => {
             return {
               ...obj,
@@ -75,7 +73,7 @@ export const useSubjectStore = defineStore({
         if (response.status === 201) {
           this.newForm.loading = false
           this.reset(['newForm'])
-          this.getSubjects() // refresh teachers list in store
+          this.getSubjects() // refresh subjects list in store
         }
       })
     },
@@ -83,7 +81,7 @@ export const useSubjectStore = defineStore({
       this.editForm.loading = true
       return SubjectService.update(payload).then((response) => {
         if (response.status === 200) {
-          this.getSubjects() // refresh teachers list in store
+          this.getSubjects() // refresh subjects list in store
         }
       })
     },
@@ -103,7 +101,7 @@ export const useSubjectStore = defineStore({
     reset(keys) {
       Object.assign(
         this,
-        keys?.length ? _pick(defaultState, keys) : defaultState
+        keys?.length ? _pick(freshDefaultState, keys) : freshDefaultState
       )
     },
   },
