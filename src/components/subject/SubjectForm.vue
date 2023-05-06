@@ -60,7 +60,6 @@
           }"
         />
       </div>
-      <!-- <pre>{{ validation['errors'] }}</pre> -->
     </template>
     <div class="field">
       <Button
