@@ -23,7 +23,7 @@
           (value) =>
             $emit(
               'selectedStartTime',
-              value.toLocaleTimeString().substring(0, 5)
+              value !== null ? value.toLocaleTimeString().substring(0, 5) : ''
             )
         "
       />
@@ -39,7 +39,10 @@
         class="mr-1"
         @update:model-value="
           (value) =>
-            $emit('selectedEndTime', value.toLocaleTimeString().substring(0, 5))
+            $emit(
+              'selectedEndTime',
+              value !== null ? value.toLocaleTimeString().substring(0, 5) : ''
+            )
         "
       />
       <Button
@@ -72,6 +75,11 @@ const days = ref([
 const selectedDay = ref('')
 const selectedStartTime = ref('')
 const selectedEndTime = ref('')
+
+const log = (value) => {
+  console.log(value)
+}
+
 
 defineProps({
   hasDeleteButton: {
