@@ -99,6 +99,9 @@ export const useSubjectStore = defineStore({
       }
     },
     reset(keys) {
+      // defaultState is reactive so will not return expected results in some circumstances
+      // to address this, we have to do a fresh copy of defaultState
+      const freshDefaultState = JSON.parse(JSON.stringify(defaultState))
       Object.assign(
         this,
         keys?.length ? _pick(freshDefaultState, keys) : freshDefaultState
