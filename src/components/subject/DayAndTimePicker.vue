@@ -50,6 +50,7 @@
         @click="() => $emit('clickedDeleteDayAndTimeButton')"
         icon="pi pi-trash"
         class="p-button-danger"
+        id="deleteDayAndTimeButton"
       />
       <small class="p-error">{{ validationErrors.endTime[0] }}</small>
     </div>
@@ -75,11 +76,6 @@ const days = ref([
 const selectedDay = ref('')
 const selectedStartTime = ref('')
 const selectedEndTime = ref('')
-
-const log = (value) => {
-  console.log(value)
-}
-
 
 defineProps({
   hasDeleteButton: {
