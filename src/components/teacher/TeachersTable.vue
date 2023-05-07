@@ -64,10 +64,10 @@ import { useDialog } from 'primevue/usedialog'
 import DataTable from 'primevue/datatable'
 import Button from 'primevue/button'
 import Column from 'primevue/column'
-// import Paginator from 'primevue/paginator'
 import TablePaginator from '@/components/TablePaginator.vue'
 import TeacherForm from '@/components/teacher/TeacherForm.vue'
 import { useTeacherStore } from '@/stores/teacher'
+import { formatDate } from '@/utils/dateTimeFormatters'
 
 const teacherStore = useTeacherStore()
 const confirm = useConfirm()
@@ -119,12 +119,6 @@ const onClickEditButton = async (rowData) => {
     hourlyRate: parseFloat(hourlyRate),
   }
   showEditTeacherDialog()
-}
-
-const formatDate = (dateObj) => {
-  return `${dateObj.getDate()}/${
-    dateObj.getMonth() + 1
-  }/${dateObj.getFullYear()}`
 }
 
 const onPageChange = (page) => {
