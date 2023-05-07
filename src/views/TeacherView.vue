@@ -1,12 +1,12 @@
 <template>
   <div class="col courses">
     <h1>Teachers</h1>
-    <Toolbar />
+    <TeacherToolbar />
     <TeachersTable />
   </div>
 </template>
 
 <script setup>
-import Toolbar from '@/components/teacher/Toolbar.vue'
+import TeacherToolbar from '@/components/teacher/TeacherToolbar.vue'
 import TeachersTable from '@/components/teacher/TeachersTable.vue'
 </script>
