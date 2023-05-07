@@ -19,6 +19,7 @@ const defaultState = {
   list: {
     data: [],
     loading: false,
+    total: 0,
   },
   loading: false,
 }
@@ -47,10 +48,10 @@ export const useSubjectStore = defineStore({
   }),
   getters: {},
   actions: {
-    async getSubjects() {
+    async getSubjects(page = 1) {
       try {
         this.list.loading = true
-        SubjectService.list().then((data) => {
+        SubjectService.list(page).then((data) => {
           const formattedData = data.data.subjects.map((obj) => {
             return {
               ...obj,
@@ -66,6 +67,7 @@ export const useSubjectStore = defineStore({
             }
           })
           this.list.data = formattedData
+          this.list.total = data.data.meta.total
           this.list.loading = false
         })
       } catch (error) {

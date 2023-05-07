@@ -1,7 +1,7 @@
 <template>
   <DataTable
-    :value="storeSubject.list.data"
-    :loading="storeSubject.list.loading"
+    :value="subjectStore.list.data"
+    :loading="subjectStore.list.loading"
     class="mt-4"
   >
     <Column field="name" header="Name"></Column>
@@ -44,26 +44,36 @@
     </Column>
     <Column style="min-width: 5rem"> </Column>
   </DataTable>
+  <TablePaginator
+    :totalRecords="subjectStore.list.total"
+    :rowsPerPage="15"
+    @page-changed="(page) => onPageChange(page)"
+  />
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
+import TablePaginator from '@/components/TablePaginator.vue'
 import { useSubjectStore } from '@/stores/subject'
 import { formatDate } from '@/utils/dateTimeFormatters'
 
-const storeSubject = useSubjectStore()
+const subjectStore = useSubjectStore()
 
 const dateValueColumns = ref([
   { field: 'createdAt', header: 'Created At' },
   { field: 'updatedAt', header: 'Updated At' },
 ])
 
+const onPageChange = (page) => {
+  subjectStore.getSubjects(page)
+}
+
 onMounted(() => {
   // check to prevent hammering the API unnecessarily
-  if (storeSubject.list.data.length === 0) {
-    storeSubject.getSubjects()
+  if (subjectStore.list.data.length === 0) {
+    subjectStore.getSubjects()
   }
 })
 </script>

@@ -13,7 +13,7 @@ export default {
   async delete(subjectId) {
     return axiosClient.delete(`/api/subjects/${subjectId}`)
   },
-  list() {
-    return axiosClient.get('/api/subjects')
+  list(page = 1) {
+    return axiosClient.get(`/api/subjects?page=${page}`)
   },
 }
