@@ -2,11 +2,11 @@
   <div class="col">
     <h1>Subjects</h1>
     <Toolbar />
-    <Table />
+    <SubjectTable />
   </div>
 </template>
 
 <script setup>
 import Toolbar from '@/components/subject/Toolbar.vue'
-import Table from '@/components/subject/Table.vue'
+import SubjectTable from '@/components/subject/SubjectTable.vue'
 </script>
