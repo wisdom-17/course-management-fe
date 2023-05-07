@@ -54,6 +54,12 @@ export const useSubjectStore = defineStore({
           const formattedData = data.data.subjects.map((obj) => {
             return {
               ...obj,
+              daysAndTimes: obj.daysAndTimes.reduce((group, item) => {
+                const day = item.day
+                group[day] = group[day] ?? []
+                group[day].push(item)
+                return group
+              }, {}),
               createdAt: new Date(obj.createdAt),
               updatedAt: new Date(obj.updatedAt),
               deletedAt: new Date(obj.deletedAt),
