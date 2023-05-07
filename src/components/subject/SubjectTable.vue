@@ -32,39 +32,16 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useConfirm } from 'primevue/useconfirm'
-import { useDialog } from 'primevue/usedialog'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
-import TeacherForm from '@/components/teacher/TeacherForm.vue'
 import { useSubjectStore } from '@/stores/subject'
-import { useTeacherStore } from '@/stores/teacher'
 
 const storeSubject = useSubjectStore()
-const storeTeacher = useTeacherStore()
-const confirm = useConfirm()
-const dialog = useDialog()
 
 const dateValueColumns = ref([
   { field: 'createdAt', header: 'Created At' },
   { field: 'updatedAt', header: 'Updated At' },
 ])
-
-const showEditTeacherDialog = () => {
-  dialog.open(TeacherForm, {
-    props: {
-      style: { width: '60vw' },
-      header: 'Edit Teacher',
-    },
-    onClose: () => {
-      storeTeacher.editForm = {
-        id: null,
-        name: '',
-        hourlyRate: 0,
-      }
-    },
-  })
-}
 
 // TODO: move into composable
 const formatDate = (dateObj) => {
