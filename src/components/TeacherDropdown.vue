@@ -4,7 +4,8 @@
     :options="teacherOptions"
     optionLabel="name"
     placeholder="Select a Teacher"
-    :loading="storeTeacher.list.loading"
+    :loading="storeTeacher.all.loading"
+    filter
   />
 </template>
 <script setup>
@@ -12,20 +13,20 @@ import { computed, ref, onMounted } from 'vue'
 import Dropdown from 'primevue/dropdown'
 import { useTeacherStore } from '@/stores/teacher'
 
-const storeTeacher = useTeacherStore()
+const teacherStore = useTeacherStore()
 
 const selectedTeacher = ref(null)
 
 const teacherOptions = computed(() => {
-  return storeTeacher.list.data.map((teacherObj) => {
+  return teacherStore.all.data.map((teacherObj) => {
     return { id: teacherObj.id, name: teacherObj.name }
   })
 })
 
 onMounted(() => {
   // check to prevent hammering the API unnecessarily
-  if (storeTeacher.list.data.length === 0) {
-    storeTeacher.getTeachers()
+  if (teacherStore.all.data.length === 0) {
+    teacherStore.getAllTeachers()
   }
 })
 </script>

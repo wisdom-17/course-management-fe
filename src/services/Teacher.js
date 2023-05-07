@@ -16,4 +16,7 @@ export default {
   list(page = 1) {
     return axiosClient.get(`/api/teachers?page=${page}`)
   },
+  all() {
+    return axiosClient.get('/api/teachers/all')
+  },
 }

@@ -1,10 +1,11 @@
 <template>
   <MultiSelect
-    v-model="storeSubject.newForm.teachers"
+    v-model="subjectStore.newForm.teachers"
     :options="teacherOptions"
     optionLabel="name"
     placeholder="Select Teacher(s)"
-    :loading="storeTeacher.list.loading"
+    :loading="teacherStore.all.loading"
+    :filter="true"
   />
 </template>
 <script setup>
@@ -13,19 +14,19 @@ import MultiSelect from 'primevue/multiselect'
 import { useSubjectStore } from '@/stores/subject'
 import { useTeacherStore } from '@/stores/teacher'
 
-const storeSubject = useSubjectStore()
-const storeTeacher = useTeacherStore()
+const subjectStore = useSubjectStore()
+const teacherStore = useTeacherStore()
 
 const teacherOptions = computed(() => {
-  return storeTeacher.list.data.map((teacherObj) => {
+  return teacherStore.all.data.map((teacherObj) => {
     return { id: teacherObj.id, name: teacherObj.name }
   })
 })
 
 onMounted(() => {
   // check to prevent hammering the API unnecessarily
-  if (storeTeacher.list.data.length === 0) {
-    storeTeacher.getTeachers()
+  if (teacherStore.all.data.length === 0) {
+    teacherStore.getAllTeachers()
   }
 })
 </script>

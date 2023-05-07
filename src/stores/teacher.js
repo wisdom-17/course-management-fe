@@ -18,7 +18,10 @@ export const useTeacherStore = defineStore({
       loading: false,
       total: 0,
     },
-    loading: false,
+    all: {
+      data: [],
+      loading: false,
+    },
   }),
   getters: {},
   actions: {
@@ -42,6 +45,27 @@ export const useTeacherStore = defineStore({
       } catch (error) {
         console.log(error)
       }
+    },
+    async getAllTeachers() {
+      this.all.loading = true
+      TeacherService.all()
+        .then((data) => {
+          // convert date string JS Date object
+          const formattedData = data.data.teachers.map((obj) => {
+            return {
+              ...obj,
+              createdAt: new Date(obj.createdAt),
+              updatedAt: new Date(obj.updatedAt),
+              deletedAt: new Date(obj.deletedAt),
+            }
+          })
+          this.all.data = formattedData
+          this.all.loading = false
+        })
+        .catch((error) => {
+          this.all.loading = false
+          console.log(error)
+        })
     },
     async saveNew(payload) {
       this.newForm.loading = true
