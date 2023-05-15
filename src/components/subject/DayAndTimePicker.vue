@@ -23,7 +23,11 @@
           (value) =>
             $emit(
               'selectedStartTime',
-              value !== null ? value.toLocaleTimeString().substring(0, 5) : ''
+              value !== null
+                ? value
+                    .toLocaleTimeString('en-GB', { timeZone: 'UTC' })
+                    .substring(0, 5)
+                : ''
             )
         "
       />
@@ -41,7 +45,11 @@
           (value) =>
             $emit(
               'selectedEndTime',
-              value !== null ? value.toLocaleTimeString().substring(0, 5) : ''
+              value !== null
+                ? value
+                    .toLocaleTimeString('en-GB', { timeZone: 'UTC' })
+                    .substring(0, 5)
+                : ''
             )
         "
       />
