@@ -2,6 +2,7 @@ import { useAuthStore } from '@/stores/auth'
 import { useCourseCalendarStore } from '@/stores/courseCalendar'
 import { createRouter, createWebHistory } from 'vue-router'
 import AboutView from '@/views/AboutView.vue'
+import CourseBudgetCalculatorView from '@/views/CourseBudgetCalculatorView.vue'
 import CourseCalendarsView from '@/views/CourseCalendarsView.vue'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
@@ -83,6 +84,12 @@ const routes = [
     name: 'subjects',
     meta: { requiresAuth: true },
     component: SubjectView,
+  },
+  {
+    path: '/course-budget-calculator',
+    name: 'courseBudgetCalculator',
+    meta: { requiresAuth: true },
+    component: CourseBudgetCalculatorView,
   },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
 ]

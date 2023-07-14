@@ -32,8 +32,13 @@ const items = ref([
   },
   {
     label: 'Subjects',
-    icon: 'pi pi-calculator',
+    icon: 'pi pi-briefcase',
     to: { name: 'subjects' },
+  },
+  {
+    label: 'Course Budget Calculator',
+    icon: 'pi pi-calculator',
+    to: { name: 'courseBudgetCalculator' },
   },
   {
     label: 'About',
