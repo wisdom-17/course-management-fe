@@ -58,8 +58,7 @@ watch(
 
     // add active style to link on current page
     if (items.value.find((obj) => obj.to.name === newRoute)) {
-      items.value.find((obj) => obj.to.name === newRoute).class =
-        'p-menuitem-active'
+      items.value.find((obj) => obj.to.name === newRoute).class = 'p-highlight'
     }
   },
   // this ensures the watch is run on initialisation too
