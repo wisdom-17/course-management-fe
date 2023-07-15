@@ -23,7 +23,11 @@
 
     <div class="field">
       <label for="calendars">Course Calendar</label>
-      <CourseCalendarsDropdown id="calendars" class="mr-1 w-6" />
+      <CourseCalendarsDropdown
+        id="calendars"
+        class="mr-1 w-6"
+        v-model="storeSubject.newForm.courseCalendar"
+      />
       <small class="p-error">{{ validation.errors.courseCalendarId[0] }}</small>
     </div>
 
