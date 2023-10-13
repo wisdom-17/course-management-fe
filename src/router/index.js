@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import AboutView from '@/views/AboutView.vue'
 import CourseBudgetCalculatorView from '@/views/CourseBudgetCalculatorView.vue'
 import CourseCalendarsView from '@/views/CourseCalendarsView.vue'
+import ViewCourseCalendarView from '@/views/ViewCourseCalendarView.vue'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import SubjectView from '@/views/SubjectView.vue'
@@ -43,6 +44,12 @@ const routes = [
     name: 'courseCalendars',
     meta: { requiresAuth: true },
     component: CourseCalendarsView,
+  },
+  {
+    path: '/view-course-calendar',
+    name: 'viewCourseCalendar',
+    meta: { requiresAuth: true },
+    component: ViewCourseCalendarView,
   },
   {
     path: '/new-course-calendar',
