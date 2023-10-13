@@ -66,7 +66,13 @@
         {{ formatDate(slotProps.data[col.field]) }}
       </template>
     </Column>
-    <Column style="min-width: 10rem">{{ Todo }} </Column>
+    <Column header="Actions">
+      <template #body>
+        <router-link :to="{ name: 'viewCourseCalendar' }">
+          <i class="pi pi-eye"></i>
+        </router-link>
+      </template>
+    </Column>
   </DataTable>
 </template>
 
