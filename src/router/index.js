@@ -46,10 +46,11 @@ const routes = [
     component: CourseCalendarsView,
   },
   {
-    path: '/view-course-calendar',
+    path: '/view-course-calendar/:id',
     name: 'viewCourseCalendar',
     meta: { requiresAuth: true },
     component: ViewCourseCalendarView,
+    props: true,
   },
   {
     path: '/new-course-calendar',

@@ -67,8 +67,13 @@
       </template>
     </Column>
     <Column header="Actions">
-      <template #body>
-        <router-link :to="{ name: 'viewCourseCalendar' }">
+      <template #body="slotProps">
+        <router-link
+          :to="{
+            name: 'viewCourseCalendar',
+            params: { id: slotProps.data.id },
+          }"
+        >
           <i class="pi pi-eye"></i>
         </router-link>
       </template>
