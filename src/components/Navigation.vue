@@ -31,6 +31,12 @@ const items = ref([
     to: { name: 'courseCalendars' },
   },
   {
+    label: 'View Course Calendar',
+    icon: 'pi pi-calendar',
+    to: { name: 'viewCourseCalendar' },
+    visible: false,
+  },
+  {
     label: 'Subjects',
     icon: 'pi pi-briefcase',
     to: { name: 'subjects' },
