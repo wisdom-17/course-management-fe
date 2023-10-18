@@ -41,16 +41,16 @@ const items = ref([
     icon: 'pi pi-briefcase',
     to: { name: 'subjects' },
   },
-  {
-    label: 'Course Budget Calculator',
-    icon: 'pi pi-calculator',
-    to: { name: 'courseBudgetCalculator' },
-  },
-  {
-    label: 'About',
-    icon: 'pi pi-info-circle',
-    to: { name: 'about' },
-  },
+  // {
+  //   label: 'Course Budget Calculator',
+  //   icon: 'pi pi-calculator',
+  //   to: { name: 'courseBudgetCalculator' },
+  // },
+  // {
+  //   label: 'About',
+  //   icon: 'pi pi-info-circle',
+  //   to: { name: 'about' },
+  // },
 ])
 
 // Buggy since updating to Primevue v3.18.0
