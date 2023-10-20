@@ -8,6 +8,7 @@ import ViewCourseCalendarView from '@/views/ViewCourseCalendarView.vue'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import SubjectView from '@/views/SubjectView.vue'
+import ViewSubjectTimetableView from '@/views/ViewSubjectTimetableView.vue'
 import OldNewCourseCalendarView from '@/views/OldNewCourseCalendarView.vue'
 import NewCourseCalendarView from '@/views/NewCourseCalendarView.vue'
 import NotFound from '@/components/404.vue'
@@ -92,6 +93,13 @@ const routes = [
     name: 'subjects',
     meta: { requiresAuth: true },
     component: SubjectView,
+  },
+  {
+    path: '/view-subject-timetable/:id',
+    name: 'viewSubjectTimetable',
+    meta: { requiresAuth: true },
+    component: ViewSubjectTimetableView,
+    props: true,
   },
   {
     path: '/course-budget-calculator',

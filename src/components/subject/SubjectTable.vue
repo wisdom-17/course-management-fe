@@ -42,7 +42,18 @@
         {{ formatDate(slotProps.data[col.field]) }}
       </template>
     </Column>
-    <Column style="min-width: 5rem"> </Column>
+    <Column header="Actions">
+      <template #body="slotProps">
+        <router-link
+          :to="{
+            name: 'viewSubjectTimetable',
+            params: { id: slotProps.data.id },
+          }"
+        >
+          <i class="pi pi-eye"></i>
+        </router-link>
+      </template>
+    </Column>
   </DataTable>
   <TablePaginator
     :totalRecords="subjectStore.list.total"
