@@ -1,16 +1,12 @@
 <template>
   <div class="col courses">
-    <Card class="mt-3">
-      <template #title>View #{{ id }} Course Calendar</template>
+    <h1>View #{{ id }} Course Calendar</h1>
 
-      <template #content>Under construction</template>
-    </Card>
+    <p>Under construction</p>
   </div>
 </template>
 
 <script setup>
-import Card from 'primevue/card'
-
 defineProps({
   id: { type: Number, default: 0 },
 })
