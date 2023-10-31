@@ -8,7 +8,9 @@ import ViewCourseCalendarView from '@/views/ViewCourseCalendarView.vue'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import SubjectView from '@/views/SubjectView.vue'
+import CourseView from '@/views/CourseView.vue'
 import ViewSubjectTimetableView from '@/views/ViewSubjectTimetableView.vue'
+import ViewCourseTimetableView from '@/views/ViewCourseTimetableView.vue'
 import OldNewCourseCalendarView from '@/views/OldNewCourseCalendarView.vue'
 import NewCourseCalendarView from '@/views/NewCourseCalendarView.vue'
 import NotFound from '@/components/404.vue'
@@ -89,6 +91,12 @@ const routes = [
     component: TeacherView,
   },
   {
+    path: '/courses',
+    name: 'courses',
+    meta: { requiresAuth: true },
+    component: CourseView,
+  },
+  {
     path: '/subjects',
     name: 'subjects',
     meta: { requiresAuth: true },
@@ -99,6 +107,13 @@ const routes = [
     name: 'viewSubjectTimetable',
     meta: { requiresAuth: true },
     component: ViewSubjectTimetableView,
+    props: true,
+  },
+  {
+    path: '/view-course-timetable/:id',
+    name: 'viewCourseTimetable',
+    meta: { requiresAuth: true },
+    component: ViewCourseTimetableView,
     props: true,
   },
   {
