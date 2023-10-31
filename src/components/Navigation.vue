@@ -41,6 +41,11 @@ const items = ref([
     icon: 'pi pi-briefcase',
     to: { name: 'subjects' },
   },
+  {
+    label: 'Courses',
+    icon: 'pi pi-briefcase',
+    to: { name: 'courses' },
+  },
   // {
   //   label: 'Course Budget Calculator',
   //   icon: 'pi pi-calculator',
