@@ -46,7 +46,20 @@ const routes = [
     name: 'viewCourse',
     meta: { requiresAuth: true },
     component: ViewCourseView,
-    props: true,
+    props: (route) => {
+      /**
+       * This would preserve the other route.params object properties overriding only
+       * `id` in case it exists with its integer equivalent, or otherwise with
+       * undefined.
+       *
+       * Unary plus operator converts its operand to Number type. 
+       * (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Unary_plus)
+       */
+      return {
+        ...route.params,
+        ...{ id: +route.params.id || undefined },
+      }
+    },
   },
   {
     path: '/new-course',
@@ -100,7 +113,17 @@ const routes = [
     name: 'viewSubjectTimetable',
     meta: { requiresAuth: true },
     component: ViewSubjectTimetableView,
-    props: true,
+    props: (route) => {
+      /**
+       * This would preserve the other route.params object properties overriding only
+       * `id` in case it exists with its integer equivalent, or otherwise with
+       * undefined.
+       */
+      return {
+        ...route.params,
+        ...{ id: +route.params.id || undefined },
+      }
+    },
   },
   {
     path: '/view-course-timetable/:id',
