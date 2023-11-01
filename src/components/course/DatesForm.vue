@@ -40,7 +40,7 @@
       />
     </div>
     <MultiStepFormButtons
-      @save-button-clicked="onClickSaveButton('courseCalendars')"
+      @save-button-clicked="onClickSaveButton('courses')"
       @next-button-clicked="onClickSaveButton('courseStepThree')"
       @previous-button-clicked="onClickPreviousButton"
       :hasNextButton="hasNextButton"
@@ -57,13 +57,13 @@ import { useRouter } from 'vue-router'
 import Button from 'primevue/button'
 import { useConfirm } from 'primevue/useconfirm'
 import { useToast } from 'primevue/usetoast'
-import CourseCalendarService from '@/services/CourseCalendar'
+import CourseService from '@/services/Course'
 import DateRangePicker from '@/components/DateRangePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
-import MultiStepFormButtons from '@/components/courseCalendar/MultiStepFormButtons.vue'
-import { useCourseCalendarStore } from '@/stores/courseCalendar'
+import MultiStepFormButtons from '@/components/course/MultiStepFormButtons.vue'
+import { useCourseStore } from '@/stores/course'
 
-const storeCourseCalendar = useCourseCalendarStore()
+const storeCourse = useCourseStore()
 const confirm = useConfirm()
 const toast = useToast()
 
@@ -102,10 +102,10 @@ const formattedSelectedDates = computed(() => {
 const minAndMaxDates = computed(() => {
   return {
     minDate: new Date(
-      storeCourseCalendar.multiStepForm.startDate.replace(/-/g, '/')
+      storeCourse.multiStepForm.startDate.replace(/-/g, '/')
     ),
     maxDate: new Date(
-      storeCourseCalendar.multiStepForm.endDate.replace(/-/g, '/')
+      storeCourse.multiStepForm.endDate.replace(/-/g, '/')
     ),
   }
 })
@@ -157,10 +157,10 @@ const onClickSaveButton = async (redirectRouteName) => {
     endDate: [],
   }
 
-  const { id } = storeCourseCalendar.multiStepForm
+  const { id } = storeCourse.multiStepForm
   try {
     isLoading.value = true
-    const apiResult = await CourseCalendarService.newDates(payload, id)
+    const apiResult = await CourseService.newDates(payload, id)
     if (apiResult.status === 201) {
       isLoading.value = false
       successMessage.value = [...apiResult.data]
@@ -185,9 +185,9 @@ const onClickSaveButton = async (redirectRouteName) => {
 const onClickPreviousButton = () => {
   let redirectRouteName = ''
   if (props.type === 'Term') {
-    redirectRouteName = 'courseCalendarStepOne'
+    redirectRouteName = 'courseStepOne'
   } else if (props.type === 'Holiday') {
-    redirectRouteName = 'courseCalendarStepTwo'
+    redirectRouteName = 'courseStepTwo'
   }
   setTimeout(() => {
     router.push({ name: redirectRouteName })

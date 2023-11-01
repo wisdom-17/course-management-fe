@@ -1,6 +1,6 @@
 <template>
   <div class="col courses">
-    <h1>View #{{ id }} Course Calendar</h1>
+    <h1>View #{{ id }} Course </h1>
 
     <p>Under construction</p>
   </div>

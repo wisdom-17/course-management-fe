@@ -2,10 +2,10 @@
   <Card class="mt-4 surface-ground w-auto">
     <template #content>
       <DatesForm
-        type="Term"
-        :hasPreviousButton="true"
-        :hasSaveButton="false"
-        hasNextButton
+        type="Holiday"
+        :hasPreviousButton="false"
+        :hasNextButton="false"
+        hasSaveButton
       />
     </template>
   </Card>
@@ -13,5 +13,5 @@
 
 <script setup>
 import Card from 'primevue/card'
-import DatesForm from '@/components/courseCalendar/DatesForm.vue'
+import DatesForm from '@/components/course/DatesForm.vue'
 </script>

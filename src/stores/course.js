@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia'
-import CourseCalendarService from '@/services/CourseCalendar'
+import CourseService from '@/services/Course'
 
-export const useCourseCalendarStore = defineStore({
-  id: 'courseCalendar',
+export const useCourseStore = defineStore({
+  id: 'course',
   state: () => ({
     newForm: {
-      calendarName: '',
+      Name: '',
       startDate: '',
       endDate: '',
       // default value for semester is:
@@ -24,9 +24,9 @@ export const useCourseCalendarStore = defineStore({
       startDate: '',
       endDate: '',
       loading: false,
-      courseCalendarStatus: 'new',
+      courseStatus: 'new',
       formData: {
-        courseCalendarDetails: {
+        courseDetails: {
           name: '',
           dateRange: [],
         },
@@ -48,10 +48,10 @@ export const useCourseCalendarStore = defineStore({
   }),
   getters: {},
   actions: {
-    async getCourseCalendars() {
+    async getCourses() {
       try {
         this.list.loading = true
-        CourseCalendarService.list().then((data) => {
+        CourseService.list().then((data) => {
           // convert date string JS Date object
           const formattedData = data.data.map((obj) => {
             return {
@@ -76,7 +76,7 @@ export const useCourseCalendarStore = defineStore({
     async saveNewCourse(payload) {
       this.multiStepForm.loading = true
 
-      return CourseCalendarService.new(payload).then((response) => {
+      return CourseService.new(payload).then((response) => {
         if (response.status === 201) {
           this.multiStepForm.loading = false
           this.multiStepForm.id = response.data.id
@@ -84,18 +84,18 @@ export const useCourseCalendarStore = defineStore({
           this.multiStepForm.startDate = payload.startDate
           this.multiStepForm.endDate = payload.endDate
 
-          this.getCourseCalendars() // refresh courses list in defineStore
+          this.getCourses() // refresh courses list in defineStore
         }
       })
     },
-    async saveNewCalendar(payload) {
+    async saveNew(payload) {
       this.newForm.loading = true
 
-      return CourseCalendarService.new(payload).then((response) => {
+      return CourseService.new(payload).then((response) => {
         if (response.status === 201) {
           // reset newForm properties
           this.newForm = {
-            calendarName: '',
+            Name: '',
             startDate: '',
             endDate: '',
             semesters: [{ name: '' }],
@@ -104,15 +104,15 @@ export const useCourseCalendarStore = defineStore({
             loading: false,
           }
 
-          this.getCourseCalendars() // refresh courses list in defineStore
+          this.getCourses() // refresh courses list in defineStore
         }
       })
     },
     async update(payload) {
       this.editForm.loading = true
-      return CourseCalendarService.update(payload).then((response) => {
+      return CourseService.update(payload).then((response) => {
         if (response.status === 200) {
-          this.getCourseCalendars() // refresh courses list in store
+          this.getCourses() // refresh courses list in store
         }
       })
     },
@@ -122,11 +122,11 @@ export const useCourseCalendarStore = defineStore({
         const payload = {
           courseIds: [...courseIds],
         }
-        const apiResult = await CourseCalendarService.delete(payload)
+        const apiResult = await CourseService.delete(payload)
 
         if (apiResult.status === 200) {
           this.list.loading = false
-          this.getCourseCalendars() // refresh
+          this.getCourses() // refresh
         }
       } catch (error) {
         console.log(error)

@@ -3,7 +3,7 @@ body {
 }
 
 .newCourse .field label,
-.newCourseCalendar .field label,
+.newCourse .field label,
 .teacher .field label,
 .subject .field label {
   display: block;

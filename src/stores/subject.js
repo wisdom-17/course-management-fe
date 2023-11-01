@@ -6,7 +6,7 @@ const defaultState = {
   newForm: {
     name: '',
     teachers: [],
-    courseCalendar: null,
+    course: null,
     daysAndTimes: [{ day: '', startTime: null, endTime: null }],
     loading: false,
   },
@@ -30,7 +30,7 @@ export const useSubjectStore = defineStore({
     newForm: {
       name: '',
       teachers: [],
-      courseCalendar: null,
+      course: null,
       daysAndTimes: [{ day: '', startTime: null, endTime: null }],
       loading: false,
     },

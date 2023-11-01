@@ -26,25 +26,20 @@ const items = ref([
     to: { name: 'teachers' },
   },
   {
-    label: 'Course Calendars',
+    label: 'Courses',
     icon: 'pi pi-calendar',
-    to: { name: 'courseCalendars' },
+    to: { name: 'courses' },
   },
   {
-    label: 'View Course Calendar',
+    label: 'View Course ',
     icon: 'pi pi-calendar',
-    to: { name: 'viewCourseCalendar' },
+    to: { name: 'viewCourse' },
     visible: false,
   },
   {
     label: 'Subjects',
     icon: 'pi pi-briefcase',
     to: { name: 'subjects' },
-  },
-  {
-    label: 'Courses',
-    icon: 'pi pi-briefcase',
-    to: { name: 'courses' },
   },
   // {
   //   label: 'Course Budget Calculator',

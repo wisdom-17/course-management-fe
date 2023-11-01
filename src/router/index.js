@@ -1,23 +1,22 @@
 import { useAuthStore } from '@/stores/auth'
-import { useCourseCalendarStore } from '@/stores/courseCalendar'
+import { useCourseStore } from '@/stores/course'
 import { createRouter, createWebHistory } from 'vue-router'
 import AboutView from '@/views/AboutView.vue'
 import CourseBudgetCalculatorView from '@/views/CourseBudgetCalculatorView.vue'
-import CourseCalendarsView from '@/views/CourseCalendarsView.vue'
-import ViewCourseCalendarView from '@/views/ViewCourseCalendarView.vue'
+import ViewCourseView from '@/views/ViewCourseView.vue'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import SubjectView from '@/views/SubjectView.vue'
 import CourseView from '@/views/CourseView.vue'
 import ViewSubjectTimetableView from '@/views/ViewSubjectTimetableView.vue'
 import ViewCourseTimetableView from '@/views/ViewCourseTimetableView.vue'
-import OldNewCourseCalendarView from '@/views/OldNewCourseCalendarView.vue'
-import NewCourseCalendarView from '@/views/NewCourseCalendarView.vue'
+import OldNewCourseView from '@/views/OldNewCourseView.vue'
+import NewCourseView from '@/views/NewCourseView.vue'
 import NotFound from '@/components/404.vue'
 import TeacherView from '@/views/TeacherView.vue'
-import StepOne from '@/components/courseCalendar/StepOne.vue'
-import StepTwo from '@/components/courseCalendar/StepTwo.vue'
-import StepThree from '@/components/courseCalendar/StepThree.vue'
+import StepOne from '@/components/course/StepOne.vue'
+import StepTwo from '@/components/course/StepTwo.vue'
+import StepThree from '@/components/course/StepThree.vue'
 
 const routes = [
   {
@@ -43,43 +42,37 @@ const routes = [
     component: AboutView,
   },
   {
-    path: '/course-calendars',
-    name: 'courseCalendars',
+    path: '/view-course-/:id',
+    name: 'viewCourse',
     meta: { requiresAuth: true },
-    component: CourseCalendarsView,
-  },
-  {
-    path: '/view-course-calendar/:id',
-    name: 'viewCourseCalendar',
-    meta: { requiresAuth: true },
-    component: ViewCourseCalendarView,
+    component: ViewCourseView,
     props: true,
   },
   {
-    path: '/new-course-calendar',
-    name: 'newCourseCalendar',
+    path: '/new-course-',
+    name: 'newCourse',
     meta: { requiresAuth: true },
-    component: NewCourseCalendarView,
+    component: NewCourseView,
   },
   {
-    path: '/old-new-course-calendar',
-    name: 'oldNewCourseCalendar',
+    path: '/old-new-course-',
+    name: 'oldNewCourse',
     meta: { requiresAuth: true },
-    component: OldNewCourseCalendarView,
+    component: OldNewCourseView,
     children: [
       {
         path: '',
-        name: 'courseCalendarStepOne',
+        name: 'courseStepOne',
         component: StepOne,
       },
       {
         path: 'step-two',
-        name: 'courseCalendarStepTwo',
+        name: 'courseStepTwo',
         component: StepTwo,
       },
       {
         path: 'step-three',
-        name: 'courseCalendarStepThree',
+        name: 'courseStepThree',
         component: StepThree,
       },
     ],
@@ -132,7 +125,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const storeAuth = useAuthStore()
-  const storeCourseCalendar = useCourseCalendarStore()
+  const storeCourse = useCourseStore()
   const authUser = storeAuth.loggedInUser
   const reqAuth = to.matched.some((record) => record.meta.requiresAuth)
   const hideForAuth = to.matched.some((record) => record.meta.hideForAuth)
@@ -142,10 +135,10 @@ router.beforeEach((to, from, next) => {
     storeAuth.getAuthenticatedUserDetails().then(() => {
       if (!storeAuth.loggedInUser) next(loginQuery)
       else if (
-        ['courseCalendarStepTwo', 'courseCalendarStepThree'].includes(
+        ['courseStepTwo', 'courseStepThree'].includes(
           to.name
         ) &&
-        !storeCourseCalendar.multiStepForm.id
+        !storeCourse.multiStepForm.id
       ) {
         return next(from)
       } else next()

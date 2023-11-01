@@ -1,12 +1,12 @@
 <template>
-  <CourseCalendarsToolbar
+  <CoursesToolbar
     :selectedCourses="selectedCourses"
     @delete-success="selectedCourses = []"
   />
   <DataTable
-    :value="storeCourseCalendar.list.data"
+    :value="storeCourse.list.data"
     v-model:selection="selectedCourses"
-    :loading="storeCourseCalendar.list.loading"
+    :loading="storeCourse.list.loading"
     class="mt-4"
   >
     <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
@@ -70,7 +70,7 @@
       <template #body="slotProps">
         <router-link
           :to="{
-            name: 'viewCourseCalendar',
+            name: 'viewCourse',
             params: { id: slotProps.data.id },
           }"
         >
@@ -85,11 +85,11 @@
 import { ref, onMounted } from 'vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
-import CourseCalendarsToolbar from '@/components/courseCalendar/CourseCalendarsToolbar.vue'
-import { useCourseCalendarStore } from '@/stores/courseCalendar'
+import CoursesToolbar from '@/components/course/CoursesToolbar.vue'
+import { useCourseStore } from '@/stores/course'
 import { formatDate } from '@/utils/dateTimeFormatters'
 
-const storeCourseCalendar = useCourseCalendarStore()
+const storeCourse = useCourseStore()
 
 const selectedCourses = ref([])
 
@@ -104,8 +104,8 @@ const dateValueColumns = ref([
 
 onMounted(() => {
   // check to prevent hammering the API unnecessarily
-  if (storeCourseCalendar.list.data.length === 0) {
-    storeCourseCalendar.getCourseCalendars()
+  if (storeCourse.list.data.length === 0) {
+    storeCourse.getCourses()
   }
 })
 </script>

@@ -18,11 +18,11 @@ const router = useRouter()
 const onClickCancelButton = () => {
   confirm.require({
     message:
-      'Are you sure you want to cancel? Clicking "Yes" will take you to the Course Calendars list page and any unsaved changes will be lost.',
+      'Are you sure you want to cancel? Clicking "Yes" will take you to the Course s list page and any unsaved changes will be lost.',
     header: 'Cancel',
     icon: 'pi pi-exclamation-triangle',
     accept: () => {
-      router.push({ name: 'courseCalendars' })
+      router.push({ name: 'courses' })
     },
   })
 }

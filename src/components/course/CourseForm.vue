@@ -1,32 +1,32 @@
 <template>
   <div class="col">
-    <h1 ref="top">Create New Course Calendar</h1>
+    <h1 ref="top">Create New Course</h1>
     <ErrorMessage
       :message="validation.message"
       v-show="showErrorMessage"
       @close="onClickCloseErrorMessage"
     />
-    <form class="newCourseCalendar">
-      <Fieldset legend="Calendar Details">
+    <form class="newCourse">
+      <Fieldset legend=" Details">
         <div class="field">
-          <label for="courseCalendarName">Course Calendar Name</label>
+          <label for="courseName">Course  Name</label>
           <InputText
-            id="courseCalendarName"
+            id="courseName"
             :class="{ 'p-invalid': validation.errors.name.length > 0 }"
             class="mr-1 w-6"
             type="text"
-            v-model="storeCourseCalendar.newForm.calendarName"
+            v-model="storeCourse.newForm.Name"
           />
           <small class="p-error">{{ validation.errors.name[0] }}</small>
         </div>
 
         <div class="field">
           <DateRangePicker
-            label="Calendar Start and End Dates"
+            label=" Start and End Dates"
             @selected-date-range="
               (selectedDateRange) => {
-                storeCourseCalendar.newForm.startDate = selectedDateRange[0]
-                storeCourseCalendar.newForm.endDate = selectedDateRange[1]
+                storeCourse.newForm.startDate = selectedDateRange[0]
+                storeCourse.newForm.endDate = selectedDateRange[1]
               }
             "
             :validationErrorMessages="[
@@ -40,7 +40,7 @@
 
       <Fieldset legend="Semesters" :toggleable="true" class="mt-4">
         <template
-          v-for="(semester, index) in storeCourseCalendar.newForm.semesters"
+          v-for="(semester, index) in storeCourse.newForm.semesters"
           :key="index"
         >
           <!-- we need the v-if="semester" check to ensure deleted semester fields are handled as expected-->
@@ -50,7 +50,7 @@
               id="semesterName"
               class="mr-1 w-6"
               type="text"
-              v-model="storeCourseCalendar.newForm.semesters[index].name"
+              v-model="storeCourse.newForm.semesters[index].name"
             />
             <small class="p-error"></small>
             <Button
@@ -73,7 +73,7 @@
 
       <Fieldset legend="Terms" class="mt-4">
         <template
-          v-for="(term, index) in storeCourseCalendar.newForm.terms"
+          v-for="(term, index) in storeCourse.newForm.terms"
           :key="index"
         >
           <div v-if="term" class="formgrid grid">
@@ -83,7 +83,7 @@
                 id="semester"
                 class="w-full"
                 :options="semesters.map((obj) => obj.name)"
-                v-model="storeCourseCalendar.newForm.terms[index].semester"
+                v-model="storeCourse.newForm.terms[index].semester"
               />
               <small class="p-error"></small>
             </div>
@@ -93,7 +93,7 @@
                 id="termName"
                 class="w-full"
                 type="text"
-                v-model="storeCourseCalendar.newForm.terms[index].name"
+                v-model="storeCourse.newForm.terms[index].name"
               />
               <small class="p-error"></small>
             </div>
@@ -101,14 +101,14 @@
               <DateRangePicker
                 label="Term Start and End Dates"
                 cssClass="w-8 mr-1"
-                :minDate="new Date(storeCourseCalendar.newForm.startDate)"
-                :maxDate="new Date(storeCourseCalendar.newForm.endDate)"
+                :minDate="new Date(storeCourse.newForm.startDate)"
+                :maxDate="new Date(storeCourse.newForm.endDate)"
                 :disabledDates="getDisabledDates(index, 'terms')"
                 @selected-date-range="
                   (selectedDateRange) => {
-                    storeCourseCalendar.newForm.terms[index].startDate =
+                    storeCourse.newForm.terms[index].startDate =
                       selectedDateRange[0]
-                    storeCourseCalendar.newForm.terms[index].endDate =
+                    storeCourse.newForm.terms[index].endDate =
                       selectedDateRange[1]
                   }
                 "
@@ -135,7 +135,7 @@
 
       <Fieldset legend="Holidays" class="mt-4">
         <template
-          v-for="(holiday, index) in storeCourseCalendar.newForm.holidays"
+          v-for="(holiday, index) in storeCourse.newForm.holidays"
           :key="index"
         >
           <div v-if="holiday" class="formgrid grid">
@@ -145,7 +145,7 @@
                 id="semester"
                 class="w-full"
                 :options="semesters.map((obj) => obj.name)"
-                v-model="storeCourseCalendar.newForm.holidays[index].semester"
+                v-model="storeCourse.newForm.holidays[index].semester"
               />
               <small class="p-error"></small>
             </div>
@@ -157,7 +157,7 @@
                 id="holidayName"
                 class="w-full"
                 type="text"
-                v-model="storeCourseCalendar.newForm.holidays[index].name"
+                v-model="storeCourse.newForm.holidays[index].name"
               />
               <small class="p-error"></small>
             </div>
@@ -165,14 +165,14 @@
               <DateRangePicker
                 label="Holiday Start and End Dates"
                 cssClass="w-8 mr-1"
-                :minDate="new Date(storeCourseCalendar.newForm.startDate)"
-                :maxDate="new Date(storeCourseCalendar.newForm.endDate)"
+                :minDate="new Date(storeCourse.newForm.startDate)"
+                :maxDate="new Date(storeCourse.newForm.endDate)"
                 :disabledDates="getDisabledDates(index, 'holidays')"
                 @selected-date-range="
                   (selectedDateRange) => {
-                    storeCourseCalendar.newForm.holidays[index].startDate =
+                    storeCourse.newForm.holidays[index].startDate =
                       selectedDateRange[0]
-                    storeCourseCalendar.newForm.holidays[index].endDate =
+                    storeCourse.newForm.holidays[index].endDate =
                       selectedDateRange[1]
                   }
                 "
@@ -202,7 +202,7 @@
           icon="pi pi-save"
           label="Save"
           @click="onClickSaveButton"
-          :loading="storeCourseCalendar.newForm.loading"
+          :loading="storeCourse.newForm.loading"
         />
       </Fieldset>
     </form>
@@ -219,12 +219,12 @@ import { useConfirm } from 'primevue/useconfirm'
 import { useToast } from 'primevue/usetoast'
 import { useRouter } from 'vue-router'
 import ErrorMessage from '@/components/ErrorMessage.vue'
-import { useCourseCalendarStore } from '@/stores/courseCalendar'
+import { useCourseStore } from '@/stores/course'
 import DateRangePicker from '@/components/DateRangePicker.vue'
 
 const confirm = useConfirm()
 const router = useRouter()
-const storeCourseCalendar = useCourseCalendarStore()
+const storeCourse = useCourseStore()
 const toast = useToast()
 
 const validation = ref({
@@ -235,19 +235,19 @@ const validation = ref({
 const top = ref(null)
 
 const showDeleteSemesterButton = computed(() => {
-  return storeCourseCalendar.newForm.semesters.filter((x) => x).length > 1
+  return storeCourse.newForm.semesters.filter((x) => x).length > 1
     ? true
     : false
 })
 
 const showDeleteTermButton = computed(() => {
-  return storeCourseCalendar.newForm.terms.filter((x) => x).length > 1
+  return storeCourse.newForm.terms.filter((x) => x).length > 1
     ? true
     : false
 })
 
 const showDeleteHolidayButton = computed(() => {
-  return storeCourseCalendar.newForm.holidays.filter((x) => x).length > 1
+  return storeCourse.newForm.holidays.filter((x) => x).length > 1
     ? true
     : false
 })
@@ -258,19 +258,19 @@ const showErrorMessage = computed(() => {
 
 const onClickAdditionalSemestersButton = () => {
   console.log('clicked + semester button')
-  storeCourseCalendar.newForm.semesters.push({ name: '' })
+  storeCourse.newForm.semesters.push({ name: '' })
 }
 
 const onClickAdditionalTermsButton = () => {
-  storeCourseCalendar.newForm.terms.push({ name: '' })
+  storeCourse.newForm.terms.push({ name: '' })
 }
 
 const onClickAdditionalHolidaysButton = () => {
-  storeCourseCalendar.newForm.holidays.push({ name: '' })
+  storeCourse.newForm.holidays.push({ name: '' })
 }
 
 const semesters = computed(() =>
-  storeCourseCalendar.newForm.semesters
+  storeCourse.newForm.semesters
     .filter((obj) => obj.name !== '')
     .map((obj) => {
       return { name: obj.name }
@@ -278,7 +278,7 @@ const semesters = computed(() =>
 )
 
 const terms = computed(() =>
-  storeCourseCalendar.newForm.terms
+  storeCourse.newForm.terms
     .filter((obj) => obj.name !== '')
     .map((obj) => {
       return {
@@ -291,7 +291,7 @@ const terms = computed(() =>
 )
 
 const holidays = computed(() =>
-  storeCourseCalendar.newForm.holidays
+  storeCourse.newForm.holidays
     .filter((obj) => obj.name !== '')
     .map((obj) => {
       return {
@@ -314,7 +314,7 @@ const onClickDeleteSemesterButton = (index) => {
       // we need to preserve the index to ensure selected dates are handled correctly
       // howevever, the deleted element index position will still return 'empty'
       // so this needs to be handled
-      delete storeCourseCalendar.newForm.semesters[index]
+      delete storeCourse.newForm.semesters[index]
     },
   })
 }
@@ -330,7 +330,7 @@ const onClickDeleteTermButton = (index) => {
       // we need to preserve the index to ensure selected dates are handled correctly
       // howevever, the deleted element index position will still return 'empty'
       // so this needs to be handled
-      delete storeCourseCalendar.newForm.terms[index]
+      delete storeCourse.newForm.terms[index]
     },
   })
 }
@@ -346,14 +346,14 @@ const onClickDeleteHolidayButton = (index) => {
       // we need to preserve the index to ensure selected dates are handled correctly
       // howevever, the deleted element index position will still return 'empty'
       // so this needs to be handled
-      delete storeCourseCalendar.newForm.holidays[index]
+      delete storeCourse.newForm.holidays[index]
     },
   })
 }
 
 const getDisabledDates = (fieldIndex, type) => {
   // get all selected term dates
-  const selectedTermsDates = storeCourseCalendar.newForm.terms
+  const selectedTermsDates = storeCourse.newForm.terms
     .filter((obj, index) => {
       if (!!obj.startDate && !!obj.endDate) {
         if (type === 'terms') {
@@ -369,7 +369,7 @@ const getDisabledDates = (fieldIndex, type) => {
     )
 
   // get all selected holiday dates
-  const selectedHolidaysDates = storeCourseCalendar.newForm.holidays
+  const selectedHolidaysDates = storeCourse.newForm.holidays
     .filter((obj, index) => {
       if (!!obj.startDate && !!obj.endDate) {
         if (type === 'holidays') {
@@ -399,9 +399,9 @@ const getDatesInRange = (startDate, endDate) => {
 
 const onClickSaveButton = async () => {
   const payload = {
-    name: storeCourseCalendar.newForm.calendarName,
-    startDate: storeCourseCalendar.newForm.startDate,
-    endDate: storeCourseCalendar.newForm.endDate,
+    name: storeCourse.newForm.Name,
+    startDate: storeCourse.newForm.startDate,
+    endDate: storeCourse.newForm.endDate,
     semesters: semesters.value,
     terms: terms.value,
     holidays: holidays.value,
@@ -415,19 +415,19 @@ const onClickSaveButton = async () => {
     endDate: [],
   }
 
-  storeCourseCalendar
-    .saveNewCalendar(payload)
+  storeCourse
+    .saveNew(payload)
     .then(() => {
-      showToast('Course Calendar saved successfully')
+      showToast('Course  saved successfully')
       setTimeout(() => {
-        // redirect to course calendar list page
-        router.push({ name: 'courseCalendars' })
+        // redirect to course  list page
+        router.push({ name: 'courses' })
       }, 2000)
     })
     .catch((error) => {
       console.log(error)
-      storeCourseCalendar.newForm.loading = false
-      console.log('error in course calendar form')
+      storeCourse.newForm.loading = false
+      console.log('error in course  form')
       validation.value.message = error.response.data.message
       // update validation error msgs with error msgs
       // returned from API call

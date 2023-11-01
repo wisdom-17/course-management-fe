@@ -32,7 +32,7 @@
 
 <script setup>
 import Button from 'primevue/button'
-import CancelButton from '@/components/courseCalendar/CancelButton.vue'
+import CancelButton from '@/components/course/CancelButton.vue'
 
 defineProps({
   hasSaveButton: { type: Boolean, default: false },

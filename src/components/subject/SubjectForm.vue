@@ -22,13 +22,13 @@
     </div>
 
     <div class="field">
-      <label for="calendars">Course Calendar</label>
-      <CourseCalendarsDropdown
-        id="calendars"
+      <label for="s">Course </label>
+      <CourseDropdown
+        id="s"
         class="mr-1 w-6"
-        v-model="storeSubject.newForm.courseCalendar"
+        v-model="storeSubject.newForm.course"
       />
-      <small class="p-error">{{ validation.errors.courseCalendarId[0] }}</small>
+      <small class="p-error">{{ validation.errors.courseId[0] }}</small>
     </div>
 
     <h4 for="dayTime">Subject Days and Times</h4>
@@ -101,7 +101,7 @@ import { useConfirm } from 'primevue/useconfirm'
 import DayAndTimePicker from '@/components/subject/DayAndTimePicker.vue'
 import ErrorMessage from '@/components/ErrorMessage.vue'
 import TeacherMultiSelect from '@/components/TeacherMultiSelect.vue'
-import CourseCalendarsDropdown from '@/components/CourseCalendarsDropdown.vue'
+import CourseDropdown from '@/components/CourseDropdown.vue'
 
 import { useSubjectStore } from '@/stores/subject'
 import { useTeacherStore } from '@/stores/teacher'
@@ -125,7 +125,7 @@ const validation = ref({
   errors: {
     name: [],
     teacherIds: [],
-    courseCalendarId: [],
+    courseId: [],
   },
 })
 
@@ -155,12 +155,12 @@ const onClickSaveButton = async () => {
   const formData = storeSubject.newForm
   const selectedTeacherIds = formData.teachers.map((obj) => obj.id)
 
-  const selectedCourseCalendarId = formData.courseCalendar?.id
+  const selectedCourseId = formData.course?.id
 
   const payload = {
     name: formData.name,
     teacherIds: selectedTeacherIds,
-    courseCalendarId: selectedCourseCalendarId,
+    courseId: selectedCourseId,
     daysTimes: formData.daysAndTimes,
   }
 
@@ -169,7 +169,7 @@ const onClickSaveButton = async () => {
   validation.value.errors = {
     name: [],
     teacherIds: [],
-    courseCalendarId: [],
+    courseId: [],
   }
 
   storeSubject
