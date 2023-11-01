@@ -68,14 +68,19 @@
     </Column>
     <Column header="Actions">
       <template #body="slotProps">
-        <router-link
-          :to="{
-            name: 'viewCourse',
-            params: { id: slotProps.data.id },
-          }"
-        >
-          <i class="pi pi-eye"></i>
-        </router-link>
+        <Button
+          icon="pi pi-eye"
+          class="p-button-rounded p-button-primary mr-2"
+          @click="
+            () =>
+              router.push({
+                name: 'viewCourse',
+                params: { id: slotProps.data.id },
+              })
+          "
+          aria-label="View Course Timetable"
+          title="View Course Timetable"
+        />
       </template>
     </Column>
   </DataTable>
@@ -84,10 +89,14 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import DataTable from 'primevue/datatable'
+import Button from 'primevue/button'
 import Column from 'primevue/column'
+import { useRouter } from 'vue-router'
 import CoursesToolbar from '@/components/course/CoursesToolbar.vue'
 import { useCourseStore } from '@/stores/course'
 import { formatDate } from '@/utils/dateTimeFormatters'
+
+const router = useRouter()
 
 const storeCourse = useCourseStore()
 
