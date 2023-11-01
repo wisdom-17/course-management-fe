@@ -74,7 +74,7 @@
           @click="
             () =>
               router.push({
-                name: 'viewCourse',
+                name: 'viewCourseTimetable',
                 params: { id: slotProps.data.id },
               })
           "

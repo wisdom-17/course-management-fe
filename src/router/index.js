@@ -3,13 +3,12 @@ import { useCourseStore } from '@/stores/course'
 import { createRouter, createWebHistory } from 'vue-router'
 import AboutView from '@/views/AboutView.vue'
 import CourseBudgetCalculatorView from '@/views/CourseBudgetCalculatorView.vue'
-import ViewCourseView from '@/views/ViewCourseView.vue'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import SubjectView from '@/views/SubjectView.vue'
 import CourseView from '@/views/CourseView.vue'
 import ViewSubjectTimetableView from '@/views/ViewSubjectTimetableView.vue'
-import ViewCourseTimetableView from '@/views/ViewCourseTimetableView.vue'
+import CourseTimetableView from '@/views/CourseTimetableView.vue'
 import OldNewCourseView from '@/views/OldNewCourseView.vue'
 import NewCourseView from '@/views/NewCourseView.vue'
 import NotFound from '@/components/404.vue'
@@ -40,26 +39,6 @@ const routes = [
     // component: () => import('../views/AboutView.vue'),
     meta: { requiresAuth: true },
     component: AboutView,
-  },
-  {
-    path: '/view-course/:id',
-    name: 'viewCourse',
-    meta: { requiresAuth: true },
-    component: ViewCourseView,
-    props: (route) => {
-      /**
-       * This would preserve the other route.params object properties overriding only
-       * `id` in case it exists with its integer equivalent, or otherwise with
-       * undefined.
-       *
-       * Unary plus operator converts its operand to Number type. 
-       * (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Unary_plus)
-       */
-      return {
-        ...route.params,
-        ...{ id: +route.params.id || undefined },
-      }
-    },
   },
   {
     path: '/new-course',
@@ -129,8 +108,18 @@ const routes = [
     path: '/view-course-timetable/:id',
     name: 'viewCourseTimetable',
     meta: { requiresAuth: true },
-    component: ViewCourseTimetableView,
-    props: true,
+    component: CourseTimetableView,
+    props: (route) => {
+      /**
+       * This would preserve the other route.params object properties overriding only
+       * `id` in case it exists with its integer equivalent, or otherwise with
+       * undefined.
+       */
+      return {
+        ...route.params,
+        ...{ id: +route.params.id || undefined },
+      }
+    },
   },
   {
     path: '/course-budget-calculator',
