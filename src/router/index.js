@@ -42,20 +42,20 @@ const routes = [
     component: AboutView,
   },
   {
-    path: '/view-course-/:id',
+    path: '/view-course/:id',
     name: 'viewCourse',
     meta: { requiresAuth: true },
     component: ViewCourseView,
     props: true,
   },
   {
-    path: '/new-course-',
+    path: '/new-course',
     name: 'newCourse',
     meta: { requiresAuth: true },
     component: NewCourseView,
   },
   {
-    path: '/old-new-course-',
+    path: '/old-new-course',
     name: 'oldNewCourse',
     meta: { requiresAuth: true },
     component: OldNewCourseView,
@@ -135,9 +135,7 @@ router.beforeEach((to, from, next) => {
     storeAuth.getAuthenticatedUserDetails().then(() => {
       if (!storeAuth.loggedInUser) next(loginQuery)
       else if (
-        ['courseStepTwo', 'courseStepThree'].includes(
-          to.name
-        ) &&
+        ['courseStepTwo', 'courseStepThree'].includes(to.name) &&
         !storeCourse.multiStepForm.id
       ) {
         return next(from)
