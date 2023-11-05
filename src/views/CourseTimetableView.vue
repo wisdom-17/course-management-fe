@@ -24,7 +24,5 @@ const props = defineProps({
 
 onMounted(() => {
   storeTimetable.getTimetable(props.id)
-
-  console.log(storeTimetable.timetable)
 })
 </script>
