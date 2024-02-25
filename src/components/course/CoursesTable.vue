@@ -1,15 +1,10 @@
 <template>
-  <CoursesToolbar
-    :selectedCourses="selectedCourses"
-    @delete-success="selectedCourses = []"
-  />
+  <CoursesToolbar />
   <DataTable
     :value="storeCourse.list.data"
-    v-model:selection="selectedCourses"
     :loading="storeCourse.list.loading"
     class="mt-4"
   >
-    <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
     <Column
       v-for="col in stringValueColumns"
       :field="col.field"
@@ -99,8 +94,6 @@ import { formatDate } from '@/utils/dateTimeFormatters'
 const router = useRouter()
 
 const storeCourse = useCourseStore()
-
-const selectedCourses = ref([])
 
 const stringValueColumns = ref([{ field: 'name', header: 'Name' }])
 
