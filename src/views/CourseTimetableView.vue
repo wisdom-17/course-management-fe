@@ -1,10 +1,10 @@
 <template>
   <div class="col courses">
     <h1>View #{{ id }} Course Timetable</h1>
-    <div class="grid">
-      <div v-for="(lessons, day) in timetable" :key="day" class="col-12">
-        <h4>{{ day }}</h4>
-        <h5>{{ lessons }}</h5>
+    <div class="flex flex-row">
+      <div v-for="(lessons, day) in timetable" :key="day" class="flex-1">
+        <Day :day="day" />
+        <!-- <h5>{{ lessons }}</h5> -->
       </div>
     </div>
   </div>
@@ -13,6 +13,7 @@
 <script setup>
 import { computed, onMounted } from 'vue'
 import { useTimetableStore } from '@/stores/timetable'
+import Day from '@/components/timetable/Day.vue'
 
 const storeTimetable = useTimetableStore()
 
