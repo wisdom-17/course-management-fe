@@ -1,5 +1,4 @@
 import { useAuthStore } from '@/stores/auth'
-import { useCourseStore } from '@/stores/course'
 import { createRouter, createWebHistory } from 'vue-router'
 import AboutView from '@/views/AboutView.vue'
 import CourseBudgetCalculatorView from '@/views/CourseBudgetCalculatorView.vue'
@@ -137,7 +136,6 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const storeAuth = useAuthStore()
-  const storeCourse = useCourseStore()
   const authUser = storeAuth.loggedInUser
   const reqAuth = to.matched.some((record) => record.meta.requiresAuth)
   const hideForAuth = to.matched.some((record) => record.meta.hideForAuth)
@@ -146,12 +144,7 @@ router.beforeEach((to, from, next) => {
   if (reqAuth && !authUser) {
     storeAuth.getAuthenticatedUserDetails().then(() => {
       if (!storeAuth.loggedInUser) next(loginQuery)
-      else if (
-        ['courseStepTwo', 'courseStepThree'].includes(to.name) &&
-        !storeCourse.multiStepForm.id
-      ) {
-        return next(from)
-      } else next()
+      else next()
     })
   } else if (!authUser && hideForAuth) {
     storeAuth.getAuthenticatedUserDetails().then(() => {
