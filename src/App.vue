@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <Navigation v-if="loginStatus" />
-    <div :class="{ grid: loginStatus }">
+    <div :class="{ 'grid pt-5': loginStatus }">
       <ConfirmDialog />
       <DynamicDialog />
       <Toast />
