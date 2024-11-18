@@ -1,6 +1,6 @@
 <template>
   <div class="col">
-    <Card class="bg-blue-100" style="min-height: 210px">
+    <Card class="bg-blue-100" style="min-height: 262px">
       <template #title>Teachers</template>
       <template #content>
         <div class="grid">
@@ -18,10 +18,18 @@
           </div>
         </div>
       </template>
+      <template #footer>
+        <router-link :to="{ name: 'teachers' }">
+          <Button icon="pi pi-plus" class="mr-2" />
+        </router-link>
+        <router-link :to="{ name: 'teachers' }">
+          <Button icon="pi pi-list" />
+        </router-link>
+      </template>
     </Card>
   </div>
   <div class="col">
-    <Card class="bg-yellow-100" style="min-height: 210px">
+    <Card class="bg-yellow-100" style="min-height: 262px">
       <template #title>Courses</template>
       <template #content>
         <div class="grid">
@@ -39,10 +47,18 @@
           </div>
         </div>
       </template>
+      <template #footer>
+        <router-link :to="{ name: 'newCourse' }">
+          <Button icon="pi pi-plus" class="mr-2" />
+        </router-link>
+        <router-link :to="{ name: 'courses' }">
+          <Button icon="pi pi-list" />
+        </router-link>
+      </template>
     </Card>
   </div>
   <div class="col">
-    <Card class="bg-green-100" style="min-height: 210px">
+    <Card class="bg-green-100" style="min-height: 262px">
       <template #title>Subjects</template>
       <template #content>
         <div class="grid">
@@ -60,12 +76,21 @@
           </div>
         </div>
       </template>
+      <template #footer>
+        <router-link :to="{ name: 'subjects' }">
+          <Button icon="pi pi-plus" class="mr-2" />
+        </router-link>
+        <router-link :to="{ name: 'subjects' }">
+          <Button icon="pi pi-list" />
+        </router-link>
+      </template>
     </Card>
   </div>
 </template>
 
 <script setup>
 import { onMounted } from 'vue'
+import Button from 'primevue/button'
 import Card from 'primevue/card'
 import ProgressSpinner from 'primevue/progressspinner'
 import { useTeacherStore } from '@/stores/teacher'
