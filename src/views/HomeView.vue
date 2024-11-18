@@ -3,7 +3,7 @@
     <Card class="bg-blue-100" style="min-height: 262px">
       <template #title>Teachers</template>
       <template #content>
-        <div class="grid">
+        <div class="grid" style="min-height: 118px">
           <div class="col-6 flex align-items-center">
             <i class="pi pi-users" style="font-size: 3.5rem" />
           </div>
@@ -32,7 +32,7 @@
     <Card class="bg-yellow-100" style="min-height: 262px">
       <template #title>Courses</template>
       <template #content>
-        <div class="grid">
+        <div class="grid" style="min-height: 118px">
           <div class="col-6 flex align-items-center">
             <i class="pi pi-calendar" style="font-size: 2.5rem" />
           </div>
@@ -61,7 +61,7 @@
     <Card class="bg-green-100" style="min-height: 262px">
       <template #title>Subjects</template>
       <template #content>
-        <div class="grid">
+        <div class="grid" style="min-height: 118px">
           <div class="col-6 flex align-items-center">
             <i class="pi pi-briefcase" style="font-size: 2.5rem" />
           </div>
