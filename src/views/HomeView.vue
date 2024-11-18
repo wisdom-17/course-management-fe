@@ -1,105 +1,49 @@
 <template>
-  <div class="col">
-    <Card class="bg-blue-100" style="min-height: 262px">
-      <template #title>Teachers</template>
-      <template #content>
-        <div class="grid" style="min-height: 118px">
-          <div class="col-6 flex align-items-center">
-            <i class="pi pi-users" style="font-size: 3.5rem" />
-          </div>
-          <div class="col-6">
-            <div class="text-center">
-              <ProgressSpinner
-                v-if="teacherStore.list.loading"
-                style="width: 75px; height: 75px"
-              />
-              <p v-else class="text-4xl">{{ teacherStore.list.total }}</p>
-            </div>
-          </div>
-        </div>
-      </template>
-      <template #footer>
-        <router-link :to="{ name: 'teachers' }">
-          <Button icon="pi pi-plus" class="mr-2" />
-        </router-link>
-        <router-link :to="{ name: 'teachers' }">
-          <Button icon="pi pi-list" />
-        </router-link>
-      </template>
-    </Card>
-  </div>
-  <div class="col">
-    <Card class="bg-yellow-100" style="min-height: 262px">
-      <template #title>Courses</template>
-      <template #content>
-        <div class="grid" style="min-height: 118px">
-          <div class="col-6 flex align-items-center">
-            <i class="pi pi-calendar" style="font-size: 2.5rem" />
-          </div>
-          <div class="col-6">
-            <div class="text-center">
-              <ProgressSpinner
-                v-if="courseStore.list.loading"
-                style="width: 75px; height: 75px"
-              />
-              <p v-else class="text-4xl">{{ courseStore.list.data.length }}</p>
-            </div>
-          </div>
-        </div>
-      </template>
-      <template #footer>
-        <router-link :to="{ name: 'newCourse' }">
-          <Button icon="pi pi-plus" class="mr-2" />
-        </router-link>
-        <router-link :to="{ name: 'courses' }">
-          <Button icon="pi pi-list" />
-        </router-link>
-      </template>
-    </Card>
-  </div>
-  <div class="col">
-    <Card class="bg-green-100" style="min-height: 262px">
-      <template #title>Subjects</template>
-      <template #content>
-        <div class="grid" style="min-height: 118px">
-          <div class="col-6 flex align-items-center">
-            <i class="pi pi-briefcase" style="font-size: 2.5rem" />
-          </div>
-          <div class="col-6">
-            <div class="text-center">
-              <ProgressSpinner
-                v-if="subjectStore.list.loading"
-                style="width: 75px; height: 75px"
-              />
-              <p v-else class="text-4xl">{{ subjectStore.list.data.length }}</p>
-            </div>
-          </div>
-        </div>
-      </template>
-      <template #footer>
-        <router-link :to="{ name: 'subjects' }">
-          <Button icon="pi pi-plus" class="mr-2" />
-        </router-link>
-        <router-link :to="{ name: 'subjects' }">
-          <Button icon="pi pi-list" />
-        </router-link>
-      </template>
-    </Card>
-  </div>
+  <DashboardCard
+    v-for="card in cards"
+    :key="card.title"
+    :title="card.title"
+    :mainIcon="card.mainIcon"
+    :isLoading="card.isLoading"
+    :count="card.count"
+    :cardColour="card.cardColour"
+  />
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
-import Button from 'primevue/button'
-import Card from 'primevue/card'
-import ProgressSpinner from 'primevue/progressspinner'
+import { onMounted, computed } from 'vue'
 import { useTeacherStore } from '@/stores/teacher'
 import { useCourseStore } from '@/stores/course'
 import { useSubjectStore } from '@/stores/subject'
+import DashboardCard from '@/components/home/DashboardCard.vue'
 
 const teacherStore = useTeacherStore()
 const courseStore = useCourseStore()
 const subjectStore = useSubjectStore()
+
+const cards = computed(() => [
+  {
+    title: 'Teachers',
+    mainIcon: 'pi pi-users',
+    isLoading: teacherStore.list.loading,
+    count: teacherStore.list.total,
+    cardColour: 'bg-blue-100',
+  },
+  {
+    title: 'Courses',
+    mainIcon: 'pi pi-calendar',
+    isLoading: courseStore.list.loading,
+    count: courseStore.list.data.length,
+    cardColour: 'bg-yellow-100',
+  },
+  {
+    title: 'Subjects',
+    mainIcon: 'pi pi-briefcase',
+    isLoading: subjectStore.list.loading,
+    count: subjectStore.list.data.length,
+    cardColour: 'bg-green-100',
+  },
+])
 
 onMounted(() => {
   teacherStore.getTeachers(1)
