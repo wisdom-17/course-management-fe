@@ -95,6 +95,13 @@ const routes = [
     component: SubjectView,
   },
   {
+    path: '/subjects/new',
+    name: 'newSubject',
+    meta: { requiresAuth: true },
+    component: SubjectView,
+    props: { showNewSubjectDialog: true },
+  },
+  {
     path: '/view-subject-timetable/:id',
     name: 'viewSubjectTimetable',
     meta: { requiresAuth: true },

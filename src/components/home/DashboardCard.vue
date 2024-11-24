@@ -71,6 +71,9 @@ const addNewRoute = computed(() => {
   if (props.title === 'Teachers') {
     addNewRoute = { name: 'newTeacher' }
   }
+  if (props.title === 'Subjects') {
+    addNewRoute = { name: 'newSubject' }
+  }
   return addNewRoute
 })
 </script>

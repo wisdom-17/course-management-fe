@@ -12,6 +12,7 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
 import Toolbar from 'primevue/toolbar'
 import Button from 'primevue/button'
 import { useDialog } from 'primevue/usedialog'
@@ -19,7 +20,18 @@ import SubjectForm from '@/components/subject/SubjectForm.vue'
 
 const dialog = useDialog()
 
+const props = defineProps({
+  showNewSubjectDialog: {
+    type: Boolean,
+    default: false,
+  },
+})
+
 const onClickNewButton = () => {
+  openNewSubjectDialog()
+}
+
+const openNewSubjectDialog = () => {
   dialog.open(SubjectForm, {
     props: {
       style: { width: '60vw' },
@@ -28,4 +40,10 @@ const onClickNewButton = () => {
     },
   })
 }
+
+onMounted(() => {
+  if (props.showNewSubjectDialog) {
+    openNewSubjectDialog()
+  }
+})
 </script>
