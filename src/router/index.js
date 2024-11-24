@@ -73,6 +73,14 @@ const routes = [
     name: 'teachers',
     meta: { requiresAuth: true },
     component: TeacherView,
+    props: { showNewTeacherDialog: false },
+  },
+  {
+    path: '/teachers/new',
+    name: 'newTeacher',
+    meta: { requiresAuth: true },
+    component: TeacherView,
+    props: { showNewTeacherDialog: true },
   },
   {
     path: '/courses',

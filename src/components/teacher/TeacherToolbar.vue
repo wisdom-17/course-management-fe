@@ -12,6 +12,7 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
 import Toolbar from 'primevue/toolbar'
 import Button from 'primevue/button'
 import { useDialog } from 'primevue/usedialog'
@@ -19,7 +20,18 @@ import TeacherForm from '@/components/teacher/TeacherForm.vue'
 
 const dialog = useDialog()
 
+const props = defineProps({
+  showNewTeacherDialog: {
+    type: Boolean,
+    default: false,
+  },
+})
+
 const onClickNewButton = () => {
+  openNewTeacherDialog()
+}
+
+const openNewTeacherDialog = () => {
   dialog.open(TeacherForm, {
     props: {
       style: { width: '60vw' },
@@ -28,4 +40,10 @@ const onClickNewButton = () => {
     },
   })
 }
+
+onMounted(() => {
+  if (props.showNewTeacherDialog) {
+    openNewTeacherDialog()
+  }
+})
 </script>
